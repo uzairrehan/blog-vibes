@@ -1,6 +1,7 @@
 "use client";
 import { loginWithEmailPassword, passwordReset } from "@/firebase/firebaseauthentication";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ function SignIn() {
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     loginWithEmailPassword(email, password);
+    toast.success("User logged in")
     setEmail("");
     setPassword("");
   }
@@ -16,17 +18,18 @@ function SignIn() {
   function handlePasswordReset() {
     if (email) {
       passwordReset(email);
+      toast.success(`Email Sent to : ${email}`)
     } else {
-      alert("Please enter your email address to reset your password.");
+      toast.error("Please Add Email")
     }
   }
 
   return (
     <>
-      <div className="flex h-full flex-col justify-center px-6 py-12 lg:px-8 ">
+      <div className="flex  flex-col justify-center px-6  lg:px-8 ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-neutral">
-            Sign in to your account
+          <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-neutral">
+            Login to your account
           </h2>
         </div>
 
@@ -74,12 +77,12 @@ function SignIn() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <button
+                  <a
                     onClick={handlePasswordReset}
-                    className="font-semibold text-neutral hover:text-secondary"
+                    className="font-semibold text-neutral hover:text-secondary hover:cursor-pointer"
                   >
                     Forgot password?
-                  </button>
+                  </a>
                 </div>
               </div>
 

@@ -1,5 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, updateProfile,sendPasswordResetEmail} from "firebase/auth";
 import { app } from "./firebaseconfig";
+import { toast } from "react-toastify";
 // import { saveUser } from "./firebasefirestore";
 // import { app } from "./firebaseconfig";
 
@@ -52,6 +53,7 @@ export function googleSign() {
       const token = credential?.accessToken;
       const user = result.user;
       console.log(token, user);
+      toast.success("User Created")
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -59,6 +61,8 @@ export function googleSign() {
       const email = error.customData.email;
       const credential = GoogleAuthProvider.credentialFromError(error);
       console.log(errorCode, errorMessage, email, credential);
+      toast.error("Could'nt Create")
+      
 
     });
 }
