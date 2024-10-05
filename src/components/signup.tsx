@@ -14,7 +14,7 @@ function SignUp() {
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     signupWithEmailPassword(email, password, name);
-    toast.success("User Created")
+    toast.success("User Created");
     setEmail("");
     setName("");
     setPassword("");

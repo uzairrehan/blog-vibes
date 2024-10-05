@@ -1,5 +1,8 @@
 "use client";
-import { loginWithEmailPassword, passwordReset } from "@/firebase/firebaseauthentication";
+import {
+  loginWithEmailPassword,
+  passwordReset,
+} from "@/firebase/firebaseauthentication";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -10,7 +13,7 @@ function SignIn() {
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     loginWithEmailPassword(email, password);
-    toast.success("User logged in")
+    toast.success("User logged in");
     setEmail("");
     setPassword("");
   }
@@ -18,9 +21,9 @@ function SignIn() {
   function handlePasswordReset() {
     if (email) {
       passwordReset(email);
-      toast.success(`Email Sent to : ${email}`)
+      toast.success(`Email Sent to : ${email}`);
     } else {
-      toast.error("Please Add Email")
+      toast.error("Please Add Email");
     }
   }
 
