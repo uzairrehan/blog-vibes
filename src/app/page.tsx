@@ -1,11 +1,9 @@
 "use client";
 
-import Loading from "@/components/loading";
 
 export default function Home() {
   return (
     <>
-      {/* <Loading/> */}
 
       <button className="btn">
         <svg
@@ -66,7 +64,7 @@ export default function Home() {
       {/* Open the modal using document.getElementById('ID').showModal() method */}
       <button
         className="btn"
-        onClick={() => document.getElementById("my_modal_5").showModal()}
+        // onClick={() => document.getElementById("my_modal_5").showModal()}
       >
         open modal
       </button>
@@ -136,8 +134,6 @@ export default function Home() {
         </svg>
       </label>
     </>
-    // <>
-    // <Loading/>
-    // </>
+
   );
 }
