@@ -1,101 +1,256 @@
-import Image from "next/image";
+"use client";
+
+// import Loading from "@/components/loading";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    // <>
+    //     {/* <Loading/> */}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //   <button className="btn">
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       className="h-6 w-6"
+    //       fill="none"
+    //       viewBox="0 0 24 24"
+    //       stroke="currentColor"
+    //     >
+    //       <path
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //         strokeWidth="2"
+    //         d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+    //       />
+    //     </svg>
+    //     Button
+    //   </button>
+
+
+
+
+
+
+
+
+
+
+
+    //   <button className="btn btn-circle btn-outline">
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       className="h-6 w-6"
+    //       fill="none"
+    //       viewBox="0 0 24 24"
+    //       stroke="currentColor"
+    //     >
+    //       <path
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //         strokeWidth="2"
+    //         d="M6 18L18 6M6 6l12 12"
+    //       />
+    //     </svg>
+    //   </button>
+
+
+
+
+
+
+
+    //   <button className="btn">
+    //     <span className="loading loading-spinner"></span>
+    //     loading
+    //   </button>
+
+
+
+
+
+
+      
+    //   <div className="dropdown dropdown-hover">
+    //     <div tabIndex={0} role="button" className="btn m-1">
+    //       Hover
+    //     </div>
+    //     <ul
+    //       tabIndex={0}
+    //       className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+    //     >
+    //       <li>
+    //         <a>Item 1</a>
+    //       </li>
+    //       <li>
+    //         <a>Item 2</a>
+    //       </li>
+    //     </ul>
+    //   </div>
+    //   {/* Open the modal using document.getElementById('ID').showModal() method */}
+    //   <button
+    //     className="btn"
+    //     onClick={() => document.getElementById("my_modal_5").showModal()}
+    //   >
+    //     open modal
+    //   </button>
+    //   <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
+    //     <div className="modal-box">
+    //       <h3 className="font-bold text-lg">Hello!</h3>
+    //       <p className="py-4">
+    //         Press ESC key or click the button below to close
+    //       </p>
+    //       <div className="modal-action">
+    //         <form method="dialog">
+    //           {/* if there is a button in form, it will close the modal */}
+    //           <button className="btn">Close</button>
+    //         </form>
+    //       </div>
+    //     </div>
+    //   </dialog>
+
+
+
+
+
+
+    //   {/* <div className="card card-side bg-base-100 shadow-xl">
+    //     <figure>
+    //       <img
+    //         src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+    //         alt="Movie"
+    //       />
+    //     </figure>
+    //     <div className="card-body">
+    //       <h2 className="card-title">New movie is released!</h2>
+    //       <p>Click the button to watch on Jetflix app.</p>
+    //       <div className="card-actions justify-end">
+    //         <button className="btn btn-primary">Watch</button>
+    //       </div>
+    //     </div>
+    //   </div> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //   <label className="form-control w-full max-w-xs">
+    //     <div className="label">
+    //       <span className="label-text">Pick a file</span>
+    //     </div>
+    //     <input
+    //       type="file"
+    //       className="file-input file-input-bordered w-full max-w-xs"
+    //     />
+    //   </label>
+
+
+
+
+
+
+
+
+
+
+
+
+    //   <select className="select select-bordered select-sm w-full max-w-xs">
+    //     <option disabled selected>
+    //       Small
+    //     </option>
+    //     <option>Small Apple</option>
+    //     <option>Small Orange</option>
+    //     <option>Small Tomato</option>
+    //   </select>
+
+
+
+
+
+
+
+
+
+
+    //   <label className="input input-bordered flex items-center gap-2">
+    //     <input type="text" className="grow" placeholder="Search" />
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       viewBox="0 0 16 16"
+    //       fill="currentColor"
+    //       className="h-4 w-4 opacity-70"
+    //     >
+    //       <path
+    //         fillRule="evenodd"
+    //         d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+    //         clipRule="evenodd"
+    //       />
+    //     </svg>
+    //   </label>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // </>
+    <></>
   );
 }
