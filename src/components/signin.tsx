@@ -13,7 +13,6 @@ function SignIn() {
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     loginWithEmailPassword(email, password);
-    toast.success("User logged in");
     setEmail("");
     setPassword("");
   }
@@ -21,7 +20,6 @@ function SignIn() {
   function handlePasswordReset() {
     if (email) {
       passwordReset(email);
-      toast.success(`Email Sent to : ${email}`);
     } else {
       toast.error("Please Add Email");
     }
@@ -111,7 +109,6 @@ function SignIn() {
                   placeholder="••••••••"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
-                 
                 />
               </label>
             </div>

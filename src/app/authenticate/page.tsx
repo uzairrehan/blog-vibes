@@ -8,15 +8,15 @@ import { app } from "@/firebase/firebaseconfig";
 
 function Authenticate() {
   const [page, setPage] = useState("SignUp");
-  const route = useRouter()
-  useEffect(()=>{
+  const route = useRouter();
+  useEffect(() => {
     const auth = getAuth(app);
-    onAuthStateChanged(auth,(loggedInUser)=>{
-      if (loggedInUser){
-          route.push("/")
+    onAuthStateChanged(auth, (loggedInUser) => {
+      if (loggedInUser) {
+        route.push("/");
       }
-    })
-  },[route])
+    });
+  }, [route]);
 
   return (
     <>

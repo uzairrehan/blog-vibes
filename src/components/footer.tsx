@@ -10,7 +10,7 @@ function Footer() {
             className="link"
             target="_blank"
           >
-            Syed Uzair Rehan
+            Syed Uzair
           </a>
         </p>
       </aside>

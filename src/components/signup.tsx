@@ -5,7 +5,6 @@ import {
 } from "@/firebase/firebaseauthentication";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { toast } from "react-toastify";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -15,7 +14,6 @@ function SignUp() {
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     signupWithEmailPassword(email, password, name);
-    toast.success("User Created");
     setEmail("");
     setName("");
     setPassword("");
@@ -144,7 +142,7 @@ function SignUp() {
               className="btn-error btn btn-wide flex items-center justify-center space-x-2 sm:mx-auto sm:w-full sm:max-w-sm"
               onClick={googleSign}
             >
-           <FaGoogle />
+              <FaGoogle />
 
               <span>Google Sign Up</span>
             </button>

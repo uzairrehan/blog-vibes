@@ -3,7 +3,6 @@
 import { auth } from "@/firebase/firebaseauthentication";
 import { signOut } from "firebase/auth";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import { IoMdAdd } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { LuLogIn } from "react-icons/lu";
@@ -16,7 +15,11 @@ function Navbar() {
     <div className="navbar bg-neutral text-base-100">
       <div className="navbar-start">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle hover:bg-secondary">
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle hover:bg-secondary"
+          >
             <GiHamburgerMenu />
           </div>
           <ul
@@ -28,7 +31,6 @@ function Navbar() {
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
                 href={"/"}
               >
-                {" "}
                 <IoHomeOutline />
                 Go to Home
               </Link>
@@ -55,7 +57,6 @@ function Navbar() {
             <li
               onClick={() => {
                 signOut(auth);
-                toast.success("Signed out Succesfully");
               }}
             >
               <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">
@@ -67,14 +68,19 @@ function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <a href="/" className="btn btn-ghost text-xl hover:bg-secondary ">blog - vibes</a>
+        <a href="/" className="btn btn-ghost text-xl hover:bg-secondary ">
+          blog - vibes
+        </a>
       </div>
 
       <div className="navbar-end">
         {/* <button className="btn btn-ghost btn-circle hover:bg-secondary">
           <IoMdSearch />
         </button> */}
-        <Link href={"/profile"} className="btn btn-ghost btn-circle hover:bg-secondary">
+        <Link
+          href={"/profile"}
+          className="btn btn-ghost btn-circle hover:bg-secondary"
+        >
           <FaRegUser />
         </Link>
       </div>

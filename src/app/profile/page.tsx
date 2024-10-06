@@ -35,15 +35,15 @@ function Profile() {
           <div className="mb-4 ">
             <label
               htmlFor="image"
-              className="block  text-sm font-bold mb-2 form-control w-full  label"
+              className="block pl-0 text-sm font-bold mb-2 form-control w-full  label"
             >
-              <span className="label-text text-neutral">Upload Image : </span>
+              <span className="text-neutral">Upload Image : </span>
             </label>
             <input
               type="file"
               id="image"
               accept="image/*"
-              className="w-full p-0 file-input bg-white file-input-bordered rounded-lg input input-primary "
+              className="w-full p-0 file-input bg-white file-input-bordered rounded-lg input input-primary"
             />
           </div>
 
