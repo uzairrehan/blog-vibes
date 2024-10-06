@@ -1,10 +1,25 @@
 "use client";
 
+import { saveBlog } from "@/firebase/firebasefirestore";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 function Markdown() {
+  const [title, setTitle] = useState("");
+  const [imageURL, setImageURL] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [tag, setTag] = useState("");
+  const [slug, setSlug] = useState("");
+  const [createdDate] = useState(new Date());
   const [mark, setMark] = useState("");
+
+
+  const handleSubmit = async () => {
+    await saveBlog({ title, imageURL, tag, mark, slug, createdDate });
+  };
+
+
+
   return (
     <>
       <div className="flex justify-center items-center py-4">
@@ -22,7 +37,9 @@ function Markdown() {
             <input
               type="text"
               id="title"
-              className="w-full input input-bordered input-primary rounded-lg bg-white mb-4  text-black"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full input input-bordered input-primary rounded-lg bg-white mb-4 text-black"
             />
           </div>
           <div className="mb-4">
@@ -33,7 +50,13 @@ function Markdown() {
               type="file"
               id="image"
               accept="image/*"
-              className="w-full p-0 file-input bg-white file-input-bordered rounded-lg  input input-primary  text-black"
+              onChange={(e) => {
+                const selectedFile = e.target.files?.[0];
+                if (selectedFile) {
+                  setFile(selectedFile);
+                }
+              }}
+              className="w-full p-0 file-input bg-white file-input-bordered rounded-lg input input-primary text-black"
             />
           </div>
 
@@ -41,38 +64,45 @@ function Markdown() {
             <span className="text-neutral">Tags:</span>
           </label>
           <select
-            id="tag" // Fixed the id to "tag"
+            id="tag"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
             className="w-full input input-bordered input-primary rounded-lg bg-white mb-4 text-black"
           >
-            <option selected>Others</option>
-            <option>Entertainment</option>
-            <option>Education</option>
-            <option>Coding</option>
-            <option>Programming</option>
-            <option>Blogging</option>
+            <option value="Others" selected>
+              Others
+            </option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Education">Education</option>
+            <option value="Coding">Coding</option>
+            <option value="Programming">Programming</option>
+            <option value="Blogging">Blogging</option>
           </select>
 
           <label className="block text-sm font-bold mb-2">
             <span className="text-neutral">Text:</span>
           </label>
           <textarea
-            className="textarea textarea-bordered h-24 w-full input input-neutral rounded-lg mb-4  text-black"
+            className="textarea textarea-bordered h-24 w-full input input-neutral rounded-lg mb-4 text-black"
             placeholder="Type Blog text here in markdown format..."
             value={mark}
             onChange={(e) => setMark(e.target.value)}
           ></textarea>
 
           <div>
-            <button className="btn btn-active btn-neutral w-full">
-              Update
+            <button
+              onClick={handleSubmit}
+              className="btn btn-active btn-neutral w-full"
+            >
+              Add Blog
             </button>
           </div>
         </div>
 
-        <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200  text-black">
+        <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200 text-black max-h-96 overflow-y-scroll">
           <label htmlFor="tag" className="block text-sm font-bold mb-2">
             <span className="text-neutral">Text Output:</span>
-          </label>{" "}
+          </label>
           <div className="border border-primary rounded p-2 h-full">
             <ReactMarkdown className="w-full rounded-lg mb-4">
               {mark}
@@ -80,6 +110,7 @@ function Markdown() {
           </div>
         </div>
       </div>
+
     </>
   );
 }

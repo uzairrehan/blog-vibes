@@ -9,6 +9,9 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 
 function Profile() {
+  
+
+
   const route = useRouter();
   useEffect(() => {
     const auth = getAuth(app);
