@@ -1,6 +1,12 @@
 "use client";
+
+import Markdown from "@/components/markdown";
+
+
 function Add() {
-  return <>Add</>;
+  return <>
+  <Markdown/>
+  </>;
 }
 
 export default Add;

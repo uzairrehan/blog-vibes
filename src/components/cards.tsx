@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { cardType } from "@/types/types";
@@ -9,11 +8,11 @@ function Cards({ imageURL, heading, text, tags , slug}: cardType) {
   const route = useRouter();
   return (
     <>
-      <div className="card glass lg:w-96 shadow-sm transition-transform transform hover:scale-101 hover:shadow-lg duration-300">
+      <div className="card lg:w-96 shadow-lg transition-transform transform hover:scale-101 hover:shadow-2xl duration-300 border-neutral border border-opacity-30 bg-white text-black ">
         <figure>
           <img src={imageURL} alt="blog image" />
         </figure>
-        <div className="card-body">
+        <div className="card-body ">
           <h2 className="card-title">{heading}</h2>
           <div className="flex flex-row gap-2">
             {tags.map((tag, index) => (
@@ -28,7 +27,7 @@ function Cards({ imageURL, heading, text, tags , slug}: cardType) {
               onClick={() => {
                 route.push(`/blog/${slug}`);
               }}
-              className="btn btn-primary text-neutral"
+              className="btn btn-primary"
             >
               Read blog <FaLongArrowAltRight />
 

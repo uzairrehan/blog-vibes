@@ -40,6 +40,7 @@ const config: Config = {
           error: "#dc2626",
         },
       },
+      "black"
     ],
   },
 };

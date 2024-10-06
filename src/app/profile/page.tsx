@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/firebase/firebaseconfig";
 import Footer from "@/components/footer";
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import Link from "next/link";
 
 function Profile() {
   const route = useRouter();
@@ -19,8 +21,9 @@ function Profile() {
 
   return (
     <>
+  <Link href={"/"} className="btn m-2 btn-xs btn-neutral"><FaLongArrowAltLeft /> Go Back to Home </Link>
 
-      <div className="max-w-screen-lg mx-auto p-4">
+      <div className="max-w-screen-lg mx-auto p-4 text-black">
  
         <div className="flex justify-center mb-6">
           <img

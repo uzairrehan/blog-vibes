@@ -6,9 +6,11 @@ import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { IoHomeOutline } from "react-icons/io5";
 import { LuLogIn } from "react-icons/lu";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegMoon, FaRegUser } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
+import Image from "next/image";
+import { FiSun } from "react-icons/fi";
 
 function Navbar() {
   return (
@@ -68,8 +70,15 @@ function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <a href="/" className="btn btn-ghost text-xl hover:bg-secondary ">
-          blog - vibes
+        <a href="/">
+          {/* blog - vibes */}
+          <Image
+            src="/images/bv.png"
+            alt="logo"
+            height={25}
+            width={70}
+            className="rounded-lg"
+          />
         </a>
       </div>
 
@@ -77,6 +86,17 @@ function Navbar() {
         {/* <button className="btn btn-ghost btn-circle hover:bg-secondary">
           <IoMdSearch />
         </button> */}
+        <label className="swap swap-rotate btn btn-ghost btn-circle hover:bg-secondary">
+          {/* this hidden checkbox controls the state */}
+          <input type="checkbox" className="theme-controller" value="black" />
+
+          {/* sun icon */}
+          <FiSun className="swap-off h-5 w-5 fill-current" />
+
+          {/* moon icon */}
+          <FaRegMoon className="swap-on h-5 w-5 fill-current" />
+        </label>
+
         <Link
           href={"/profile"}
           className="btn btn-ghost btn-circle hover:bg-secondary"
