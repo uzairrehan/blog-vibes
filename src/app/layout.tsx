@@ -33,7 +33,7 @@ export default function RootLayout({
       >
         <Navbar />
         {children}
-        <ToastContainer />
+        <ToastContainer autoClose={2000} />
       </body>
     </html>
   );

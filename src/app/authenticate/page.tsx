@@ -1,10 +1,22 @@
 "use client";
 import SignUp from "@/components/signup";
 import SignIn from "@/components/signin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app } from "@/firebase/firebaseconfig";
 
 function Authenticate() {
   const [page, setPage] = useState("SignUp");
+  const route = useRouter()
+  useEffect(()=>{
+    const auth = getAuth(app);
+    onAuthStateChanged(auth,(loggedInUser)=>{
+      if (loggedInUser){
+          route.push("/")
+      }
+    })
+  },[route])
 
   return (
     <>

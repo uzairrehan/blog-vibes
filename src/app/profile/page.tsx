@@ -1,5 +1,22 @@
 "use client";
+
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { app } from "@/firebase/firebaseconfig";
+import Footer from "@/components/footer";
+
 function Profile() {
+  const route = useRouter();
+  useEffect(() => {
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (loggedInUser) => {
+      if (!loggedInUser) {
+        route.push("/authenticate");
+      }
+    });
+  }, [route]);
+
   return (
     <>
       <div className="max-w-screen-lg mx-auto p-4">
@@ -15,9 +32,9 @@ function Profile() {
           <div className="mb-4">
             <label
               htmlFor="image"
-              className="block text-gray-700 text-sm font-bold mb-2 form-control w-full  label"
+              className="block  text-sm font-bold mb-2 form-control w-full  label"
             >
-              <span className="label-text ">Upload Image : </span>
+              <span className="label-text text-neutral">Upload Image : </span>
             </label>
             <input
               type="file"
@@ -31,90 +48,93 @@ function Profile() {
             <div>
               <label
                 htmlFor="Name"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                className="block text-neutral text-sm font-bold mb-2"
               >
-                Field 1:
+                Name :
               </label>
               <input
                 type="text"
                 id="Name"
-                className="w-full py-2 px-3 border rounded-lg "
+                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
               <label
-                htmlFor="field2"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="fathername"
+                className="block text-neutral text-sm font-bold mb-2"
               >
-                Field 2:
+                Fathername :
               </label>
               <input
                 type="text"
-                id="field2"
-                className="w-full py-2 px-3 border rounded-lg  "
+                id="fathername"
+                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
               <label
-                htmlFor="field3"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="phonenumber"
+                className="block text-neutral text-sm font-bold mb-2"
               >
-                Field 3:
+                Phonenumber :
               </label>
               <input
-                type="text"
-                id="field3"
-                className="w-full py-2 px-3 border rounded-lg "
+                type="number"
+                id="phonenumber"
+                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
               <label
-                htmlFor="field4"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="DOB :"
+                className="block text-neutral text-sm font-bold mb-2"
               >
-                Field 4:
+                DOB :
               </label>
               <input
-                type="text"
-                id="field4"
-                className="w-full py-2 px-3 border rounded-lg "
+                type="date"
+                id="DOB :"
+                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
               <label
-                htmlFor="field5"
-                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="Role"
+                className="block text-neutral text-sm font-bold mb-2"
               >
-                Field 5:
+                Role :
               </label>
               <input
                 type="text"
-                id="field5"
-                className="w-full py-2 px-3 border rounded-lg "
+                id="Role"
+                className="w-full py-2 px-3 input input-bordered input-neutral  rounded-lg bg-white"
               />
             </div>
-            <div>
-              <label
-                htmlFor="field6"
-                className="block text-gray-700 text-sm font-bold mb-2"
-              >
-                Field 6:
-              </label>
-              <input
-                type="text"
-                id="field6"
-                className="w-full py-2 px-3 border rounded-lg "
-              />
-            </div>
- 
-            
-          </div>
+          
 
+
+          <div>
+            <label
+              htmlFor="bio"
+              className="block text-neutral text-sm font-bold mb-2"
+            >
+              Bio :
+            </label>
+            <textarea
+              className="textarea textarea-primary w-full py-2 px-3 input input-bordered input-neutral  rounded-lg bg-white"
+              placeholder="Bio"
+              id="bio"
+            ></textarea>
+          </div>
+          </div>
           <div className="mt-6">
-            <button className="btn btn-active btn-neutral w-full">Update</button>
+            <button className="btn btn-active btn-neutral w-full">
+              Update
+            </button>
           </div>
         </form>
       </div>
+      <Footer />
     </>
   );
 }
