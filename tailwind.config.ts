@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
+import lineClamp from "@tailwindcss/line-clamp";
 
 const config: Config = {
   content: [
@@ -15,7 +16,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [daisyui],
+  plugins: [daisyui, lineClamp],
   daisyui: {
     themes: [
       {
@@ -39,7 +40,6 @@ const config: Config = {
           error: "#dc2626",
         },
       },
-
     ],
   },
 };

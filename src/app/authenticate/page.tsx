@@ -24,8 +24,8 @@ function Authenticate() {
         <button
           className={
             page == "SignIn"
-              ? "btn btn-secondary "
-              : "btn btn-neutral "
+              ? "btn btn-secondary  text-neutral"
+              : "btn btn-neutral text-primary "
           }
           onClick={() => setPage("SignIn")}
         >
@@ -34,8 +34,8 @@ function Authenticate() {
         <button
           className={
             page == "SignUp"
-              ? "btn btn-secondary "
-              : "btn btn-neutral "
+              ? "btn btn-secondary text-neutral"
+              : "btn btn-neutral  text-primary "
           }
           onClick={() => setPage("SignUp")}
         >

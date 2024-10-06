@@ -131,7 +131,7 @@ function SignUp() {
             <div className="center flex justify-center items-center pt-4">
               <button
                 type="submit"
-                className="text-neutral btn-primary btn bg-secondary btn-wide sm:mx-auto sm:w-full sm:max-w-sm"
+                className="text-neutral btn-primary btn bg-secondary btn-wide sm:mx-auto sm:w-full sm:max-w-sm hover:bg-neutral hover:text-primary"
               >
                 Sign Up
               </button>

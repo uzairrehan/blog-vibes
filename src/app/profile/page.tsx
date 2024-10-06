@@ -19,7 +19,9 @@ function Profile() {
 
   return (
     <>
+
       <div className="max-w-screen-lg mx-auto p-4">
+ 
         <div className="flex justify-center mb-6">
           <img
             src="https://via.placeholder.com/150"
@@ -29,7 +31,8 @@ function Profile() {
         </div>
 
         <form className=" px-8 pt-6 pb-8 mb-4">
-          <div className="mb-4">
+
+          <div className="mb-4 ">
             <label
               htmlFor="image"
               className="block  text-sm font-bold mb-2 form-control w-full  label"
@@ -40,7 +43,7 @@ function Profile() {
               type="file"
               id="image"
               accept="image/*"
-              className="w-full file-input file-input-bordered rounded-lg"
+              className="w-full p-0 file-input bg-white file-input-bordered rounded-lg input input-primary "
             />
           </div>
 
@@ -55,7 +58,7 @@ function Profile() {
               <input
                 type="text"
                 id="Name"
-                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
+                className="w-full py-2 px-3 input input-bordered input-primary  input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
@@ -68,7 +71,7 @@ function Profile() {
               <input
                 type="text"
                 id="fathername"
-                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
+                className="w-full py-2 px-3 input input-bordered input-primary  input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
@@ -81,7 +84,7 @@ function Profile() {
               <input
                 type="number"
                 id="phonenumber"
-                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
+                className="w-full py-2 px-3 input input-bordered input-primary  input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
@@ -94,7 +97,7 @@ function Profile() {
               <input
                 type="date"
                 id="DOB :"
-                className="w-full py-2 px-3 input input-bordered input-neutral rounded-lg bg-white"
+                className="w-full py-2 px-3 input input-bordered input-primary  input-neutral rounded-lg bg-white"
               />
             </div>
             <div>
@@ -107,7 +110,7 @@ function Profile() {
               <input
                 type="text"
                 id="Role"
-                className="w-full py-2 px-3 input input-bordered input-neutral  rounded-lg bg-white"
+                className="w-full py-2 px-3 input input-bordered input-primary  rounded-lg bg-white"
               />
             </div>
           
