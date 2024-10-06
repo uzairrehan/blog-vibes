@@ -7,7 +7,7 @@ function Blog() {
     useEffect(()=>{
         route.push("/")
     },[route])
-    return ( <> YOU ARE IN WRONG PLACE !!</> );
+    return ( <> YOU ARE IN WRONG PLACE !</> );
 }
 
 export default Blog;
