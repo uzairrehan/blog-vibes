@@ -3,8 +3,24 @@
 import Cards from "@/components/cards";
 
 import Footer from "@/components/footer";
+import { db } from "@/firebase/firebasefirestore";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [allCards, setAllCards] = useState([]);
+  useEffect(() => {
+    async function getData() {
+      const querySnapshot = await getDocs(collection(db, "blogs"));
+      const dataArray: object[] = [];
+      querySnapshot.forEach((doc) => {
+        dataArray.push(doc.data());
+      });
+      setAllCards(dataArray);
+    }
+    getData();
+  }, []);
+  console.log(allCards);
   return (
     // <>
 
@@ -140,60 +156,18 @@ export default function Home() {
     <>
       <div className="flex justify-center items-center min-h-screen">
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3  mx-5 my-5">
-          <Cards
-            imageURL="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            heading={"Cars"}
-            text={
-              "lorem ipdiaf fuhfgosidf sdfiohfsd fdsiohfsd fsdiofsd fusdbfnfbsdf df9sd wfidfsndfsdffpsafwqasvfa diafhaf nafofgwq fsaifha wafbbsd af8afwf sakfwnbfsanafasb fanfiafvafb ak"
-            }
-            tags={["coding", "programming"]}
-            slug={"programming-geee-myy"}
-          />
-          <Cards
-            imageURL="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            heading={"Cars"}
-            text={
-              "lorem ipdiaf fuhfgosidf sdfiohfsd fdsiohfsd fsdiofsd fusdbfnfbsdf df9sd wfidfsndfsdffpsafwqasvfa diafhaf nafofgwq fsaifha wafbbsd af8afwf sakfwnbfsanafasb fanfiafvafb ak"
-            }
-            tags={["coding", "programming"]}
-            slug={"programming-geee-myy"}
-          />
-          <Cards
-            imageURL="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            heading={"Cars"}
-            text={
-              "lorem ipdiaf fuhfgosidf sdfiohfsd fdsiohfsd fsdiofsd fusdbfnfbsdf df9sd wfidfsndfsdffpsafwqasvfa diafhaf nafofgwq fsaifha wafbbsd af8afwf sakfwnbfsanafasb fanfiafvafb ak"
-            }
-            tags={["coding", "programming"]}
-            slug={"dolor"}
-          />
-          <Cards
-            imageURL="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            heading={"Cars"}
-            text={
-              "lorem ipdiaf fuhfgosidf sdfiohfsd fdsiohfsd fsdiofsd fusdbfnfbsdf df9sd wfidfsndfsdffpsafwqasvfa diafhaf nafofgwq fsaifha wafbbsd af8afwf sakfwnbfsanafasb fanfiafvafb ak"
-            }
-            tags={["coding", "programming"]}
-            slug={"lorem-ipsum"}
-          />
-          <Cards
-            imageURL="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            heading={"Cars"}
-            text={
-              "lorem ipdiaf fuhfgosidf sdfiohfsd fdsiohfsd fsdiofsd fusdbfnfbsdf df9sd wfidfsndfsdffpsafwqasvfa diafhaf nafofgwq fsaifha wafbbsd af8afwf sakfwnbfsanafasb fanfiafvafb ak"
-            }
-            tags={["coding", "programming"]}
-            slug={"programming-geee-myy"}
-          />
-          <Cards
-            imageURL="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            heading={"Cars"}
-            text={
-              "lorem ipdiaf fuhfgosidf sdfiohfsd fdsiohfsd fsdiofsd fusdbfnfbsdf df9sd wfidfsndfsdffpsafwqasvfa diafhaf nafofgwq fsaifha wafbbsd af8afwf sakfwnbfsanafasb fanfiafvafb ak"
-            }
-            tags={["coding", "programming"]}
-            slug={"programming-geee-myy"}
-          />
+          {allCards.map(({ firebaseID, imageURL, title, mark, tag, slug }) => {
+            return (
+              <Cards
+                key={firebaseID}
+                imageURL={imageURL}
+                heading={title}
+                text={mark}
+                tags={tag}
+                slug={slug}
+              />
+            );
+          })}
         </div>
       </div>
       <Footer />

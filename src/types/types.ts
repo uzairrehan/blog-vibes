@@ -18,7 +18,7 @@ export type userSavingType = {
 
 export type blogType = {
   title: string ;
-  imageURL: string;
+  file: File | null | undefined;
   tag: string;
   mark: string;
   slug: string;

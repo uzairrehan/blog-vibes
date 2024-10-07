@@ -3,8 +3,9 @@
 import { cardType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import ReactMarkdown from "react-markdown";
 
-function Cards({ imageURL, heading, text, tags , slug}: cardType) {
+function Cards({ imageURL, heading, text, tags, slug }: cardType) {
   const route = useRouter();
   return (
     <>
@@ -15,13 +16,11 @@ function Cards({ imageURL, heading, text, tags , slug}: cardType) {
         <div className="card-body ">
           <h2 className="card-title">{heading}</h2>
           <div className="flex flex-row gap-2">
-            {tags.map((tag, index) => (
-              <div key={index} className="badge badge-neutral badge-outline">
-                {tag}
-              </div>
-            ))}
+            <div className="badge badge-neutral badge-outline">{tags}</div>
           </div>
-          <p className="line-clamp-4 pb-1">{text}</p>
+          <p className="line-clamp-4 pb-1">
+            <ReactMarkdown>{text}</ReactMarkdown>
+          </p>
           <div className="card-actions justify-end ">
             <button
               onClick={() => {
@@ -30,7 +29,6 @@ function Cards({ imageURL, heading, text, tags , slug}: cardType) {
               className="btn btn-primary"
             >
               Read blog <FaLongArrowAltRight />
-
             </button>
           </div>
         </div>
