@@ -26,6 +26,7 @@ function Profile() {
       </Link>
 
       <div className="max-w-screen-lg mx-auto p-4 text-black">
+        This Page is Under Construction !!
         <div className="flex justify-center mb-6">
           <img
             src="https://via.placeholder.com/150"

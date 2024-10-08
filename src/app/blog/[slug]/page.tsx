@@ -36,7 +36,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       };
 
       fetchBlog();
-      console.log(data);
+      // console.log(data);
     }
   }, [params.slug]);
 
@@ -78,7 +78,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           <div className="mt-4 text-gray-600">
             <div className="mb-2">
               <span className="font-semibold">Tag : </span>
-              <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-600 rounded">
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-neutral rounded">
                 {data.tag}
               </span>
             </div>
@@ -92,7 +92,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
 
           <div className="prose prose-lg text-gray-800">
-            <ReactMarkdown>{data.mark}</ReactMarkdown>
+            <ReactMarkdown className="select-all">{data.mark}</ReactMarkdown>
           </div>
         </div>
       ) : (

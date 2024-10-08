@@ -136,7 +136,7 @@ function SignUp() {
             </div>
             <div className="divider">OR</div>
           </form>
-          <div className="center flex justify-center items-center pt-2">
+          <div className="center flex justify-center items-center pt-2 mb-7">
             <button
               type="submit"
               className="btn-error btn btn-wide flex items-center justify-center space-x-2 sm:mx-auto sm:w-full sm:max-w-sm"

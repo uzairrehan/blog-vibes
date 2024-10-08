@@ -10,21 +10,30 @@ function Markdown() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("coding");
-  const [slug] = useState("ok");
   const [createdDate] = useState(new Date());
   const [mark, setMark] = useState("");
 
   const route = useRouter();
 
+  function makeSlug(title: string) {
+    return (
+      title
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+    );
+  }
   const handleSubmit = async () => {
     try {
-      await saveBlog({ title, file, tag, mark, slug, createdDate });
+      const generatedSlug = makeSlug(title); 
+      await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate }); 
       route.push("/");
     } catch (error) {
-      console.error("Error adding blog: ", error);
-      toast.error("Couldn't add blog!");
+      // console.error("Error adding blog: ", error);
+      toast.error(`Couldn't add blog! ${error}`);
     }
   };
+  
 
   return (
     <>
@@ -68,11 +77,9 @@ function Markdown() {
             onChange={(e) => setTag(e.target.value)}
             className="w-full input input-bordered input-primary rounded-lg bg-white mb-4 text-black"
           >
-            <option value="Others">Others</option>
-            <option value="Entertainment">Entertainment</option>
+            <option value="Entertainment" selected>Entertainment</option>
             <option value="Education">Education</option>
             <option value="Coding">Coding</option>
-            <option value="Programming">Programming</option>
             <option value="Blogging">Blogging</option>
           </select>
 
@@ -100,7 +107,7 @@ function Markdown() {
           <label htmlFor="tag" className="block text-sm font-bold mb-2">
             <span className="text-neutral">Text Output:</span>
           </label>
-          <div className="border border-primary rounded p-2 h-full">
+          <div className="p-2 h-full">
             <ReactMarkdown className="w-full rounded-lg mb-4">
               {mark}
             </ReactMarkdown>

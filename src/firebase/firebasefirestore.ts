@@ -36,7 +36,7 @@ export async function saveUser(
 }
 
 export async function deleteBlog(id: string) {
-  await deleteDoc(doc(db, "cities", id));
+  await deleteDoc(doc(db, "blogs", id));
 }
 
 export async function saveBlog({
