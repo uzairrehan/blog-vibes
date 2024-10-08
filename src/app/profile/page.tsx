@@ -4,9 +4,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { app } from "@/firebase/firebaseconfig";
-import Footer from "@/components/footer";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
+import Footer from "@/components/footer";
 
 function Profile() {
   const route = useRouter();
@@ -21,10 +21,11 @@ function Profile() {
 
   return (
     <>
-  <Link href={"/"} className="btn m-2 btn-xs btn-neutral"><FaLongArrowAltLeft /> Go Back to Home </Link>
+      <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
+        <FaLongArrowAltLeft /> Go Back to Home{" "}
+      </Link>
 
       <div className="max-w-screen-lg mx-auto p-4 text-black">
- 
         <div className="flex justify-center mb-6">
           <img
             src="https://via.placeholder.com/150"
@@ -34,7 +35,6 @@ function Profile() {
         </div>
 
         <form className=" px-8 pt-6 pb-8 mb-4">
-
           <div className="mb-4 ">
             <label
               htmlFor="image"
@@ -103,35 +103,20 @@ function Profile() {
                 className="w-full py-2 px-3 input input-bordered input-primary  input-neutral rounded-lg bg-white"
               />
             </div>
+
             <div>
               <label
-                htmlFor="Role"
+                htmlFor="bio"
                 className="block text-neutral text-sm font-bold mb-2"
               >
-                Role :
+                Bio :
               </label>
-              <input
-                type="text"
-                id="Role"
-                className="w-full py-2 px-3 input input-bordered input-primary  rounded-lg bg-white"
-              />
+              <textarea
+                className="textarea textarea-primary w-full py-2 px-3 input input-bordered input-neutral  rounded-lg bg-white"
+                placeholder="Bio"
+                id="bio"
+              ></textarea>
             </div>
-          
-
-
-          <div>
-            <label
-              htmlFor="bio"
-              className="block text-neutral text-sm font-bold mb-2"
-            >
-              Bio :
-            </label>
-            <textarea
-              className="textarea textarea-primary w-full py-2 px-3 input input-bordered input-neutral  rounded-lg bg-white"
-              placeholder="Bio"
-              id="bio"
-            ></textarea>
-          </div>
           </div>
           <div className="mt-6">
             <button className="btn btn-active btn-neutral w-full">

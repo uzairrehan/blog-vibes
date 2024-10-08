@@ -50,7 +50,6 @@ function Navbar() {
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
                 href={"/authenticate"}
-                onClick={() => signOut(auth)}
               >
                 <LuLogIn />
                 Login / Sign-Up
