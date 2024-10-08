@@ -27,7 +27,7 @@ function SignIn() {
 
   return (
     <>
-      <div className="flex  flex-col justify-center px-6  lg:px-8 ">
+      <div className="flex  flex-col justify-center px-6  lg:px-8  ">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-neutral">
             Login to your account
@@ -113,7 +113,7 @@ function SignIn() {
               </label>
             </div>
 
-            <div className="center flex justify-center items-center pt-4">
+            <div className="center flex justify-center items-center pt-4 ">
               <button
                 type="submit"
                 className="text-neutral btn-primary btn bg-secondary btn-wide sm:mx-auto sm:w-full sm:max-w-sm hover:bg-neutral hover:text-primary"

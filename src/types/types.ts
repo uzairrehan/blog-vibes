@@ -2,12 +2,15 @@ export type messageType = {
   message: string;
 };
 
-export type cardType = {
-  imageURL: string;
-  heading: string;
-  text: string;
-  tags: string[];
-  slug: string;
+export type CardData = {
+  firebaseID?: string;
+  imageURL?: string;
+  title?: string;
+  mark?: string;
+  tag?: string;
+  slug?: string;
+  heading?: string;
+  text?: string;
 };
 
 export type userSavingType = {
@@ -17,10 +20,10 @@ export type userSavingType = {
 };
 
 export type blogType = {
-  title: string ;
+  title: string;
   file: File | null | undefined;
   tag: string;
   mark: string;
   slug: string;
-  createdDate:Date;
+  createdDate: Date;
 };

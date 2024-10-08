@@ -16,7 +16,7 @@ const geistMono = localFont({
   weight: "100 900",
 });
 export const metadata: Metadata = {
-  title: "blog - vibes",
+  title: "Blog - Vibes 😎 ",
   description: "Blogging website",
 };
 
@@ -26,13 +26,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="mytheme black"  className="h-full">
+    <html lang="en" data-theme="mytheme black" className="h-full">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         data-theme="mytheme black"
       >
         <Navbar />
         {children}
+
         <ToastContainer autoClose={2000} />
       </body>
     </html>

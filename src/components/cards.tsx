@@ -1,39 +1,38 @@
-"use client";
-
-import { cardType } from "@/types/types";
+import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/navigation";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import ReactMarkdown from "react-markdown";
+import { CardData } from "@/types/types";
 
-function Cards({ imageURL, heading, text, tags, slug }: cardType) {
+function Cards({ imageURL, heading, text, tag, slug }: CardData) {
   const route = useRouter();
+
   return (
-    <>
-      <div className="card lg:w-96 shadow-lg transition-transform transform hover:scale-101 hover:shadow-2xl duration-300 border-neutral border border-opacity-30 bg-white text-black ">
-        <figure>
-          <img src={imageURL} alt="blog image" />
-        </figure>
-        <div className="card-body ">
-          <h2 className="card-title">{heading}</h2>
-          <div className="flex flex-row gap-2">
-            <div className="badge badge-neutral badge-outline">{tags}</div>
-          </div>
-          <p className="line-clamp-4 pb-1">
-            <ReactMarkdown>{text}</ReactMarkdown>
-          </p>
-          <div className="card-actions justify-end ">
-            <button
-              onClick={() => {
-                route.push(`/blog/${slug}`);
-              }}
-              className="btn btn-primary"
-            >
-              Read blog <FaLongArrowAltRight />
-            </button>
-          </div>
+    <div className="max-w-sm rounded-lg overflow-hidden shadow-md  border border-neutral-300 bg-white text-black">
+      <figure className="relative h-48">
+        <img
+          src={imageURL}
+          alt="blog image"
+          className="object-cover w-full h-full"
+        />
+      </figure>
+      <div className="p-4">
+        <h2 className="text-xl font-semibold mb-2">{heading}</h2>
+        <div className="flex flex-wrap gap-2 mb-3">
+          <div className="badge badge-neutral badge-outline">{tag}</div>
+        </div>
+        <p className="line-clamp-4 mb-4">
+          {<ReactMarkdown>{text}</ReactMarkdown>}
+        </p>
+        <div className="flex justify-end">
+          <button
+            onClick={() => route.push(`/blog/${slug}`)}
+            className="btn btn-primary flex items-center"
+          >
+            Read blog <FaLongArrowAltRight className="ml-1" />
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

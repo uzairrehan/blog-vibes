@@ -15,12 +15,6 @@ import { saveUser } from "./firebasefirestore";
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-
-
-
-
-
-
 export function signupWithEmailPassword(
   email: string,
   password: string,
@@ -45,12 +39,6 @@ export function signupWithEmailPassword(
     });
 }
 
-
-
-
-
-
-
 export function loginWithEmailPassword(email: string, password: string) {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
@@ -65,13 +53,6 @@ export function loginWithEmailPassword(email: string, password: string) {
       toast.error("Could'nt sign-in", error.message);
     });
 }
-
-
-
-
-
-
-
 
 export function googleSign() {
   signInWithPopup(auth, provider)

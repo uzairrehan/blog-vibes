@@ -1,50 +1,106 @@
 "use client";
 
+import Footer from "@/components/footer";
+import Loading from "@/components/loading";
 import { db } from "@/firebase/firebasefirestore";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  collection,
+  DocumentData,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-// import ReactMarkdown from "react-markdown";
-
-
+import ReactMarkdown from "react-markdown";
 
 export default function Page({ params }: { params: { slug: string } }) {
-  const [data,setData] = useState()
+  const [data, setData] = useState<DocumentData | null>(null);
+
   useEffect(() => {
     if (params.slug) {
       const fetchBlog = async () => {
         try {
-          const dataRef = doc(db, "blogs", params.slug);
-          const dataSnap = await getDoc(dataRef);
-          if (dataSnap.exists()) {
-            const blogData = dataSnap.data()
-            setData(blogData)
-            console.log(data);
-            
-          }
+          const q = query(
+            collection(db, "blogs"),
+            where("slug", "==", params.slug)
+          );
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            setData(doc.data());
+          });
         } catch (error) {
           console.error(error);
-        } 
+        }
       };
 
       fetchBlog();
+      console.log(data);
     }
   }, [params.slug]);
-  console.log(data);
+
+  // from ChatGPT
+  function formatDate() {
+    const timestamp = data?.createdDate;
+    const milliseconds =
+      timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000);
+    const date = new Date(milliseconds);
+    const pad = (num: number) => num.toString().padStart(2, "0");
+    const day = date.getUTCDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getUTCFullYear();
+    const hours = pad(date.getUTCHours());
+    const minutes = pad(date.getUTCMinutes());
+    const secondsTime = pad(date.getUTCSeconds());
+    const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
+    return formattedDate;
+  }
+//
   return (
     <>
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
         <FaLongArrowAltLeft /> Go Back to Home
       </Link>
-      <p>Post: {params.slug}</p>
 
-{/* 
-      <ReactMarkdown>
-        {data}
-      </ReactMarkdown> */}
-      {/* {data ? JSON.stringify(data): null} */}
-      
+      {data ? (
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <img
+            className="w-full rounded-lg shadow-md h-auto"
+            src={data.imageURL}
+            alt="Blog Image"
+          />
+
+          <h1 className="mt-6 text-4xl font-bold text-gray-900">
+            {data.title}
+          </h1>
+
+          <div className="mt-4 text-gray-600">
+            <div className="mb-2">
+              <span className="font-semibold">Tag : </span>
+              <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-blue-100 text-blue-600 rounded">
+                {data.tag}
+              </span>
+            </div>
+
+            <div className="mb-4">
+              <span className="font-semibold">Created Date:</span>{" "}
+              <span>{formatDate()}</span> |
+              <span className="font-semibold"> Edited Date:</span>{" "}
+              <span>{formatDate()}</span>
+            </div>
+          </div>
+
+          <div className="prose prose-lg text-gray-800">
+            <ReactMarkdown>{data.mark}</ReactMarkdown>
+          </div>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center">
+          <Loading />
+        </div>
+      )}
+      <Footer />
     </>
   );
 }

@@ -19,7 +19,6 @@ function Markdown() {
   const handleSubmit = async () => {
     try {
       await saveBlog({ title, file, tag, mark, slug, createdDate });
-      toast.success("Blog Added Successfully!");
       route.push("/");
     } catch (error) {
       console.error("Error adding blog: ", error);
@@ -29,11 +28,6 @@ function Markdown() {
 
   return (
     <>
-      <div className="flex justify-center items-center py-4">
-        <button className="btn btn-neutral" onClick={handleSubmit}>
-          Add New Blog
-        </button>
-      </div>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200">
           <div>
@@ -66,7 +60,7 @@ function Markdown() {
           </div>
 
           <label htmlFor="tag" className="block text-sm font-bold mb-2">
-            <span className="text-neutral">Tags:</span>
+            <span className="text-neutral">Tag:</span>
           </label>
           <select
             id="tag"
@@ -106,8 +100,8 @@ function Markdown() {
           <label htmlFor="tag" className="block text-sm font-bold mb-2">
             <span className="text-neutral">Text Output:</span>
           </label>
-          <div className="border border-primary rounded p-2 h-full" >
-            <ReactMarkdown className="w-full rounded-lg mb-4" >
+          <div className="border border-primary rounded p-2 h-full">
+            <ReactMarkdown className="w-full rounded-lg mb-4">
               {mark}
             </ReactMarkdown>
           </div>
