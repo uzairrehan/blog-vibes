@@ -10,6 +10,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
@@ -65,10 +66,12 @@ export default function Page({ params }: { params: { slug: string } }) {
 
       {data ? (
         <div className="max-w-4xl mx-auto px-4 py-8">
-          <img
+          <Image
             className="w-full rounded-lg shadow-md h-auto"
             src={data.imageURL}
             alt="Blog Image"
+            width={700}
+            height={700}
           />
 
           <h1 className="mt-6 text-4xl font-bold text-gray-900">
@@ -77,17 +80,18 @@ export default function Page({ params }: { params: { slug: string } }) {
 
           <div className="mt-4 text-gray-600">
             <div className="mb-2">
-              <span className="font-semibold">Tag : </span>
+              <span className="font-semibold prose  ">Tag : </span>
               <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-neutral rounded">
                 {data.tag}
               </span>
             </div>
 
-            <div className="mb-4">
-              <span className="font-semibold">Created Date:</span>{" "}
-              <span>{formatDate()}</span> |
+            <div className="mb-4 prose">
+              <span className="font-semibold ">Created Date:</span>{" "}
+              <span>{formatDate()}</span> 
+              {/* |
               <span className="font-semibold"> Edited Date:</span>{" "}
-              <span>{formatDate()}</span>
+              <span>{formatDate()}</span> */}
             </div>
           </div>
 

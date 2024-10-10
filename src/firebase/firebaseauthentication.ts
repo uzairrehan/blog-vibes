@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { app } from "./firebaseconfig";
 import { toast } from "react-toastify";
-import { saveUser } from "./firebasefirestore";
+import { saveUser, updateUser } from "./firebasefirestore";
 
 export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
@@ -60,7 +60,7 @@ export async function googleSign() {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      saveUser(auth.currentUser?.email, user.displayName, user.uid, user.photoURL as string);
+      updateUser(auth.currentUser?.email, user.displayName, user.uid, user.photoURL as string);
       console.log(token, user);
       toast.success("Signed in with google !");
     })

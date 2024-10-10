@@ -3,6 +3,7 @@ import {
   googleSign,
   signupWithEmailPassword,
 } from "@/firebase/firebaseauthentication";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 
@@ -10,6 +11,7 @@ function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const route = useRouter()
 
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
@@ -17,6 +19,7 @@ function SignUp() {
     setEmail("");
     setName("");
     setPassword("");
+    route.push("/")
   }
 
   return (

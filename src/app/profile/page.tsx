@@ -80,6 +80,7 @@ function Profile() {
       if (!loggedInUser) {
         toast.error("authenticate to view your profile !")
         route.push("/authenticate");
+        return
       }
     fetchUserDetails()
     });
@@ -113,13 +114,14 @@ function Profile() {
 
       <div className="max-w-screen-lg mx-auto p-4 text-black">
         <div className="flex justify-center mb-6">
-          <Image
+          {PFP ? <Image
             src={PFP}
             alt="Profile"
             className="w-40 h-40 rounded-full object-cover"
             width={160}
             height={160}
-          />
+          /> : null}
+          
         </div>
 
 

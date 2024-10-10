@@ -37,6 +37,23 @@ export async function saveUser(
   await setDoc(reference, data);
 }
 
+export async function updateUser(
+  email: string | null | undefined,
+  userName: string | null,
+  uid: string,
+  photoURL?: string
+) {
+  const reference = doc(db, "users", uid);
+  const data = {
+    email: email,
+    userName: userName,
+    uid: uid,
+    imageURL: photoURL,
+  };
+  await updateDoc(reference, data);
+}
+
+
 export async function deleteBlog(id: string) {
   await deleteDoc(doc(db, "blogs", id));
 }

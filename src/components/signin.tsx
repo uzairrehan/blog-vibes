@@ -3,18 +3,21 @@ import {
   loginWithEmailPassword,
   passwordReset,
 } from "@/firebase/firebaseauthentication";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const route = useRouter()
+  
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     loginWithEmailPassword(email, password);
     setEmail("");
     setPassword("");
+    route.push("/")
   }
 
   function handlePasswordReset() {

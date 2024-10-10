@@ -32,7 +32,19 @@ const config: Config = {
           error: "#dc2626",
         },
       },
-      "black",
+      {
+        mytheme2: {
+          primary: "#ffffff",
+          secondary: "#ffffff",
+          accent: "#ffffff",
+          neutral: "#000000",
+          "base-100": "#5a5a5a",
+          info: "#34d399",
+          success: "#a3e635",
+          warning: "#f59e0b",
+          error: "#dc2626",
+        },
+      },
     ],
   },
 };

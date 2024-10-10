@@ -10,7 +10,6 @@ function Markdown() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("coding");
-  // const [createdDate] = useState(new Date());
   const [mark, setMark] = useState("");
 
   const route = useRouter();
@@ -29,7 +28,6 @@ function Markdown() {
         await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate :new Date() }); 
         route.push("/");
       } catch (error) {
-        // console.error("Error adding blog: ", error);
         toast.error(`Couldn't add blog! ${error}`);
       }
     };
@@ -108,7 +106,7 @@ function Markdown() {
             <span className="text-neutral">Text Output:</span>
           </label>
           <div className="p-2 h-full">
-            <ReactMarkdown className="w-full rounded-lg mb-4">
+            <ReactMarkdown className="w-full rounded-lg prose">
               {mark}
             </ReactMarkdown>
           </div>
