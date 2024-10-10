@@ -58,15 +58,6 @@ function Profile() {
 
 
 
-useEffect(()=>{
-    if (!auth.currentUser){
-        toast.error("authenticate to view your profile !")
-        return
-    }
-    fetchUserDetails()
-},[])
-
-
 
 
 
@@ -87,8 +78,10 @@ useEffect(()=>{
     const auth = getAuth(app);
     onAuthStateChanged(auth, (loggedInUser) => {
       if (!loggedInUser) {
+        toast.error("authenticate to view your profile !")
         route.push("/authenticate");
       }
+    fetchUserDetails()
     });
   }, [route]);
 
