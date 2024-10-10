@@ -92,7 +92,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
 
           <div className="prose prose-lg text-gray-800">
-            <ReactMarkdown className="select-all">{data.mark}</ReactMarkdown>
+            <ReactMarkdown className="prose">{data.mark}</ReactMarkdown>
           </div>
         </div>
       ) : (
