@@ -83,7 +83,7 @@ function Profile() {
       }
     fetchUserDetails()
     });
-  }, [route]);
+  }, []);
 
 
 
