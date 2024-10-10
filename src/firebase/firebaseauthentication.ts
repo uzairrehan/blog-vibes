@@ -54,13 +54,13 @@ export function loginWithEmailPassword(email: string, password: string) {
     });
 }
 
-export function googleSign() {
-  signInWithPopup(auth, provider)
+export async function googleSign() {
+  await signInWithPopup(auth, provider)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
       const user = result.user;
-      saveUser(auth.currentUser?.email, user.displayName, user.uid);
+      saveUser(auth.currentUser?.email, user.displayName, user.uid, user.photoURL as string);
       console.log(token, user);
       toast.success("Signed in with google !");
     })

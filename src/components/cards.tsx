@@ -20,9 +20,9 @@ function Cards({ imageURL, heading, text, tag, slug }: CardData) {
         <div className="flex flex-wrap gap-2 mb-3">
           <div className="badge badge-neutral badge-outline">{tag}</div>
         </div>
-        <p className="line-clamp-4 mb-4">
+        <div className="line-clamp-4 mb-4">
           {<ReactMarkdown>{text}</ReactMarkdown>}
-        </p>
+        </div>
         <div className="flex justify-end">
           <button
             onClick={() => route.push(`/blog/${slug}`)}

@@ -11,6 +11,7 @@ import { BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import { FiSun } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 function Navbar() {
   return (
@@ -58,6 +59,7 @@ function Navbar() {
             <li
               onClick={() => {
                 signOut(auth);
+                toast.success("signed out succesfully")
               }}
             >
               <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">

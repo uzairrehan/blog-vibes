@@ -27,3 +27,12 @@ export type blogType = {
   slug: string;
   createdDate: Date;
 };
+
+export type updateProfileType = {
+  picture:File | null | undefined;
+  name :string;
+  fathername:string;
+  phonenumber:string;
+  DOB:string;
+  bio:string;
+};

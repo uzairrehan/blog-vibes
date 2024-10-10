@@ -10,7 +10,7 @@ function Markdown() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("coding");
-  const [createdDate] = useState(new Date());
+  // const [createdDate] = useState(new Date());
   const [mark, setMark] = useState("");
 
   const route = useRouter();
@@ -23,17 +23,17 @@ function Markdown() {
         .replace(/\s+/g, "-")
     );
   }
-  const handleSubmit = async () => {
-    try {
-      const generatedSlug = makeSlug(title); 
-      await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate }); 
-      route.push("/");
-    } catch (error) {
-      // console.error("Error adding blog: ", error);
-      toast.error(`Couldn't add blog! ${error}`);
-    }
-  };
-  
+    const handleSubmit = async () => {
+      try {
+        const generatedSlug = makeSlug(title); 
+        await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate :new Date() }); 
+        route.push("/");
+      } catch (error) {
+        // console.error("Error adding blog: ", error);
+        toast.error(`Couldn't add blog! ${error}`);
+      }
+    };
+    
 
   return (
     <>
