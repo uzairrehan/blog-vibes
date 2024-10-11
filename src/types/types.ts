@@ -21,12 +21,14 @@ export type userSavingType = {
 };
 
 export type blogType = {
-  title: string;
-  file: File | null | undefined;
-  tag: string;
-  mark: string;
-  slug: string;
-  createdDate: Date;
+  title?: string;
+  file?: File | null | undefined;
+  tag?: string;
+  mark?: string;
+  slug?: string;
+  createdDate?: Date;
+  editedDate?: Date
+  firebaseID?:string
 };
 
 export type updateProfileType = {

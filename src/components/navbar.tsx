@@ -11,6 +11,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
 
 function Navbar() {
   return (
@@ -37,7 +38,17 @@ function Navbar() {
                 Go to Home
               </Link>
             </li>
-           
+            <li>
+              <Link
+                className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
+                href={"/dashboard"}
+              >
+
+                <MdOutlineSpaceDashboard />
+
+                Go to Dashboard
+              </Link>
+            </li>
             <li>
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"

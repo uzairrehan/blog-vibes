@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Loading from "@/components/loading";
 import { auth } from "@/firebase/firebaseauthentication";
 import { db } from "@/firebase/firebasefirestore";
@@ -8,10 +8,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-function AdminProtectedRoute({ children }:{children:React.ReactNode}) {
-  const [
-    // user
-    , setUser] = useState(null);
+function AdminProtectedRoute({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const route = useRouter();
 
@@ -25,29 +23,43 @@ function AdminProtectedRoute({ children }:{children:React.ReactNode}) {
               where("uid", "==", currentUser.uid)
             );
             const querySnapshot = await getDocs(q);
-            querySnapshot.forEach((doc) => {
-              setUser(doc.data() && null);
-            });
+            if (!querySnapshot.empty) {
+              querySnapshot.forEach((doc) => {
+                setUser(doc.data());
+              });
+            } else {
+              toast.error("User not found!");
+              route.push("/");
+              setLoading(false);
+              return;
+            }
             setLoading(false);
           } catch (error) {
-            console.error("Error in fetch user data : ", error);
-            setLoading(false); 
+            console.error("Error in fetch user data: ", error);
+            setLoading(false);
           }
         };
 
         fetchUser();
       } else {
-        toast.error("You are not an admin !")
+        toast.error("You are not authenticated!");
         route.push("/");
         setLoading(false);
       }
     });
 
-    return () => unsubscribe(); 
+    return () => unsubscribe();
   }, [route]);
 
+  useEffect(() => {
+    if (user && user.role !== "admin") {
+      toast.error("You are not an admin!");
+      route.push("/");
+    }
+  }, [user, route]);
+
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   return <>{children}</>;

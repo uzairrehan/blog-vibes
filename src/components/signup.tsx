@@ -21,7 +21,10 @@ function SignUp() {
     setPassword("");
     route.push("/")
   }
-
+  async function  googlee() {
+    await googleSign()
+    route.push("/")
+  }
   return (
     <>
       <div className="flex  flex-col justify-center px-6  lg:px-8  ">
@@ -143,7 +146,7 @@ function SignUp() {
             <button
               type="submit"
               className="btn-error btn btn-wide flex items-center justify-center space-x-2 sm:mx-auto sm:w-full sm:max-w-sm"
-              onClick={googleSign}
+              onClick={googlee}
             >
               <FaGoogle />
 

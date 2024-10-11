@@ -57,6 +57,22 @@ export default function Page({ params }: { params: { slug: string } }) {
     const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
     return formattedDate;
   }
+//  // from ChatGPT
+function formatEditDate() {
+  const timestamp = data?.createdDate;
+  const milliseconds =
+    timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000);
+  const date = new Date(milliseconds);
+  const pad = (num: number) => num.toString().padStart(2, "0");
+  const day = date.getUTCDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getUTCFullYear();
+  const hours = pad(date.getUTCHours());
+  const minutes = pad(date.getUTCMinutes());
+  const secondsTime = pad(date.getUTCSeconds());
+  const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
+  return formattedDate;
+}
 //
   return (
     <>
@@ -89,9 +105,9 @@ export default function Page({ params }: { params: { slug: string } }) {
             <div className="mb-4 prose">
               <span className="font-semibold ">Created Date:</span>{" "}
               <span>{formatDate()}</span> 
-              {/* |
+              |
               <span className="font-semibold"> Edited Date:</span>{" "}
-              <span>{formatDate()}</span> */}
+              <span>{formatEditDate() ?? null }</span>
             </div>
           </div>
 

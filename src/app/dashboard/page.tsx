@@ -9,14 +9,12 @@ import { deleteBlog } from "@/firebase/firebasefirestore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
+import Link from "next/link";
+import { IoMdAdd } from "react-icons/io";
 
 function Dashboard() {
   const [cards, setCards] = useState<CardData[]>([]);
   const route = useRouter();
-//   function convertToDate({ seconds, nanoseconds }) {
-//     const milliseconds = seconds * 1000 + nanoseconds / 1000000;
-//     return new Date(milliseconds);
-//   }
 
   useEffect(() => {
     async function getData() {
@@ -28,10 +26,16 @@ function Dashboard() {
       setCards(dataArray);
     }
     getData();
-  }, [cards]);
+  }, [cards, route]);
   return (
     <>
       <div className="overflow-x-auto">
+        <Link href={"/dashboard/add"}>
+          <button className="btn btn-sm btn-primary m-5 btn-outline">
+            <IoMdAdd />
+            Add Blog
+          </button>
+        </Link>
         <table className="table">
           {/* head */}
           <thead>
@@ -46,57 +50,58 @@ function Dashboard() {
             {!cards ? (
               <Loading />
             ) : (
-              cards.map(
-                ({ imageURL, title, tag, slug, firebaseID }) => (
-                  <tr key={title}>
-                    <th>
-                      <div className="flex items-center gap-3">
-                        <div className="avatar">
-                          <div className="mask mask-squircle h-12 w-12">
-                            {imageURL ? (
-                              <Image
-                                src={imageURL}
-                                alt="image"
-                                width={50}
-                                height={50}
-                              />
-                            ) : null}
-                          </div>
-                        </div>
-                        <div>
-                          <div className="font-bold">{title}</div>
-                          <div className="text-sm opacity-50">
-                            {/* {convertToDate(createdDate)} */}
-                          </div>
+              cards.map(({ imageURL, title, tag, slug, firebaseID }) => (
+                <tr key={title}>
+                  <th>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="avatar hover:cursor-pointer"
+                        onClick={() => route.push(`/blog/${slug}`)}
+                      >
+                        <div className="mask mask-squircle h-12 w-12">
+                          {imageURL ? (
+                            <Image
+                              src={imageURL}
+                              alt="image"
+                              width={50}
+                              height={50}
+                            />
+                          ) : null}
                         </div>
                       </div>
-                    </th>
-                    <td>
-                      <span className="badge badge-ghost badge-sm">{tag}</span>
-                    </td>
-                    <th>
-                      <button
-                        className="btn btn-ghost btn-xs"
-                        onClick={() => {
-                          deleteBlog(firebaseID as string);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </th>
-                    <th>
-                      <button
-                        className="btn btn-ghost btn-xs"
-                        onClick={() => {
-                          route.push(`/dashboard/edit/${slug}`);
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </th>
-                  </tr>
-                )
-              )
+                      <div>
+                        <div className="font-bold">{title}</div>
+                        <div className="text-sm opacity-50">
+                          {/* {convertToDate(createdDate)} */}
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+                    <span className="badge badge-ghost badge-sm">{tag}</span>
+                  </td>
+                  <th>
+                    <button
+                      className="btn btn-ghost btn-xs"
+                      onClick={() => {
+                        deleteBlog(firebaseID as string);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </th>
+                  <th>
+                    <button
+                      className="btn btn-ghost btn-xs"
+                      onClick={() => {
+                        route.push(`/dashboard/edit/${slug}`);
+                      }}
+                    >
+                      Edit
+                    </button>
+                  </th>
+                </tr>
+              ))
             )}
           </tbody>
         </table>

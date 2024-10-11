@@ -1,7 +1,8 @@
 "use client";
-import { db, saveBlog } from "@/firebase/firebasefirestore";
+import { db, updateBlog } from "@/firebase/firebasefirestore";
 import { CardData } from "@/types/types";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -9,9 +10,11 @@ import { toast } from "react-toastify";
 
 function Edit({ params }: { params: { slug: string } }) {
   const [title, setTitle] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [ file,setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("");
   const [mark, setMark] = useState("");
+  const [picture, setPicture] = useState("");
+  const [firebaseID, setFirebaseID] = useState("");
   const [data, setData] = useState<CardData | null>(null); 
   const route = useRouter();
 
@@ -41,32 +44,41 @@ function Edit({ params }: { params: { slug: string } }) {
       setTitle(data.title ?? "");
       setTag(data.tag ?? "");
       setMark(data.mark ?? "" );
+      setFirebaseID(data.firebaseID ?? "")
+      setPicture(data.imageURL ?? "")
     }
   }, [data]);
 
-  function makeSlug(title: string) {
-    return title.toLowerCase().trim().replace(/\s+/g, "-");
-  }
 
   const handleSubmit = async () => {
     try {
-      const generatedSlug = makeSlug(title);
-      await saveBlog({
+      await updateBlog({
         title,
-        file,
         tag,
         mark,
-        slug: generatedSlug,
-        createdDate: new Date(),
+        editedDate: new Date(),
+        firebaseID,
+        file
       });
-      route.push("/");
+  
+      route.push("/dashboard");
     } catch (error) {
-      toast.error(`Couldn't add blog! ${error}`);
+      toast.error(`Couldn't edit blog! ${error}`);
     }
   };
 
   return (
     <>
+    <div
+    className="flex justify-center items-center p-5"
+    >
+    <Image
+    src={picture}
+    width={200}
+    height={200}
+    alt="picture"
+    />
+    </div>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200">
           <div>
@@ -125,7 +137,7 @@ function Edit({ params }: { params: { slug: string } }) {
 
           <div>
             <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full">
-              Save Blog
+              Update Blog
             </button>
           </div>
         </div>

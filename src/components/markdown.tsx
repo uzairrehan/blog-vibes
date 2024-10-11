@@ -26,7 +26,7 @@ function Markdown() {
       try {
         const generatedSlug = makeSlug(title); 
         await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate :new Date() }); 
-        route.push("/");
+        route.push("/dashboard");
       } catch (error) {
         toast.error(`Couldn't add blog! ${error}`);
       }
