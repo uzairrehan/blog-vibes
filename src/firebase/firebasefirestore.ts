@@ -25,16 +25,16 @@ export async function saveUser(
   email: string | null | undefined,
   userName: string | null,
   uid: string,
-  photoURL?: string
 ) {
   const reference = doc(db, "users", uid);
   const data = {
     email: email,
     userName: userName,
     uid: uid,
-    imageURL: photoURL,
   };
   await setDoc(reference, data);
+  console.log("created");
+  
 }
 
 export async function updateUser(

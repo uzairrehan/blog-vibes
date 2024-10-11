@@ -11,6 +11,7 @@ export type CardData = {
   slug?: string;
   heading?: string;
   text?: string;
+  createdDate?:Date;
 };
 
 export type userSavingType = {
