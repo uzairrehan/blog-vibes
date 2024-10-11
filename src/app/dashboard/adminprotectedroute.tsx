@@ -2,6 +2,7 @@
 import Loading from "@/components/loading";
 import { auth } from "@/firebase/firebaseauthentication";
 import { db } from "@/firebase/firebasefirestore";
+import { userSavingType } from "@/types/types";
 import { onAuthStateChanged } from "firebase/auth";
 import { query, collection, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function AdminProtectedRoute({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<userSavingType[] | null>(null);
   const [loading, setLoading] = useState(true);
   const route = useRouter();
 
