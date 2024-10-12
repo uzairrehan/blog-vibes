@@ -272,7 +272,8 @@ export async function updateBlog({
 
     const collectionRef = doc(db, "blogs", firebaseID);
 
-    const newBlog: blogType = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newBlog: any = {
       title,
       tag,
       mark,
