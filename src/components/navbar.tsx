@@ -12,8 +12,22 @@ import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { useState, useEffect } from "react";
 
 function Navbar() {
+  const [currentPath, setCurrentPath] = useState(""); 
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const { pathname } = window.location;
+      setCurrentPath(pathname); 
+    }
+  }, []);
+
+
+  
+  console.log("Current Path:", currentPath);
+
   return (
     <div className="navbar bg-neutral text-base-100">
       <div className="navbar-start">
@@ -29,6 +43,10 @@ function Navbar() {
             tabIndex={0}
             className="menu menu-md dropdown-content  bg-base-100 text-neutral rounded-box z-[1] mt-3 w-52 p-2 shadow "
           >
+
+
+
+
             <li>
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
@@ -38,6 +56,11 @@ function Navbar() {
                 Go to Home
               </Link>
             </li>
+
+
+
+
+
             <li>
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
@@ -49,6 +72,11 @@ function Navbar() {
                 Go to Dashboard
               </Link>
             </li>
+
+
+
+
+
             <li>
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
@@ -58,6 +86,11 @@ function Navbar() {
                 Login / Sign-Up
               </Link>
             </li>
+
+
+
+
+
             <li
               onClick={() => {
                 signOut(auth);
@@ -69,6 +102,10 @@ function Navbar() {
                 Logout
               </div>
             </li>
+
+
+
+            
           </ul>
         </div>
       </div>

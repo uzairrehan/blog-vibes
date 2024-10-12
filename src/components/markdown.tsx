@@ -14,14 +14,16 @@ function Markdown() {
 
   const route = useRouter();
 
+
   function makeSlug(title: string) {
-    return (
-      title
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
-    );
+    return title
+    .toLowerCase()                   
+    .trim()                          
+    .replace(/[^a-z0-9\s-]/g, '')     
+    .replace(/\s+/g, '-')            
+    .replace(/-+/g, '-'); 
   }
+
     const handleSubmit = async () => {
       try {
         const generatedSlug = makeSlug(title); 
@@ -75,7 +77,7 @@ function Markdown() {
             onChange={(e) => setTag(e.target.value)}
             className="w-full input input-bordered input-primary rounded-lg bg-white mb-4 text-black"
           >
-            <option value="Entertainment" selected>Entertainment</option>
+            <option value="Entertainment">Entertainment</option>
             <option value="Education">Education</option>
             <option value="Coding">Coding</option>
             <option value="Blogging">Blogging</option>

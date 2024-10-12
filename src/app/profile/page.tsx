@@ -70,6 +70,7 @@ function Profile() {
 
   return (
     <>
+
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
         <FaLongArrowAltLeft /> Go Back to Home{" "}
       </Link>

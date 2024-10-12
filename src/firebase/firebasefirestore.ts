@@ -220,7 +220,7 @@ export async function updateBlog({
   mark,
   editedDate,
   firebaseID,
-  // file
+  file
 }: blogType) {
   const uid = auth.currentUser?.uid;
 
@@ -235,49 +235,54 @@ export async function updateBlog({
   }
 
   try {
-    // const uploadImage = async () => {
-    //   if (!file) {
-    //     return;
-    //   }
-    //   console.log(file);
-    //   const imageRef = ref(
-    //     storage,
-    //     `uploads/images/${Date.now()}-${file.name}`
-    //   );
-    //   const uploadTask = uploadBytesResumable(imageRef, file);
+    const uploadImage = async () => {
+      if (!file) {
+        return null; 
+      }
+      console.log(file);
+      const imageRef = ref(
+        storage,
+        `uploads/images/${Date.now()}-${file.name}`
+      );
+      const uploadTask = uploadBytesResumable(imageRef, file);
 
-    //   return new Promise((resolve, reject) => {
-    //     uploadTask.on(
-    //       "state_changed",
-    //       (snapshot) => {
-    //         const progress =
-    //           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-    //         console.log("Upload is " + progress + "% done");
-    //       },
-    //       (error) => {
-    //         console.error("Upload error: ", error);
-    //         reject(error);
-    //       },
-    //       async () => {
-    //         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-    //         console.log("File available at", downloadURL);
-    //         resolve(downloadURL);
-    //       }
-    //     );
-    //   });
-    // };
+      return new Promise((resolve, reject) => {
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+          },
+          (error) => {
+            console.error("Upload error: ", error);
+            reject(error);
+          },
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            console.log("File available at", downloadURL);
+            resolve(downloadURL);
+          }
+        );
+      });
+    };
 
-    // const imageURL = await uploadImage();
+    const imageURL = await uploadImage();
+    console.log(imageURL);
 
     const collectionRef = doc(db, "blogs", firebaseID);
 
-    const newBlog = {
+    const newBlog: blogType = {
       title,
       tag,
       mark,
       uid,
       editedDate,
     };
+
+    if (imageURL) {
+      newBlog.imageURL = imageURL;
+    }
 
     await updateDoc(collectionRef, newBlog);
 
@@ -287,4 +292,3 @@ export async function updateBlog({
     toast.error("Failed to edit the blog.");
   }
 }
-

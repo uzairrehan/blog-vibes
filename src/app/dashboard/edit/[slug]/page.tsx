@@ -69,11 +69,12 @@ function Edit({ params }: { params: { slug: string } }) {
 
   return (
     <>
+
     <div
     className="flex justify-center items-center p-5"
     >
     <Image
-    src={picture}
+    src={picture && ""}
     width={200}
     height={200}
     alt="picture"

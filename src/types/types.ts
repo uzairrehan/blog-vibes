@@ -29,6 +29,8 @@ export type blogType = {
   createdDate?: Date;
   editedDate?: Date
   firebaseID?:string
+  imageURL?:string
+  uid?:string
 };
 
 export type updateProfileType = {

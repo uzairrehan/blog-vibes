@@ -3,14 +3,13 @@ import Loading from "@/components/loading";
 import { auth } from "@/firebase/firebaseauthentication";
 import { db } from "@/firebase/firebasefirestore";
 import { onAuthStateChanged } from "firebase/auth";
-import { query, collection, where, getDocs } from "firebase/firestore";
+import { query, collection, where, getDocs, DocumentData } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 function AdminProtectedRoute({ children }: { children: React.ReactNode }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<DocumentData|null>(null);
   const [loading, setLoading] = useState(true);
   const route = useRouter();
 

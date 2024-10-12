@@ -37,13 +37,12 @@ export default function Page({ params }: { params: { slug: string } }) {
       };
 
       fetchBlog();
-      // console.log(data);
     }
   }, [params.slug]);
 
   // from ChatGPT
-  function formatDate() {
-    const timestamp = data?.createdDate;
+  function formatDate(prop:{seconds:number,nanoseconds:number}) {
+    const timestamp = prop;
     const milliseconds =
       timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000);
     const date = new Date(milliseconds);
@@ -57,25 +56,10 @@ export default function Page({ params }: { params: { slug: string } }) {
     const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
     return formattedDate;
   }
-//  // from ChatGPT
-function formatEditDate() {
-  const timestamp = data?.createdDate;
-  const milliseconds =
-    timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000);
-  const date = new Date(milliseconds);
-  const pad = (num: number) => num.toString().padStart(2, "0");
-  const day = date.getUTCDate();
-  const month = date.toLocaleString("default", { month: "long" });
-  const year = date.getUTCFullYear();
-  const hours = pad(date.getUTCHours());
-  const minutes = pad(date.getUTCMinutes());
-  const secondsTime = pad(date.getUTCSeconds());
-  const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
-  return formattedDate;
-}
 //
   return (
     <>
+
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
         <FaLongArrowAltLeft /> Go Back to Home
       </Link>
@@ -104,10 +88,13 @@ function formatEditDate() {
 
             <div className="mb-4 prose">
               <span className="font-semibold ">Created Date:</span>{" "}
-              <span>{formatDate()}</span> 
-              |
-              <span className="font-semibold"> Edited Date:</span>{" "}
-              <span>{formatEditDate() ?? null }</span>
+              <span>{formatDate(data.createdDate)}</span>
+              {data.editedDate ? (
+                <>
+                  |<span className="font-semibold"> Edited Date:</span>{" "}
+                  <span>{formatDate(data.editedDate)}</span>
+                </>
+              ) : null}
             </div>
           </div>
 

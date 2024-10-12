@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
+import { toast } from "react-toastify";
+import Navbar from "@/components/navbar";
 
 function Dashboard() {
   const [cards, setCards] = useState<CardData[]>([]);
@@ -26,21 +28,21 @@ function Dashboard() {
       setCards(dataArray);
     }
     getData();
-  }, [cards, route]);
+  }, [route]);
   return (
     <>
+
       <div className="overflow-x-auto">
         <Link href={"/dashboard/add"}>
-          <button className="btn btn-sm btn-primary m-5 btn-outline">
+          <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
             <IoMdAdd />
             Add Blog
           </button>
         </Link>
         <table className="table">
-          {/* head */}
           <thead>
             <tr>
-              <th>Title / Date</th>
+              <th>Title</th>
               <th>Tag</th>
               <th>Delete</th>
               <th>Edit</th>
@@ -53,9 +55,10 @@ function Dashboard() {
               cards.map(({ imageURL, title, tag, slug, firebaseID }) => (
                 <tr key={title}>
                   <th>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 hover:cursor-pointer"
+                     onClick={() => route.push(`/blog/${slug}`)}>
                       <div
-                        className="avatar hover:cursor-pointer"
+                        className="avatar "
                         onClick={() => route.push(`/blog/${slug}`)}
                       >
                         <div className="mask mask-squircle h-12 w-12">
@@ -71,9 +74,6 @@ function Dashboard() {
                       </div>
                       <div>
                         <div className="font-bold">{title}</div>
-                        <div className="text-sm opacity-50">
-                          {/* {convertToDate(createdDate)} */}
-                        </div>
                       </div>
                     </div>
                   </th>
@@ -82,9 +82,10 @@ function Dashboard() {
                   </td>
                   <th>
                     <button
-                      className="btn btn-ghost btn-xs"
+                      className="btn btn-error sm:btn-xs lg:btn-sm"
                       onClick={() => {
                         deleteBlog(firebaseID as string);
+                        toast.success("Deleted !")
                       }}
                     >
                       Delete
@@ -92,7 +93,7 @@ function Dashboard() {
                   </th>
                   <th>
                     <button
-                      className="btn btn-ghost btn-xs"
+                      className="btn btn-warning  sm:btn-xs lg:btn-sm"
                       onClick={() => {
                         route.push(`/dashboard/edit/${slug}`);
                       }}
