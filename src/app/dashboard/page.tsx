@@ -12,7 +12,6 @@ import Loading from "@/components/loading";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "react-toastify";
-import Navbar from "@/components/navbar";
 
 function Dashboard() {
   const [cards, setCards] = useState<CardData[]>([]);
