@@ -4,6 +4,7 @@ import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { db } from "@/firebase/firebasefirestore";
 import {
+  addDoc,
   collection,
   DocumentData,
   getDocs,
@@ -12,12 +13,20 @@ import {
 } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
+import { doc } from "firebase/firestore";
+import { auth } from "@/firebase/firebaseauthentication";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);
+  const [comment, setComment] = useState<string>("")
+  const route = useRouter()
+  const [commentsArray, setCommentsArray] = useState<DocumentData[]>([])
 
   useEffect(() => {
     if (params.slug) {
@@ -41,7 +50,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   }, [params.slug]);
 
   // from ChatGPT
-  function formatDate(prop:{seconds:number,nanoseconds:number}) {
+  function formatDate(prop: { seconds: number, nanoseconds: number }) {
     const timestamp = prop;
     const milliseconds =
       timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000);
@@ -56,7 +65,49 @@ export default function Page({ params }: { params: { slug: string } }) {
     const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
     return formattedDate;
   }
-//
+  //
+
+
+  async function handleAddComment() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First!")
+      route.push("/authenticate")
+      return
+    }
+    if (comment == "") return
+    const parentRef = doc(db, "blogs", data?.firebaseID);
+    const coll = collection(parentRef, "comments")
+    const comm = {
+      "text": comment,
+      "time": new Date(),
+      "UID": auth.currentUser?.uid
+    }
+    console.log(comm);
+    await addDoc(coll, comm)
+    setComment("")
+  }
+
+  async function fetchAllComments() {
+    const ref = doc(db, "blogs", data?.firebaseID)
+    const coll = collection(ref, "comments")
+    const querySnapshot = await getDocs(coll);
+    const array: SetStateAction<DocumentData[]> = []
+    querySnapshot.forEach((doc) => {
+      array.push(doc.data())
+    });
+    setCommentsArray(array)
+  }
+
+
+  useEffect(() => {
+    if (!data) {
+      return
+    }
+    fetchAllComments()
+  }, [data])
+
+
+
   return (
     <>
 
@@ -101,6 +152,32 @@ export default function Page({ params }: { params: { slug: string } }) {
           <div className="prose prose-lg text-gray-800">
             <ReactMarkdown className="prose">{data.mark}</ReactMarkdown>
           </div>
+
+          <label className="comment">
+            <div className="label">
+              <span className="label-text text-bold">Add comment</span>
+            </div>
+            <textarea className="textarea textarea-success textarea-lg textarea-bordered h-24" value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
+            <div className="label">
+              <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-secondary" onClick={handleAddComment}>Add Comment</button>
+            </div>
+          </label>
+
+
+
+
+          {commentsArray &&
+            commentsArray.map(({ text, time }, index) => {
+              return (<div className="chat chat-start" key={index}>
+                <div className="chat-bubble">
+                  {formatDate(time)}
+                  <br />
+                  {text}
+                </div>
+              </div>)
+            })
+          }
+
         </div>
       ) : (
         <div className="flex justify-center items-center">
