@@ -51,20 +51,36 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   // from ChatGPT
   function formatDate(prop: { seconds: number, nanoseconds: number }) {
-    const timestamp = prop;
-    const milliseconds =
-      timestamp.seconds * 1000 + Math.floor(timestamp.nanoseconds / 1000000);
+    const { seconds, nanoseconds } = prop;
+  
+    // Convert to milliseconds
+    const milliseconds = seconds * 1000 + Math.floor(nanoseconds / 1000000);
+  
+    // Create the Date object from milliseconds
     const date = new Date(milliseconds);
+  
+    // Helper function to pad numbers with leading zeros
     const pad = (num: number) => num.toString().padStart(2, "0");
-    const day = date.getUTCDate();
+  
+    // Extract date parts
+    const day = pad(date.getUTCDate());
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getUTCFullYear();
-    const hours = pad(date.getUTCHours());
+    
+    // Get the hours in 12-hour format
+    let hours = date.getUTCHours();
+    const period = hours >= 12 ? "PM" : "AM"; // Determine AM/PM
+    hours = hours % 12 || 12; // Convert to 12-hour format (0 becomes 12)
+  
     const minutes = pad(date.getUTCMinutes());
     const secondsTime = pad(date.getUTCSeconds());
-    const formattedDate = `${day} ${month} ${year} ${hours}:${minutes}:${secondsTime}`;
+  
+    // Format the date string with 12-hour time and AM/PM
+    const formattedDate = `${day} ${month} ${year} ${pad(hours)}:${minutes}:${secondsTime} ${period}`;
+  
     return formattedDate;
   }
+  
   //
 
 
