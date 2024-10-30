@@ -6,24 +6,29 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
+import Loading from "./loading";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const route = useRouter()
+  const [loading, setLoading] = useState(false);
+
+  const route = useRouter();
 
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
+    setLoading(true)
     signupWithEmailPassword(email, password, name);
     setEmail("");
     setName("");
     setPassword("");
-    route.push("/")
+    setLoading(false)
+    route.push("/");
   }
-  async function  googlee() {
-    await googleSign()
-    route.push("/")
+  async function googlee() {
+    await googleSign();
+    route.push("/");
   }
   return (
     <>
@@ -136,8 +141,9 @@ function SignUp() {
               <button
                 type="submit"
                 className="text-neutral btn-primary btn bg-secondary btn-wide sm:mx-auto sm:w-full sm:max-w-sm hover:bg-neutral hover:text-primary"
+                disabled={loading ? true : false}
               >
-                Sign Up
+                {loading ? <Loading /> : <> Signup </>}
               </button>
             </div>
             <div className="divider">OR</div>

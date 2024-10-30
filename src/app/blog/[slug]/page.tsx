@@ -8,25 +8,26 @@ import {
   collection,
   DocumentData,
   getDocs,
+  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import { doc } from "firebase/firestore";
 import { auth } from "@/firebase/firebaseauthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-
+// import firebase from "firebase/compat/app";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);
-  const [comment, setComment] = useState<string>("")
-  const route = useRouter()
-  const [commentsArray, setCommentsArray] = useState<DocumentData[]>([])
+  const [comment, setComment] = useState<string>("");
+  const route = useRouter();
+  const [commentsArray, setCommentsArray] = useState<DocumentData[]>([]);
 
   useEffect(() => {
     if (params.slug) {
@@ -50,83 +51,63 @@ export default function Page({ params }: { params: { slug: string } }) {
   }, [params.slug]);
 
   // from ChatGPT
-  function formatDate(prop: { seconds: number, nanoseconds: number }) {
+  function formatDate(prop: { seconds: number; nanoseconds: number }) {
     const { seconds, nanoseconds } = prop;
-  
-    // Convert to milliseconds
     const milliseconds = seconds * 1000 + Math.floor(nanoseconds / 1000000);
-  
-    // Create the Date object from milliseconds
     const date = new Date(milliseconds);
-  
-    // Helper function to pad numbers with leading zeros
     const pad = (num: number) => num.toString().padStart(2, "0");
-  
-    // Extract date parts
-    const day = pad(date.getUTCDate());
+    const day = pad(date.getDate());
     const month = date.toLocaleString("default", { month: "long" });
-    const year = date.getUTCFullYear();
-    
-    // Get the hours in 12-hour format
-    let hours = date.getUTCHours();
-    const period = hours >= 12 ? "PM" : "AM"; // Determine AM/PM
-    hours = hours % 12 || 12; // Convert to 12-hour format (0 becomes 12)
-  
-    const minutes = pad(date.getUTCMinutes());
-    const secondsTime = pad(date.getUTCSeconds());
-  
-    // Format the date string with 12-hour time and AM/PM
-    const formattedDate = `${day} ${month} ${year} ${pad(hours)}:${minutes}:${secondsTime} ${period}`;
-  
+    const year = date.getFullYear();
+    let hours = date.getHours();
+    const period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12;
+    const minutes = pad(date.getMinutes());
+    const secondsTime = pad(date.getSeconds());
+    const formattedDate = `${day} ${month} ${year} ${pad(
+      hours
+    )}:${minutes}:${secondsTime} ${period}`;
+
     return formattedDate;
   }
-  
-  //
 
+  //
 
   async function handleAddComment() {
     if (!auth.currentUser?.uid) {
-      toast.error("Please Login First!")
-      route.push("/authenticate")
-      return
+      toast.error("Please Login First!");
+      route.push("/authenticate");
+      return;
     }
-    if (comment == "") return
+    if (comment == "") return;
     const parentRef = doc(db, "blogs", data?.firebaseID);
-    const coll = collection(parentRef, "comments")
+    const coll = collection(parentRef, "comments");
     const comm = {
-      "text": comment,
-      "time": new Date(),
-      "UID": auth.currentUser?.uid
-    }
+      text: comment,
+      time: new Date(),
+      UID: auth.currentUser?.uid,
+    };
     console.log(comm);
-    await addDoc(coll, comm)
-    setComment("")
+    await addDoc(coll, comm);
+    setComment("");
   }
-
-  async function fetchAllComments() {
-    const ref = doc(db, "blogs", data?.firebaseID)
-    const coll = collection(ref, "comments")
-    const querySnapshot = await getDocs(coll);
-    const array: SetStateAction<DocumentData[]> = []
-    querySnapshot.forEach((doc) => {
-      array.push(doc.data())
-    });
-    setCommentsArray(array)
-  }
-
 
   useEffect(() => {
-    if (!data) {
-      return
-    }
-    fetchAllComments()
-  }, [data])
+    if (!data) return;
 
+    const ref = doc(db, "blogs", data.firebaseID);
+    const commentsCollection = collection(ref, "comments");
+    const unsubscribe = onSnapshot(commentsCollection, (snapshot) => {
+      const updatedComments: DocumentData[] = [];
+      snapshot.forEach((doc) => updatedComments.push(doc.data()));
+      setCommentsArray(updatedComments);
+    });
 
+    return () => unsubscribe();
+  }, [data]);
 
   return (
     <>
-
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
         <FaLongArrowAltLeft /> Go Back to Home
       </Link>
@@ -173,27 +154,33 @@ export default function Page({ params }: { params: { slug: string } }) {
             <div className="label">
               <span className="label-text text-bold">Add comment</span>
             </div>
-            <textarea className="textarea textarea-success textarea-lg textarea-bordered h-24" value={comment} onChange={(e) => setComment(e.target.value)}></textarea>
+            <textarea
+              className="textarea textarea-success textarea-lg textarea-bordered h-24"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            ></textarea>
             <div className="label">
-              <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-secondary" onClick={handleAddComment}>Add Comment</button>
+              <button
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-secondary"
+                onClick={handleAddComment}
+              >
+                Add Comment
+              </button>
             </div>
           </label>
 
-
-
-
           {commentsArray &&
             commentsArray.map(({ text, time }, index) => {
-              return (<div className="chat chat-start" key={index}>
-                <div className="chat-bubble">
-                  {formatDate(time)}
-                  <br />
-                  {text}
+              return (
+                <div className="chat chat-start" key={index}>
+                  <div className="chat-bubble">
+                    {formatDate(time)}
+                    <br />
+                    {text}
+                  </div>
                 </div>
-              </div>)
-            })
-          }
-
+              );
+            })}
         </div>
       ) : (
         <div className="flex justify-center items-center">

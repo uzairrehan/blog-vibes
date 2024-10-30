@@ -6,17 +6,24 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Loading from "./loading";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const route = useRouter()
   
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
+    setLoading(true)
+
     loginWithEmailPassword(email, password);
     setEmail("");
     setPassword("");
+    setLoading(false)
+
     route.push("/")
   }
 
@@ -117,11 +124,12 @@ function SignIn() {
             </div>
 
             <div className="center flex justify-center items-center pt-4 ">
-              <button
+            <button
                 type="submit"
                 className="text-neutral btn-primary btn bg-secondary btn-wide sm:mx-auto sm:w-full sm:max-w-sm hover:bg-neutral hover:text-primary"
+                disabled={loading ? true : false}
               >
-                Sign in
+                {loading ? <Loading /> : <> Signin </>}
               </button>
             </div>
           </form>

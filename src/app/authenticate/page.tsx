@@ -1,11 +1,27 @@
 "use client";
 import SignUp from "@/components/signup";
 import SignIn from "@/components/signin";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { auth } from "@/firebase/firebaseauthentication";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 function Authenticate() {
   const [page, setPage] = useState("SignUp");
+  const route = useRouter();
 
+  useEffect(()=>{
+    checkUser()
+    console.log("hello");
+    
+  },[])
+  function checkUser() {
+    if (auth.currentUser) {
+      toast.error("You are already logged in !")
+      console.log("hello");
+      route.push("/")
+    } 
+}
   return (
     <>
       <div className="flex justify-center gap-4 py-5 items-center">

@@ -12,22 +12,8 @@ import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-// import { useState, useEffect } from "react";
 
 function Navbar() {
-  // const [currentPath, setCurrentPath] = useState(""); 
-
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const { pathname } = window.location;
-  //     setCurrentPath(pathname); 
-  //   }
-  // }, []);
-
-
-  
-  // console.log("Current Path:", currentPath);
-
   return (
     <div className="navbar bg-neutral text-base-100">
       <div className="navbar-start">
@@ -43,10 +29,6 @@ function Navbar() {
             tabIndex={0}
             className="menu menu-md dropdown-content  bg-base-100 text-neutral rounded-box z-[1] mt-3 w-52 p-2 shadow "
           >
-
-
-
-
             <li>
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
@@ -57,25 +39,15 @@ function Navbar() {
               </Link>
             </li>
 
-
-
-
-
             <li>
               <Link
                 className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
                 href={"/dashboard"}
               >
-
                 <MdOutlineSpaceDashboard />
-
                 Go to Dashboard
               </Link>
             </li>
-
-
-
-
 
             <li>
               <Link
@@ -87,14 +59,10 @@ function Navbar() {
               </Link>
             </li>
 
-
-
-
-
             <li
               onClick={() => {
                 signOut(auth);
-                toast.success("signed out succesfully")
+                toast.success("signed out succesfully");
               }}
             >
               <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">
@@ -102,10 +70,6 @@ function Navbar() {
                 Logout
               </div>
             </li>
-
-
-
-            
           </ul>
         </div>
       </div>
@@ -122,9 +86,12 @@ function Navbar() {
       </div>
 
       <div className="navbar-end">
-
         <label className="swap swap-rotate btn btn-ghost btn-circle hover:bg-secondary">
-          <input type="checkbox" className="theme-controller" value="mytheme2" />
+          <input
+            type="checkbox"
+            className="theme-controller"
+            value="mytheme2"
+          />
 
           <FiSun className="swap-off h-5 w-5 fill-current" />
 

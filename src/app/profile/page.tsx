@@ -12,6 +12,7 @@ import { db, updateMyProfile } from "@/firebase/firebasefirestore";
 import { auth } from "@/firebase/firebaseauthentication";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Image from "next/image";
+import Loading from "@/components/loading";
 
 function Profile() {
   const [picture, setPicture] = useState<File | null>(null);
@@ -21,6 +22,8 @@ function Profile() {
   const [DOB, setDOB] = useState("");
   const [bio, setBio] = useState("");
   const [PFP, setPFP] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const route = useRouter();
 
   async function fetchUserDetails() {
@@ -54,6 +57,7 @@ function Profile() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
+      setLoading(true)
       await updateMyProfile({
         picture,
         name,
@@ -62,6 +66,7 @@ function Profile() {
         DOB,
         bio,
       });
+      setLoading(false)
       route.push("/");
     } catch (error) {
       toast.error(`Couldn't update ! ${error}`);
@@ -191,11 +196,10 @@ function Profile() {
             </div>
           </div>
           <div className="mt-6">
-            <button
-              className="btn btn-active btn-neutral w-full"
-              onClick={handleSubmit}
+          <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full"
+            disabled={loading ? true : false}
             >
-              Update
+              {loading? <Loading/>: <> Update Blog </>}
             </button>
           </div>
         </form>

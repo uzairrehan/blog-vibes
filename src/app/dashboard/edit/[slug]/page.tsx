@@ -20,6 +20,7 @@ function Edit({ params }: { params: { slug: string } }) {
   const [loading , setLoading] = useState(false)
   const route = useRouter();
 
+  
   useEffect(() => {
     if (params.slug) {
       const fetchBlog = async () => {
@@ -40,6 +41,7 @@ function Edit({ params }: { params: { slug: string } }) {
       fetchBlog();
     }
   }, [params.slug]);
+
 
   useEffect(() => {
     if (data) {
