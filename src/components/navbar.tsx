@@ -12,21 +12,21 @@ import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 
 function Navbar() {
-  const [currentPath, setCurrentPath] = useState(""); 
+  // const [currentPath, setCurrentPath] = useState(""); 
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const { pathname } = window.location;
-      setCurrentPath(pathname); 
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     const { pathname } = window.location;
+  //     setCurrentPath(pathname); 
+  //   }
+  // }, []);
 
 
   
-  console.log("Current Path:", currentPath);
+  // console.log("Current Path:", currentPath);
 
   return (
     <div className="navbar bg-neutral text-base-100">

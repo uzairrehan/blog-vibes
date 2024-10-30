@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/loading";
 import { db, updateBlog } from "@/firebase/firebasefirestore";
 import { CardData } from "@/types/types";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -16,6 +17,7 @@ function Edit({ params }: { params: { slug: string } }) {
   const [picture, setPicture] = useState("");
   const [firebaseID, setFirebaseID] = useState("");
   const [data, setData] = useState<CardData | null>(null); 
+  const [loading , setLoading] = useState(false)
   const route = useRouter();
 
   useEffect(() => {
@@ -51,6 +53,7 @@ function Edit({ params }: { params: { slug: string } }) {
 
 
   const handleSubmit = async () => {
+    setLoading(true)
     try {
       await updateBlog({
         title,
@@ -60,7 +63,7 @@ function Edit({ params }: { params: { slug: string } }) {
         firebaseID,
         file
       });
-  
+      setLoading(false)
       route.push("/dashboard");
     } catch (error) {
       toast.error(`Couldn't edit blog! ${error}`);
@@ -137,8 +140,10 @@ function Edit({ params }: { params: { slug: string } }) {
           ></textarea>
 
           <div>
-            <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full">
-              Update Blog
+            <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full"
+            disabled={loading ? true : false}
+            >
+              {loading? <Loading/>: <> Update Blog </>}
             </button>
           </div>
         </div>

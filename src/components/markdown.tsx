@@ -5,16 +5,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
+import Loading from "./loading";
 
 function Markdown() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("coding");
   const [mark, setMark] = useState("");
-
+  const [loading , setLoading] = useState(false)
   const route = useRouter();
 
-
+// This is from chatGPT
   function makeSlug(title: string) {
     return title
     .toLowerCase()                   
@@ -23,11 +24,13 @@ function Markdown() {
     .replace(/\s+/g, '-')            
     .replace(/-+/g, '-'); 
   }
-
+// 
     const handleSubmit = async () => {
       try {
+        setLoading(true)
         const generatedSlug = makeSlug(title); 
         await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate :new Date() }); 
+        setLoading(false)
         route.push("/dashboard");
       } catch (error) {
         toast.error(`Couldn't add blog! ${error}`);
@@ -94,11 +97,10 @@ function Markdown() {
           ></textarea>
 
           <div>
-            <button
-              onClick={handleSubmit}
-              className="btn btn-active btn-neutral w-full"
+            <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full"
+            disabled={loading ? true : false}
             >
-              Add Blog
+              {loading? <Loading/>: <> Add Blog </>}
             </button>
           </div>
         </div>

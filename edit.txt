@@ -1,0 +1,8 @@
+edit
+delete
+edit time
+only admin can do this
+commenting 
+comment add date
+add like and dislike option
+realtime listener on comments and likes

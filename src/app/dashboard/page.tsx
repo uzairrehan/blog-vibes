@@ -1,11 +1,9 @@
 "use client";
 
-import { db } from "@/firebase/firebasefirestore";
 import { CardData } from "@/types/types";
-import { getDocs, collection } from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-import { deleteBlog } from "@/firebase/firebasefirestore";
+import { deleteBlog, db } from "@/firebase/firebasefirestore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
@@ -18,19 +16,19 @@ function Dashboard() {
   const route = useRouter();
 
   useEffect(() => {
-    async function getData() {
-      const querySnapshot = await getDocs(collection(db, "blogs"));
-      const dataArray: CardData[] = [];
-      querySnapshot.forEach((doc) => {
-        dataArray.push(doc.data() as CardData);
-      });
-      setCards(dataArray);
-    }
-    getData();
-  }, [route]);
+    const q = query(collection(db, "blogs"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      console.log("snapshot", snapshot);
+      const newCards: CardData[] = [];
+      snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
+      console.log(newCards);
+      setCards(newCards);
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <>
-
       <div className="overflow-x-auto">
         <Link href={"/dashboard/add"}>
           <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
@@ -54,8 +52,10 @@ function Dashboard() {
               cards.map(({ imageURL, title, tag, slug, firebaseID }) => (
                 <tr key={title}>
                   <th>
-                    <div className="flex items-center gap-3 hover:cursor-pointer"
-                     onClick={() => route.push(`/blog/${slug}`)}>
+                    <div
+                      className="flex items-center gap-3 hover:cursor-pointer"
+                      onClick={() => route.push(`/blog/${slug}`)}
+                    >
                       <div
                         className="avatar "
                         onClick={() => route.push(`/blog/${slug}`)}
@@ -84,7 +84,7 @@ function Dashboard() {
                       className="btn btn-error sm:btn-xs lg:btn-sm"
                       onClick={() => {
                         deleteBlog(firebaseID as string);
-                        toast.success("Deleted !")
+                        toast.success("Deleted !");
                       }}
                     >
                       Delete
