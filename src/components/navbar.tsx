@@ -12,10 +12,8 @@ import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { useState } from "react";
 
 function Navbar() {
-  const [user]= useState(auth.currentUser)
 
   return (
     <div className="navbar bg-neutral text-base-100">
@@ -50,7 +48,6 @@ function Navbar() {
                 Go to Dashboard
               </Link>
             </li>
-            {user ? (
               <li>
                 <Link
                   className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
@@ -60,8 +57,7 @@ function Navbar() {
                   Login / Sign-Up
                 </Link>
               </li>
-            ) : (
-              <li
+=              <li
                 onClick={() => {
                   signOut(auth);
                   toast.success("signed out succesfully");
@@ -72,7 +68,6 @@ function Navbar() {
                   Logout
                 </div>
               </li>
-            )}
           </ul>
         </div>
       </div>
