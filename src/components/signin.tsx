@@ -1,12 +1,10 @@
 "use client";
-import {
-  loginWithEmailPassword,
-  passwordReset,
-} from "@/firebase/firebaseauthentication";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Loading from "./loading";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/firebaseconfig";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -14,7 +12,40 @@ function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const route = useRouter()
+
+  function loginWithEmailPassword(email: string, password: string) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const { email, uid } = userCredential.user;
+        console.log(email, uid, "user LOGGED IN successfully.", userCredential);
+        toast.success(`Signed in with email : ${email}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorMessage, errorCode);
+        toast.error("Could'nt sign-in", error.message);
+      });
+  }
   
+
+   function passwordReset(email: string) {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log("sent");
+        toast.success(`Check Email : ${email}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        toast.error(`error : ${error.message}`);
+      });
+  }
+  
+
+
+
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     setLoading(true)

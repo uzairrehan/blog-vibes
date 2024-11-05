@@ -21,21 +21,23 @@ function Dashboard() {
       console.log("snapshot", snapshot);
       const newCards: CardData[] = [];
       snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
-      console.log(newCards); 
+      console.log(newCards);
       setCards(newCards);
     });
-    return unsubscribe; 
+    return unsubscribe;
   }, []);
 
   return (
     <>
       <div className="overflow-x-auto">
+
         <Link href={"/dashboard/add"}>
           <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
             <IoMdAdd />
             Add Blog
           </button>
         </Link>
+
         <table className="table">
           <thead>
             <tr>

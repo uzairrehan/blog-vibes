@@ -1,7 +1,5 @@
 "use client";
 
-import { auth } from "@/firebase/firebaseauthentication";
-import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 import { LuLogIn } from "react-icons/lu";
@@ -12,8 +10,23 @@ import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { auth } from "@/firebase/firebaseconfig";
+import { signOut } from "firebase/auth";
 
 function Navbar() {
+  function signOutFunc() {
+    if (!auth.currentUser) {
+      toast.error("Not loggedin");
+      return;
+    }
+    signOut(auth)
+      .then(() => {
+        toast.success("Signed-out succesfully !");
+      })
+      .catch((error) => {
+        toast.error(`error : ${error.message}`);
+      });
+  }
 
   return (
     <div className="navbar bg-neutral text-base-100">
@@ -48,26 +61,21 @@ function Navbar() {
                 Go to Dashboard
               </Link>
             </li>
-              <li>
-                <Link
-                  className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
-                  href={"/authenticate"}
-                >
-                  <LuLogIn />
-                  Login / Sign-Up
-                </Link>
-              </li>
-=              <li
-                onClick={() => {
-                  signOut(auth);
-                  toast.success("signed out succesfully");
-                }}
+            <li>
+              <Link
+                className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
+                href={"/authenticate"}
               >
-                <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">
-                  <BiLogOut />
-                  Logout
-                </div>
-              </li>
+                <LuLogIn />
+                Login / Sign-Up
+              </Link>
+            </li>
+            <li onClick={signOutFunc}>
+              <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">
+                <BiLogOut />
+                Logout
+              </div>
+            </li>
           </ul>
         </div>
       </div>

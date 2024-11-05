@@ -1,12 +1,12 @@
 "use client";
-import {
-  googleSign,
-  signupWithEmailPassword,
-} from "@/firebase/firebaseauthentication";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import Loading from "./loading";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
+import { saveUser, updateUser } from "@/firebase/firebasefirestore";
+import { toast } from "react-toastify";
+import { auth, provider } from "@/firebase/firebaseconfig";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -16,16 +16,75 @@ function SignUp() {
 
   const route = useRouter();
 
+  function signupWithEmailPassword(
+    email: string,
+    password: string,
+    userName: string
+  ) {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const { email, uid } = userCredential.user;
+        console.log(email, uid, userName, "user created successfully.");
+        updateProfile(userCredential.user, {
+          displayName: userName,
+        });
+        console.log(userCredential);
+        saveUser(email, userName, uid);
+        toast.success(`Signed Up with email : ${email}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorMessage, errorCode);
+        toast.error("Could'nt sign-up", error.message);
+      });
+  }
+
+
+
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
-    setLoading(true)
+    setLoading(true);
     signupWithEmailPassword(email, password, name);
     setEmail("");
     setName("");
     setPassword("");
-    setLoading(false)
+    setLoading(false);
     route.push("/");
   }
+
+
+
+
+  async function googleSign() {
+    await signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        const user = result.user;
+        updateUser(auth.currentUser?.email, user.displayName, user.uid, user.photoURL as string);
+        console.log(token, user);
+        toast.success("Signed in with google !");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(errorCode, errorMessage, email, credential);
+        toast.error("Could'nt sign-in", error.message);
+      });
+  }
+  
+
+
+
+
+
+
+
+
+
   async function googlee() {
     await googleSign();
     route.push("/");

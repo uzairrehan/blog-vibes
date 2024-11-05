@@ -18,10 +18,9 @@ import { useEffect, useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import { doc } from "firebase/firestore";
-import { auth } from "@/firebase/firebaseauthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-// import firebase from "firebase/compat/app";
+import { auth } from "@/firebase/firebaseconfig";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);

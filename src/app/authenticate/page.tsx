@@ -2,9 +2,9 @@
 import SignUp from "@/components/signup";
 import SignIn from "@/components/signin";
 import { useEffect, useState } from "react";
-import { auth } from "@/firebase/firebaseauthentication";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { auth } from "@/firebase/firebaseconfig";
 
 function Authenticate() {
   const [page, setPage] = useState("SignUp");
@@ -13,7 +13,6 @@ function Authenticate() {
   useEffect(()=>{
     checkUser()
     console.log("hello");
-    
   },[])
   function checkUser() {
     if (auth.currentUser) {

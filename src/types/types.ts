@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export type messageType = {
   message: string;
 };
@@ -40,4 +42,7 @@ export type updateProfileType = {
   phonenumber:string;
   DOB:string;
   bio:string;
+}; 
+export type CompanyLayoutTypes = {
+  children: ReactNode;
 };

@@ -7,8 +7,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getFirestore } from "firebase/firestore";
-import { app } from "./firebaseconfig";
-import { auth } from "./firebaseauthentication";
+import { app, auth } from "./firebaseconfig";
 import { blogType, updateProfileType } from "@/types/types";
 import { toast } from "react-toastify";
 import {

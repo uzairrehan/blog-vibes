@@ -1,6 +1,6 @@
 "use client";
 import Loading from "@/components/loading";
-import { auth } from "@/firebase/firebaseauthentication";
+import { auth } from "@/firebase/firebaseconfig";
 import { db } from "@/firebase/firebasefirestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { query, collection, where, getDocs, DocumentData } from "firebase/firestore";

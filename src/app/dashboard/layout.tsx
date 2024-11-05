@@ -1,10 +1,7 @@
-"use client";
 
-import { ReactNode } from "react";
+import { CompanyLayoutTypes } from "@/types/types";
 import AdminProtectedRoute from "./adminprotectedroute";
-type CompanyLayoutTypes = {
-  children: ReactNode;
-};
+
 export default function CompanyLayout({ children }: CompanyLayoutTypes) {
   return <AdminProtectedRoute> {children}</AdminProtectedRoute>
   ;

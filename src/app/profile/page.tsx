@@ -3,13 +3,12 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { app } from "@/firebase/firebaseconfig";
+import { app, auth } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import { toast } from "react-toastify";
 import { db, updateMyProfile } from "@/firebase/firebasefirestore";
-import { auth } from "@/firebase/firebaseauthentication";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Image from "next/image";
 import Loading from "@/components/loading";
