@@ -1,7 +1,6 @@
 "use client";
 import Loading from "@/components/loading";
-import { auth } from "@/firebase/firebaseconfig";
-import { db } from "@/firebase/firebasefirestore";
+import { auth, db } from "@/firebase/firebaseconfig";
 import { onAuthStateChanged } from "firebase/auth";
 import {
   query,

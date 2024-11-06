@@ -1,6 +1,6 @@
 "use client";
 import AllCards from "@/components/allCards";
-import { db } from "@/firebase/firebasefirestore";
+import { db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";

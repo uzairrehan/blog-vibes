@@ -2,7 +2,6 @@
 
 import Footer from "@/components/footer";
 import Loading from "@/components/loading";
-import { db } from "@/firebase/firebasefirestore";
 import {
   addDoc,
   arrayUnion,
@@ -20,7 +19,7 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { auth } from "@/firebase/firebaseconfig";
+import { auth, db } from "@/firebase/firebaseconfig";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { LuSave } from "react-icons/lu";
 import { doc, updateDoc } from "firebase/firestore";
@@ -62,7 +61,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           console.error(error);
         }
       };
-
       fetchBlog();
     }
   }, [params.slug]);
@@ -87,7 +85,6 @@ export default function Page({ params }: { params: { slug: string } }) {
 
     return formattedDate;
   }
-
   //
 
   async function handleAddComment() {

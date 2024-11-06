@@ -3,13 +3,14 @@
 import { CardData } from "@/types/types";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { deleteBlog, db } from "@/firebase/firebasefirestore";
+import { deleteBlog } from "@/firebase/firebasefirestore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
 import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "react-toastify";
+import { db } from "@/firebase/firebaseconfig";
 
 function Dashboard() {
   const [cards, setCards] = useState<CardData[]>([]);
