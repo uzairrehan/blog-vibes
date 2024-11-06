@@ -1,4 +1,3 @@
-"use client";
 
 import Footer from "@/components/footer";
 import Markdown from "@/components/markdown";

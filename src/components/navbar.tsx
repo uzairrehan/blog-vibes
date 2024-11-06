@@ -6,12 +6,12 @@ import { LuLogIn } from "react-icons/lu";
 import { FaRegMoon, FaRegUser } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
-import Image from "next/image";
 import { FiSun } from "react-icons/fi";
 import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { auth } from "@/firebase/firebaseconfig";
 import { signOut } from "firebase/auth";
+import Image from "next/image";
 
 function Navbar() {
   function signOutFunc() {
@@ -90,7 +90,6 @@ function Navbar() {
           />
         </a>
       </div>
-
       <div className="navbar-end">
         <label className="swap swap-rotate btn btn-ghost btn-circle hover:bg-secondary">
           <input
@@ -98,12 +97,9 @@ function Navbar() {
             className="theme-controller"
             value="mytheme2"
           />
-
           <FiSun className="swap-off h-5 w-5 fill-current" />
-
           <FaRegMoon className="swap-on h-5 w-5 fill-current" />
         </label>
-
         <Link
           href={"/profile"}
           className="btn btn-ghost btn-circle hover:bg-secondary"

@@ -1,6 +1,7 @@
 "use client";
 import Loading from "@/components/loading";
-import { db, updateBlog } from "@/firebase/firebasefirestore";
+import { db } from "@/firebase/firebaseconfig";
+import {  updateBlog } from "@/firebase/firebasefirestore";
 import { CardData } from "@/types/types";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Image from "next/image";
@@ -72,7 +73,7 @@ function Edit({ params }: { params: { slug: string } }) {
   return (
     <>
       <div className="flex justify-center items-center p-5">
-        <Image src={picture && ""} width={200} height={200} alt="picture" />
+        <Image src={picture} width={200} height={200} alt="picture" />
       </div>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200">

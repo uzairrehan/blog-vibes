@@ -6,19 +6,10 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { getFirestore } from "firebase/firestore";
-import { app, auth } from "./firebaseconfig";
+import { auth, db, storage } from "./firebaseconfig";
 import { blogType, updateProfileType } from "@/types/types";
 import { toast } from "react-toastify";
-import {
-  getDownloadURL,
-  getStorage,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-
-export const db = getFirestore(app);
-export const storage = getStorage(app);
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export async function saveUser(
   email: string | null | undefined,
