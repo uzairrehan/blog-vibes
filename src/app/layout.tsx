@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import StoreProvider from "./StoreProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,9 +32,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         data-theme="mytheme mytheme2"
       >
+        <StoreProvider>
         <Navbar />
         {children}
         <ToastContainer autoClose={2000} />
+        </StoreProvider>
       </body>
     </html>
   );
