@@ -5,6 +5,7 @@ import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { useState } from "react";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function AllCards({ allCards }: any) {
 
 
@@ -42,7 +43,8 @@ export default function AllCards({ allCards }: any) {
                 <div className="flex justify-center items-center min-h-screen">
                     <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-5 my-5">
                         {filteredCards.map(
-                            ({ firebaseID, imageURL, title, mark, tag, slug }) => {
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            ({ firebaseID, imageURL, title, mark, tag, slug }:any) => {
                                 return (
                                     <Cards
                                         key={firebaseID}
