@@ -12,31 +12,37 @@ function Markdown() {
   const [file, setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("coding");
   const [mark, setMark] = useState("");
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const route = useRouter();
 
-// This is from chatGPT
+  // This is from chatGPT
   function makeSlug(title: string) {
     return title
-    .toLowerCase()                   
-    .trim()                          
-    .replace(/[^a-z0-9\s-]/g, '')     
-    .replace(/\s+/g, '-')            
-    .replace(/-+/g, '-'); 
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
   }
-// 
-    const handleSubmit = async () => {
-      try {
-        setLoading(true)
-        const generatedSlug = makeSlug(title); 
-        await saveBlog({ title, file, tag, mark, slug: generatedSlug, createdDate :new Date() }); 
-        setLoading(false)
-        route.push("/dashboard");
-      } catch (error) {
-        toast.error(`Couldn't add blog! ${error}`);
-      }
-    };
-    
+  //
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const generatedSlug = makeSlug(title);
+      await saveBlog({
+        title,
+        file,
+        tag,
+        mark,
+        slug: generatedSlug,
+        createdDate: new Date(),
+      });
+      setLoading(false);
+      route.push("/dashboard");
+    } catch (error) {
+      toast.error(`Couldn't add blog! ${error}`);
+    }
+  };
 
   return (
     <>
@@ -97,10 +103,12 @@ function Markdown() {
           ></textarea>
 
           <div>
-            <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full"
-            disabled={loading ? true : false}
+            <button
+              onClick={handleSubmit}
+              className="btn btn-active btn-neutral w-full"
+              disabled={loading ? true : false}
             >
-              {loading? <Loading/>: <> Add Blog </>}
+              {loading ? <Loading /> : <> Add Blog </>}
             </button>
           </div>
         </div>

@@ -56,7 +56,7 @@ function Profile() {
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
       await updateMyProfile({
         picture,
         name,
@@ -65,7 +65,7 @@ function Profile() {
         DOB,
         bio,
       });
-      setLoading(false)
+      setLoading(false);
       route.push("/");
     } catch (error) {
       toast.error(`Couldn't update ! ${error}`);
@@ -74,13 +74,10 @@ function Profile() {
 
   return (
     <>
-
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
         <FaLongArrowAltLeft /> Go Back to Home{" "}
       </Link>
 
-
-      
       <div className="max-w-screen-lg mx-auto p-4 text-black">
         <div className="flex justify-center mb-6">
           {PFP ? (
@@ -195,18 +192,17 @@ function Profile() {
             </div>
           </div>
           <div className="mt-6">
-          <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full"
-            disabled={loading ? true : false}
+            <button
+              onClick={handleSubmit}
+              className="btn btn-active btn-neutral w-full"
+              disabled={loading ? true : false}
             >
-              {loading? <Loading/>: <> Update Blog </>}
+              {loading ? <Loading /> : <> Update Blog </>}
             </button>
           </div>
         </form>
       </div>
 
-
-
-      
       <Footer />
     </>
   );

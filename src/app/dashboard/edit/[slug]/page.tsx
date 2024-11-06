@@ -11,16 +11,15 @@ import { toast } from "react-toastify";
 
 function Edit({ params }: { params: { slug: string } }) {
   const [title, setTitle] = useState("");
-  const [ file,setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [tag, setTag] = useState("");
   const [mark, setMark] = useState("");
   const [picture, setPicture] = useState("");
   const [firebaseID, setFirebaseID] = useState("");
-  const [data, setData] = useState<CardData | null>(null); 
-  const [loading , setLoading] = useState(false)
+  const [data, setData] = useState<CardData | null>(null);
+  const [loading, setLoading] = useState(false);
   const route = useRouter();
 
-  
   useEffect(() => {
     if (params.slug) {
       const fetchBlog = async () => {
@@ -42,20 +41,18 @@ function Edit({ params }: { params: { slug: string } }) {
     }
   }, [params.slug]);
 
-
   useEffect(() => {
     if (data) {
       setTitle(data.title ?? "");
       setTag(data.tag ?? "");
-      setMark(data.mark ?? "" );
-      setFirebaseID(data.firebaseID ?? "")
-      setPicture(data.imageURL ?? "")
+      setMark(data.mark ?? "");
+      setFirebaseID(data.firebaseID ?? "");
+      setPicture(data.imageURL ?? "");
     }
   }, [data]);
 
-
   const handleSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       await updateBlog({
         title,
@@ -63,9 +60,9 @@ function Edit({ params }: { params: { slug: string } }) {
         mark,
         editedDate: new Date(),
         firebaseID,
-        file
+        file,
       });
-      setLoading(false)
+      setLoading(false);
       route.push("/dashboard");
     } catch (error) {
       toast.error(`Couldn't edit blog! ${error}`);
@@ -74,17 +71,9 @@ function Edit({ params }: { params: { slug: string } }) {
 
   return (
     <>
-
-    <div
-    className="flex justify-center items-center p-5"
-    >
-    <Image
-    src={picture && ""}
-    width={200}
-    height={200}
-    alt="picture"
-    />
-    </div>
+      <div className="flex justify-center items-center p-5">
+        <Image src={picture && ""} width={200} height={200} alt="picture" />
+      </div>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200">
           <div>
@@ -142,10 +131,12 @@ function Edit({ params }: { params: { slug: string } }) {
           ></textarea>
 
           <div>
-            <button onClick={handleSubmit} className="btn btn-active btn-neutral w-full"
-            disabled={loading ? true : false}
+            <button
+              onClick={handleSubmit}
+              className="btn btn-active btn-neutral w-full"
+              disabled={loading ? true : false}
             >
-              {loading? <Loading/>: <> Update Blog </>}
+              {loading ? <Loading /> : <> Update Blog </>}
             </button>
           </div>
         </div>
@@ -155,7 +146,9 @@ function Edit({ params }: { params: { slug: string } }) {
             <span className="text-neutral">Text Output:</span>
           </label>
           <div className="p-2 h-full">
-            <ReactMarkdown className="w-full rounded-lg prose">{mark}</ReactMarkdown>
+            <ReactMarkdown className="w-full rounded-lg prose">
+              {mark}
+            </ReactMarkdown>
           </div>
         </div>
       </div>

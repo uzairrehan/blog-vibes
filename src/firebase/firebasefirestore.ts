@@ -23,7 +23,7 @@ export const storage = getStorage(app);
 export async function saveUser(
   email: string | null | undefined,
   userName: string | null,
-  uid: string,
+  uid: string
 ) {
   const reference = doc(db, "users", uid);
   const data = {
@@ -33,7 +33,6 @@ export async function saveUser(
   };
   await setDoc(reference, data);
   console.log("created");
-  
 }
 
 export async function updateUser(
@@ -51,7 +50,6 @@ export async function updateUser(
   };
   await updateDoc(reference, data);
 }
-
 
 export async function deleteBlog(id: string) {
   await deleteDoc(doc(db, "blogs", id));
@@ -132,10 +130,14 @@ export async function saveBlog({
   }
 }
 
-export async function updateMyProfile( { picture, name, fathername, phonenumber, DOB, bio,
+export async function updateMyProfile({
+  picture,
+  name,
+  fathername,
+  phonenumber,
+  DOB,
+  bio,
 }: updateProfileType) {
-
-
   const uid = auth.currentUser?.uid;
 
   if (!uid) {
@@ -145,7 +147,7 @@ export async function updateMyProfile( { picture, name, fathername, phonenumber,
 
   const collectionRef = doc(db, "users", uid);
 
-  if (!picture){
+  if (!picture) {
     const user = {
       userName: name,
       fathername,
@@ -155,7 +157,7 @@ export async function updateMyProfile( { picture, name, fathername, phonenumber,
     };
     await updateDoc(collectionRef, user);
     toast.success("Updated Successfully!");
-    return
+    return;
   }
 
   try {
@@ -193,8 +195,7 @@ export async function updateMyProfile( { picture, name, fathername, phonenumber,
 
     const imageURL = await uploadImage();
 
-    if(!imageURL) return toast.error("error uploading image")
-
+    if (!imageURL) return toast.error("error uploading image");
 
     const user = {
       imageURL,
@@ -205,7 +206,6 @@ export async function updateMyProfile( { picture, name, fathername, phonenumber,
       bio,
     };
     await updateDoc(collectionRef, user);
-
 
     toast.success("Updated Successfully!");
   } catch (error) {
@@ -219,7 +219,7 @@ export async function updateBlog({
   mark,
   editedDate,
   firebaseID,
-  file
+  file,
 }: blogType) {
   const uid = auth.currentUser?.uid;
 
@@ -236,7 +236,7 @@ export async function updateBlog({
   try {
     const uploadImage = async () => {
       if (!file) {
-        return null; 
+        return null;
       }
       console.log(file);
       const imageRef = ref(

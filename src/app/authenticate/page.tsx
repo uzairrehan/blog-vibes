@@ -10,17 +10,17 @@ function Authenticate() {
   const [page, setPage] = useState("SignUp");
   const route = useRouter();
 
-  useEffect(()=>{
-    checkUser()
+  useEffect(() => {
+    checkUser();
     console.log("hello");
-  },[])
+  }, []);
   function checkUser() {
     if (auth.currentUser) {
-      toast.error("You are already logged in !")
+      toast.error("You are already logged in !");
       console.log("hello");
-      route.push("/")
-    } 
-}
+      route.push("/");
+    }
+  }
   return (
     <>
       <div className="flex justify-center gap-4 py-5 items-center">

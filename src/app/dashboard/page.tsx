@@ -30,7 +30,6 @@ function Dashboard() {
   return (
     <>
       <div className="overflow-x-auto">
-
         <Link href={"/dashboard/add"}>
           <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
             <IoMdAdd />

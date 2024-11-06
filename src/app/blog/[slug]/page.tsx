@@ -25,28 +25,25 @@ import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { LuSave } from "react-icons/lu";
 import { doc, updateDoc } from "firebase/firestore";
 
-
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);
   const [comment, setComment] = useState<string>("");
   const route = useRouter();
   const [commentsArray, setCommentsArray] = useState<DocumentData[]>([]);
 
-  async function saveBlogToUser(
-  ) {
+  async function saveBlogToUser() {
     if (!auth.currentUser?.uid) {
       toast.error("Please Login First to save!");
       route.push("/authenticate");
       return;
     }
-    const uid = auth.currentUser?.uid
+    const uid = auth.currentUser?.uid;
     const reference = doc(db, "users", uid);
     const d = {
-      savedBlogs : arrayUnion(data?.firebaseID)
+      savedBlogs: arrayUnion(data?.firebaseID),
     };
     await updateDoc(reference, d);
     console.log("saved");
-    
   }
 
   useEffect(() => {
@@ -146,11 +143,9 @@ export default function Page({ params }: { params: { slug: string } }) {
             {data.title}
           </h1>
 
-
           <div className="mt-4">
             <div className="mb-2 ">
               <span className="font-semibold prose flex gap-3">
-
                 <BiSolidLike className="size-8" />
 
                 <BiLike className="size-8" />
@@ -159,13 +154,8 @@ export default function Page({ params }: { params: { slug: string } }) {
 
                 <BiDislike className="size-8" />
 
-                <LuSave onClick={()=>
-
-                  saveBlogToUser()
-                  } className="size-8" />
-
+                <LuSave onClick={() => saveBlogToUser()} className="size-8" />
               </span>
-
             </div>
             <div className="mb-2">
               <span className="font-semibold prose  ">Tag : </span>

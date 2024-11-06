@@ -3,7 +3,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import Loading from "./loading";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { saveUser, updateUser } from "@/firebase/firebasefirestore";
 import { toast } from "react-toastify";
 import { auth, provider } from "@/firebase/firebaseconfig";
@@ -40,8 +45,6 @@ function SignUp() {
       });
   }
 
-
-
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     setLoading(true);
@@ -53,16 +56,18 @@ function SignUp() {
     route.push("/");
   }
 
-
-
-
   async function googleSign() {
     await signInWithPopup(auth, provider)
       .then((result) => {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         const user = result.user;
-        updateUser(auth.currentUser?.email, user.displayName, user.uid, user.photoURL as string);
+        updateUser(
+          auth.currentUser?.email,
+          user.displayName,
+          user.uid,
+          user.photoURL as string
+        );
         console.log(token, user);
         toast.success("Signed in with google !");
       })
@@ -75,15 +80,6 @@ function SignUp() {
         toast.error("Could'nt sign-in", error.message);
       });
   }
-  
-
-
-
-
-
-
-
-
 
   async function googlee() {
     await googleSign();

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import AllCards from "@/components/allCards";
 import { db } from "@/firebase/firebasefirestore";
 import { CardData } from "@/types/types";
@@ -18,7 +18,9 @@ export default function Home() {
     }
     getData();
   }, []);
-   return(<>
-    <AllCards allCards={allCards} />
-   </>) 
+  return (
+    <>
+      <AllCards allCards={allCards} />
+    </>
+  );
 }

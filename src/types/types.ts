@@ -13,7 +13,7 @@ export type CardData = {
   slug?: string;
   heading?: string;
   text?: string;
-  createdDate?:Date;
+  createdDate?: Date;
 };
 
 export type userSavingType = {
@@ -29,20 +29,20 @@ export type blogType = {
   mark?: string;
   slug?: string;
   createdDate?: Date;
-  editedDate?: Date
-  firebaseID?:string
-  imageURL?:string
-  uid?:string
+  editedDate?: Date;
+  firebaseID?: string;
+  imageURL?: string;
+  uid?: string;
 };
 
 export type updateProfileType = {
-  picture:File | null | undefined;
-  name :string;
-  fathername:string;
-  phonenumber:string;
-  DOB:string;
-  bio:string;
-}; 
+  picture: File | null | undefined;
+  name: string;
+  fathername: string;
+  phonenumber: string;
+  DOB: string;
+  bio: string;
+};
 export type CompanyLayoutTypes = {
   children: ReactNode;
 };

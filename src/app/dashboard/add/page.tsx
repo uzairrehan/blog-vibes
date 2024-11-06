@@ -8,7 +8,6 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 function Add() {
   return (
     <>
-
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
         <FaLongArrowAltLeft /> Go Back to Home
       </Link>{" "}
