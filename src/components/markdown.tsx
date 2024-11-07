@@ -55,8 +55,10 @@ function Markdown() {
         console.log(file);
         const imageRef = ref(
           storage,
-          `uploads/images/${Date.now()}-${file.name}`
+          `uploads/images/${crypto.randomUUID()}-${file.name}`
         );
+        console.log(imageRef);
+        
         const uploadTask = uploadBytesResumable(imageRef, file);
 
         return new Promise((resolve, reject) => {
