@@ -19,3 +19,4 @@ loading par page ki opacity set karni he
 set footer on bottom
 remove all any types and add specific types
 add firebase rules
+add all new blogs

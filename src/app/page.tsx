@@ -25,7 +25,9 @@ export default function Home() {
  
   return (
     <>
+      
       <AllCards allCards={allCards} />
+
     </>
   );
 }
