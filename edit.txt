@@ -6,3 +6,7 @@ commenting
 comment add date
 add like and dislike option
 realtime listener on comments and likes
+more features in comments 
+like 
+dislike  
+save = another page   
