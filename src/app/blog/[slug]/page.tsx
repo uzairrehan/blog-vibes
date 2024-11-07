@@ -42,7 +42,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       savedBlogs: arrayUnion(data?.firebaseID),
     };
     await updateDoc(reference, d);
-    console.log("saved");
   }
 
   useEffect(() => {
@@ -155,9 +154,9 @@ export default function Page({ params }: { params: { slug: string } }) {
               </span>
             </div>
             <div className="mb-2">
-              <span className="font-semibold prose  ">Tag : </span>
+              <span className="font-semibold prose  ">category : </span>
               <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-green-100 text-neutral rounded">
-                {data.tag}
+                {data.category}
               </span>
             </div>
 

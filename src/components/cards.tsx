@@ -4,7 +4,7 @@ import { FaLongArrowAltRight } from "react-icons/fa";
 import { CardData } from "@/types/types";
 import Image from "next/image";
 
-function Cards({ imageURL, heading, text, tag, slug }: CardData) {
+function Cards({ imageURL, heading, text, category, slug }: CardData) {
   const route = useRouter();
 
   return (
@@ -23,7 +23,7 @@ function Cards({ imageURL, heading, text, tag, slug }: CardData) {
       <div className="p-4">
         <h2 className="text-xl font-semibold mb-2 line-clamp-1 ">{heading}</h2>
         <div className="flex flex-wrap gap-2 mb-3">
-          <div className="badge badge-neutral badge-outline">{tag}</div>
+          <div className="badge badge-neutral badge-outline">{category}</div>
         </div>
         <div className="line-clamp-4 mb-4">
           {<ReactMarkdown>{text}</ReactMarkdown>}

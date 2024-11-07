@@ -2,17 +2,31 @@
 import AllCards from "@/components/allCards";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function Saved() {
   const [allCards, setAllCards] = useState<CardData[]>([]);
   const [allUIDS, setAllUIDS] = useState([]);
-
+  // getting data
   useEffect(() => {
     getData();
   }, []);
+  // allUIDS is depedency so it will run only when the "getData()" function will run and put alluids in state
+  useEffect(() => {
+    if (allUIDS.length > 0) {
+      getSavedBlogs();
+    }
+  }, [allUIDS]);
 
+  // for getting the currentuser saved blogs array
   async function getData() {
     const docRef = doc(db, "users", auth.currentUser?.uid as string);
     const docSnap = await getDoc(docRef);
@@ -24,15 +38,8 @@ export default function Saved() {
     }
   }
 
-  useEffect(() => {
-    if (allUIDS.length > 0) {
-      getSavedBlogs();
-    }
-  }, [allUIDS]);
-
+  // for fetching blogs from firebaseID that is present in "allUIDS"
   async function getSavedBlogs() {
-    console.log("hello im running");
-
     const dataArray: CardData[] = [];
     for (let i = 0; i < allUIDS.length; i++) {
       const q = query(
@@ -49,11 +56,12 @@ export default function Saved() {
 
   return (
     <>
-      <h1 className="p-5 size-8">Saved Jobs</h1>
-      {/* {allCards.length >=0? */}
-      <AllCards allCards={allCards}/>
-    {/* : <h1> no saved blogs</h1>   */}
-    {/* } */}
+      <h1 className="p-5 text-neutral m-5 text-4xl text-center">Saved Blogs</h1>
+      {allCards.length >= 0 ? (
+        <AllCards allCards={allCards} />
+      ) : (
+        <h1>no saved blogs</h1>
+      )}
     </>
   );
 }

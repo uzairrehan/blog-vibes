@@ -86,7 +86,7 @@ function Navbar() {
             alt="logo"
             height={25}
             width={70}
-            className="rounded-lg"
+            className="rounded-lg w-auto h-auto"
           />
         </a>
       </div>

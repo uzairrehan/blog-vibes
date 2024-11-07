@@ -12,15 +12,16 @@ function Authenticate() {
 
   useEffect(() => {
     checkUser();
-    console.log("hello");
   }, []);
+
+
   function checkUser() {
     if (auth.currentUser) {
       toast.error("You are already logged in !");
-      console.log("hello");
       route.push("/");
     }
   }
+
   return (
     <>
       <div className="flex justify-center gap-4 py-5 items-center">

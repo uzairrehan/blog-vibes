@@ -12,7 +12,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 function Markdown() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [tag, setTag] = useState("coding");
+  const [category, setcategory] = useState("coding");
   const [mark, setMark] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
@@ -86,7 +86,7 @@ function Markdown() {
 
       const newBlog = {
         title,
-        tag,
+        category,
         mark,
         slug: makeSlug(title),
         createdDate: new Date(),
@@ -107,6 +107,8 @@ function Markdown() {
       toast.error("Couldn't add blog!");
     }
   }
+
+  
   return (
     <>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
@@ -140,13 +142,13 @@ function Markdown() {
             />
           </div>
 
-          <label htmlFor="tag" className="block text-sm font-bold mb-2">
-            <span className="text-neutral">Tag:</span>
+          <label htmlFor="category" className="block text-sm font-bold mb-2">
+            <span className="text-neutral">category:</span>
           </label>
           <select
-            id="tag"
-            value={tag}
-            onChange={(e) => setTag(e.target.value)}
+            id="category"
+            value={category}
+            onChange={(e) => setcategory(e.target.value)}
             className="w-full input input-bordered input-primary rounded-lg bg-white mb-4 text-black"
           >
             <option value="Entertainment">Entertainment</option>
@@ -177,7 +179,7 @@ function Markdown() {
         </div>
 
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200 text-black max-h-96 overflow-y-scroll">
-          <label htmlFor="tag" className="block text-sm font-bold mb-2">
+          <label htmlFor="category" className="block text-sm font-bold mb-2">
             <span className="text-neutral">Text Output:</span>
           </label>
           <div className="p-2 h-full">

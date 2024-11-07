@@ -50,7 +50,7 @@ function Dashboard() {
           <thead>
             <tr>
               <th>Title</th>
-              <th>Tag</th>
+              <th>category</th>
               <th>Delete</th>
               <th>Edit</th>
             </tr>
@@ -59,7 +59,7 @@ function Dashboard() {
             {!cards ? (
               <Loading />
             ) : (
-              cards.map(({ imageURL, title, tag, slug, firebaseID }) => (
+              cards.map(({ imageURL, title, category, slug, firebaseID }) => (
                 <tr key={title}>
                   <th>
                     <div
@@ -87,7 +87,7 @@ function Dashboard() {
                     </div>
                   </th>
                   <td>
-                    <span className="badge badge-ghost badge-sm">{tag}</span>
+                    <span className="badge badge-ghost badge-sm">{category}</span>
                   </td>
                   <th>
                     <button

@@ -1,7 +1,9 @@
+todooss = 
+
+
 edit
 delete
 edit time
-only admin can do this
 commenting 
 comment add date
 add like and dislike option
@@ -10,3 +12,10 @@ more features in comments
 like 
 dislike  
 save = another page   
+do error handling
+verify page
+loading component acha sa banana he 
+loading par page ki opacity set karni he
+set footer on bottom
+remove all any types and add specific types
+add firebase rules
