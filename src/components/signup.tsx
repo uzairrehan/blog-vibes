@@ -102,6 +102,8 @@ function SignUp() {
           user.photoURL as string
         );
         console.log(token, user);
+    route.push("/");
+
         toast.success("Signed in with google !");
       })
       .catch((error) => {
@@ -114,10 +116,11 @@ function SignUp() {
       });
   }
 
-  async function googlee() {
-    await googleSign();
-    route.push("/");
-  }
+
+
+
+
+
   return (
     <>
       <div className="flex  flex-col justify-center px-6  lg:px-8  ">
@@ -209,7 +212,7 @@ function SignUp() {
             <button
               type="submit"
               className="btn-error btn btn-wide flex items-center justify-center space-x-2 sm:mx-auto sm:w-full sm:max-w-sm"
-              onClick={googlee}
+              onClick={googleSign}
             >
               <FaGoogle />
               <span>Google Sign Up</span>

@@ -15,7 +15,7 @@ function SignIn() {
 
   const route = useRouter();
 
-  function loginWithEmailPassword(email: string, password: string) {
+  function loginWithEmailPassword() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const { email, uid } = userCredential.user;
@@ -47,7 +47,7 @@ function SignIn() {
   function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     setLoading(true);
-    loginWithEmailPassword(email, password);
+    loginWithEmailPassword();
     setEmail("");
     setPassword("");
     setLoading(false);
@@ -57,6 +57,7 @@ function SignIn() {
   function handlePasswordReset() {
     if (email) {
       passwordReset(email);
+      toast.success("Email sent !")
     } else {
       toast.error("Please Add Email");
     }

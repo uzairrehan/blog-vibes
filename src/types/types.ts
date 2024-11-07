@@ -9,7 +9,7 @@ export type CardData = {
   imageURL?: string;
   title?: string;
   mark?: string;
-  tag?: string;
+  category?: string;
   slug?: string;
   heading?: string;
   text?: string;
@@ -25,7 +25,7 @@ export type userSavingType = {
 export type blogType = {
   title?: string;
   file?: File | null | undefined;
-  tag?: string;
+  category?: string;
   mark?: string;
   slug?: string;
   createdDate?: Date;
@@ -46,3 +46,8 @@ export type updateProfileType = {
 export type CompanyLayoutTypes = {
   children: ReactNode;
 };
+
+
+export type AllCardsProps = {
+  allCards: blogType[];
+}
