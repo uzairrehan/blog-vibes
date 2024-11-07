@@ -1,9 +1,14 @@
 "use client";
 
 import { CardData } from "@/types/types";
-import { collection, query, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { deleteBlog } from "@/firebase/firebasefirestore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/loading";
@@ -27,6 +32,9 @@ function Dashboard() {
     });
     return unsubscribe;
   }, []);
+  async function deleteBlog(id: string) {
+    await deleteDoc(doc(db, "blogs", id));
+  }
 
   return (
     <>

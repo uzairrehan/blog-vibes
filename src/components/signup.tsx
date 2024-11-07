@@ -2,23 +2,58 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
-import { saveUser, updateUser } from "@/firebase/firebasefirestore";
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { toast } from "react-toastify";
-import { auth, provider } from "@/firebase/firebaseconfig";
+import { auth, db, provider } from "@/firebase/firebaseconfig";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaKey } from "react-icons/fa";
 import Loading from "./loading";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-
   const route = useRouter();
 
+  async function saveUser(
+    email: string | null | undefined,
+    userName: string | null,
+    uid: string
+  ) {
+    const reference = doc(db, "users", uid);
+    const data = {
+      email: email,
+      userName: userName,
+      uid: uid,
+    };
+    await setDoc(reference, data);
+    console.log("created");
+  }
+
+
+  async function updateUser(
+    email: string | null | undefined,
+    userName: string | null,
+    uid: string,
+    photoURL?: string
+  ) {
+    const reference = doc(db, "users", uid);
+    const data = {
+      email: email,
+      userName: userName,
+      uid: uid,
+      imageURL: photoURL,
+    };
+    await updateDoc(reference, data);
+  }
   function signupWithEmailPassword(
     email: string,
     password: string,

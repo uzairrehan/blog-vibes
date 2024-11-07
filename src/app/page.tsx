@@ -1,15 +1,16 @@
 "use client";
 import AllCards from "@/components/allCards";
 import { db } from "@/firebase/firebaseconfig";
-import { useAppSelector } from "@/store/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/lib/hooks";
+import { setUser } from "@/store/lib/slices/userSlice";
 import { CardData } from "@/types/types";
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-// import { setUser } from "@/store/lib/slices/userSlice";
 
 export default function Home() {
   const [allCards, setAllCards] = useState<CardData[]>([]);
-  const user =  useAppSelector((state) => state.user.user)
+  const user = useAppSelector((state) => state.user.user);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     async function getData() {
       const querySnapshot = await getDocs(collection(db, "blogs"));
@@ -22,18 +23,21 @@ export default function Home() {
     getData();
   }, []);
 
-  // const userrr = {
-  //   name :"uzair",
-  //   fathername:"rehan"
-  // }
+  const userrr = {
+    userName: "uzair",
+    fathername: "rehan",
+    uid: "65355524546536",
+    email: "uzairshah200684@gmail.com",
+  };
 
   function saveUser() {
-    // set
-    console.log("user => " , user );
+    dispatch(setUser(userrr));
+    console.log("user => ", user);
   }
+  console.log(user);
   return (
     <>
-    <button onClick={saveUser} >save</button>
+      <button onClick={saveUser}>save</button>
       <AllCards allCards={allCards} />
     </>
   );

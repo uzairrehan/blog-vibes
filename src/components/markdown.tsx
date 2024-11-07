@@ -1,11 +1,13 @@
 "use client";
 
-import { saveBlog } from "@/firebase/firebasefirestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "react-toastify";
 import Loading from "./loading";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
+import { auth, db, storage } from "@/firebase/firebaseconfig";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 function Markdown() {
   const [title, setTitle] = useState("");
@@ -28,15 +30,7 @@ function Markdown() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const generatedSlug = makeSlug(title);
-      await saveBlog({
-        title,
-        file,
-        tag,
-        mark,
-        slug: generatedSlug,
-        createdDate: new Date(),
-      });
+      await saveBlog();
       setLoading(false);
       route.push("/dashboard");
     } catch (error) {
@@ -44,6 +38,73 @@ function Markdown() {
     }
   };
 
+  async function saveBlog() {
+    const uid = auth.currentUser?.uid;
+    if (!uid) {
+      toast.error("User is not authenticated!");
+      return;
+    }
+
+    const collectionRef = collection(db, "blogs");
+
+    try {
+      const uploadImage = async () => {
+        if (!file) {
+          return;
+        }
+        console.log(file);
+        const imageRef = ref(
+          storage,
+          `uploads/images/${Date.now()}-${file.name}`
+        );
+        const uploadTask = uploadBytesResumable(imageRef, file);
+
+        return new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log("Upload is " + progress + "% done");
+            },
+            (error) => {
+              console.error("Upload error: ", error);
+              reject(error);
+            },
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              console.log("File available at", downloadURL);
+              resolve(downloadURL);
+            }
+          );
+        });
+      };
+
+      const imageURL = await uploadImage();
+
+      const newBlog = {
+        title,
+        tag,
+        mark,
+        slug: makeSlug(title),
+        createdDate: new Date(),
+        uid,
+        imageURL,
+      };
+
+      const docRef = await addDoc(collectionRef, newBlog);
+
+      const docRefToUpdate = doc(db, "blogs", docRef.id);
+      await updateDoc(docRefToUpdate, {
+        firebaseID: docRef.id,
+      });
+
+      toast.success("Blog Added Successfully!");
+    } catch (error) {
+      console.error("Error adding blog: ", error);
+      toast.error("Couldn't add blog!");
+    }
+  }
   return (
     <>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">

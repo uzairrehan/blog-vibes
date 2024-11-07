@@ -3,16 +3,23 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { app, auth, db } from "@/firebase/firebaseconfig";
+import { app, auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import Footer from "@/components/footer";
 import { toast } from "react-toastify";
-import { updateMyProfile } from "@/firebase/firebasefirestore";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import Image from "next/image";
 import Loading from "@/components/loading";
-
+import {} from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 function Profile() {
   const [picture, setPicture] = useState<File | null>(null);
   const [name, setName] = useState("");
@@ -57,20 +64,90 @@ function Profile() {
     e.preventDefault();
     try {
       setLoading(true);
-      await updateMyProfile({
-        picture,
-        name,
-        fathername,
-        phonenumber,
-        DOB,
-        bio,
-      });
+      await updateMyProfile();
       setLoading(false);
       route.push("/");
     } catch (error) {
       toast.error(`Couldn't update ! ${error}`);
     }
   };
+
+  async function updateMyProfile() {
+    const uid = auth.currentUser?.uid;
+
+    if (!uid) {
+      toast.error("User is not authenticated!");
+      return;
+    }
+
+    const collectionRef = doc(db, "users", uid);
+
+    if (!picture) {
+      const user = {
+        userName: name,
+        fathername,
+        phonenumber,
+        DOB,
+        bio,
+      };
+      await updateDoc(collectionRef, user);
+      toast.success("Updated Successfully!");
+      return;
+    }
+
+    try {
+      const uploadImage = async () => {
+        if (!picture) {
+          return;
+        }
+        console.log(picture);
+        const imageRef = ref(
+          storage,
+          `uploads/images/${crypto.randomUUID()}-${picture.name}`
+        );
+        const uploadTask = uploadBytesResumable(imageRef, picture);
+
+        return new Promise((resolve, reject) => {
+          uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log("Upload is " + progress + "% done");
+            },
+            (error) => {
+              console.error("Upload error: ", error);
+              reject(error);
+            },
+            async () => {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              console.log("File available at", downloadURL);
+              resolve(downloadURL);
+            }
+          );
+        });
+      };
+
+      const imageURL = await uploadImage();
+
+      if (!imageURL) return toast.error("error uploading image");
+
+      const user = {
+        imageURL,
+        userName: name,
+        fathername,
+        phonenumber,
+        DOB,
+        bio,
+      };
+      await updateDoc(collectionRef, user);
+
+      toast.success("Updated Successfully!");
+    } catch (error) {
+      console.error("Error Updating : ", error);
+      toast.error(`Error Updating! ${error}`);
+    }
+  }
 
   return (
     <>
@@ -197,7 +274,7 @@ function Profile() {
               className="btn btn-active btn-neutral w-full"
               disabled={loading ? true : false}
             >
-              {loading ? <Loading /> : <> Update Blog </>}
+              {loading ? <Loading /> : <> Update Profile </>}
             </button>
           </div>
         </form>
