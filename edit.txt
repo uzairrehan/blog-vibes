@@ -22,3 +22,5 @@ add firebase rules
 add all new blogs
 configure redux toolkit with localstorage for user
 add comments in all code
+Save likes in array type and in array save users uid 
+And then get it by .length
