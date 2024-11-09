@@ -1,12 +1,12 @@
-import { Roboto } from '@next/font/google';
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-import './globals.css';
-import Navbar from '@/components/navbar';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import StoreProvider from './StoreProvider';
-import Footer from '@/components/footer';
+import { Roboto } from "@next/font/google";
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+import Navbar from "@/components/navbar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import StoreProvider from "./StoreProvider";
+import Footer from "@/components/footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,9 +20,9 @@ const geistMono = localFont({
 });
 
 const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['400', '700'], 
-  variable: '--font-roboto',
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
@@ -38,16 +38,14 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="mytheme mytheme2" className="h-full">
       <body
-        className={ `${roboto.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-full`}
+        className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         data-theme="mytheme mytheme2"
       >
-
-        {/* this site is under construction */}
         <StoreProvider>
-        <Navbar />
-        {children}
-        <ToastContainer autoClose={2000} />
-        <Footer/>
+          <Navbar />
+          {children}
+          <ToastContainer autoClose={2000} />
+          <Footer />
         </StoreProvider>
       </body>
     </html>

@@ -2,7 +2,10 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth } from "@/firebase/firebaseconfig";
 import { FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -18,9 +21,14 @@ function SignIn() {
   function loginWithEmailPassword() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const { email, uid } = userCredential.user;
+        const { email, uid, emailVerified } = userCredential.user;
         console.log(email, uid, "user LOGGED IN successfully.", userCredential);
         toast.success(`Signed in with email : ${email}`);
+        if (emailVerified) {
+          route.push("/");
+        } else {
+          route.push("/authenticate/verify");
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -51,13 +59,12 @@ function SignIn() {
     setEmail("");
     setPassword("");
     setLoading(false);
-    route.push("/authenticate/verify");
   }
 
   function handlePasswordReset() {
     if (email) {
       passwordReset(email);
-      toast.success("Email sent !")
+      toast.success("Email sent !");
     } else {
       toast.error("Please Add Email");
     }

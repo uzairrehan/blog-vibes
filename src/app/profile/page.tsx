@@ -7,18 +7,13 @@ import { app, auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
 import Image from "next/image";
 import Loading from "@/components/loading";
-import {} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+
+
+
 function Profile() {
   const [picture, setPicture] = useState<File | null>(null);
   const [name, setName] = useState("");
@@ -28,10 +23,9 @@ function Profile() {
   const [bio, setBio] = useState("");
   const [PFP, setPFP] = useState("");
   const [loading, setLoading] = useState(false);
-  const route = useRouter();  
+  const route = useRouter();
 
-  
-  // fetching all users details and setting into state 
+  // fetching all users details and setting into state
   async function fetchUserDetails() {
     const uid = auth.currentUser?.uid;
     const q = query(collection(db, "users"), where("uid", "==", uid));
@@ -48,6 +42,7 @@ function Profile() {
     });
   }
 
+
   useEffect(() => {
     const auth = getAuth(app);
     onAuthStateChanged(auth, (loggedInUser) => {
@@ -60,17 +55,22 @@ function Profile() {
     });
   }, []);
 
+
+
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
       setLoading(true);
       await updateMyProfile();
       setLoading(false);
-      route.push("/");
+      await fetchUserDetails();
     } catch (error) {
       toast.error(`Couldn't update ! ${error}`);
     }
   };
+
+
+
 
   async function updateMyProfile() {
     const uid = auth.currentUser?.uid;
@@ -149,6 +149,11 @@ function Profile() {
     }
   }
 
+
+
+
+
+  
   return (
     <>
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
@@ -279,7 +284,6 @@ function Profile() {
           </div>
         </form>
       </div>
-
     </>
   );
 }
