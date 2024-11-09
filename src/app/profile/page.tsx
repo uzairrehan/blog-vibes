@@ -29,9 +29,10 @@ function Profile() {
   const [bio, setBio] = useState("");
   const [PFP, setPFP] = useState("");
   const [loading, setLoading] = useState(false);
+  const route = useRouter();  
 
-  const route = useRouter();
-
+  
+  // fetching all users details and setting into state 
   async function fetchUserDetails() {
     const uid = auth.currentUser?.uid;
     const q = query(collection(db, "users"), where("uid", "==", uid));

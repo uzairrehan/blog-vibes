@@ -173,7 +173,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           </div>
 
           <div className="prose prose-lg text-gray-800">
-            <ReactMarkdown className="prose">{data.mark}</ReactMarkdown>
+            <ReactMarkdown>{data.mark}</ReactMarkdown>
           </div>
 
           <label className="comment">
