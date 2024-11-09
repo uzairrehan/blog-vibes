@@ -5,6 +5,7 @@ import { FaGoogle } from "react-icons/fa";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  // sendEmailVerification,
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
@@ -37,7 +38,6 @@ function SignUp() {
     await setDoc(reference, data);
     console.log("created");
   }
-
 
   async function updateUser(
     email: string | null | undefined,
@@ -86,7 +86,7 @@ function SignUp() {
     setName("");
     setPassword("");
     setLoading(false);
-    route.push("/");
+    route.push("/authenticate/verify");
   }
 
   async function googleSign() {
@@ -102,7 +102,7 @@ function SignUp() {
           user.photoURL as string
         );
         console.log(token, user);
-    route.push("/");
+        route.push("/");
 
         toast.success("Signed in with google !");
       })
@@ -115,11 +115,6 @@ function SignUp() {
         toast.error("Could'nt sign-in", error.message);
       });
   }
-
-
-
-
-
 
   return (
     <>

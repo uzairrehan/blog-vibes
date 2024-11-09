@@ -51,7 +51,7 @@ function SignIn() {
     setEmail("");
     setPassword("");
     setLoading(false);
-    route.push("/");
+    route.push("/authenticate/verify");
   }
 
   function handlePasswordReset() {
