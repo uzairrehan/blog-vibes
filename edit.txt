@@ -7,7 +7,6 @@ more features in comments
 save = another page   
 set footer on bottom
 do error handling
-verify page
 loading component acha sa banana he 
 loading par page ki opacity set karni he
 remove all any types and add specific types
@@ -27,3 +26,4 @@ edit
 delete
 edit time
 add all new blogs
+verify page

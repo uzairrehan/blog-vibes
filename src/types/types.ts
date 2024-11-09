@@ -43,7 +43,7 @@ export type updateProfileType = {
   DOB: string;
   bio: string;
 };
-export type CompanyLayoutTypes = {
+export type AdminLayoutTypes = {
   children: ReactNode;
 };
 
