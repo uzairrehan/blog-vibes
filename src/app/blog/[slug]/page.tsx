@@ -184,14 +184,17 @@ export default function Page({ params }: { params: { slug: string } }) {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             ></textarea>
-            <div className="label">
-              <button
-                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-secondary"
-                onClick={handleAddComment}
-              >
-                Add Comment
-              </button>
-            </div>
+
+            {comment.length > 0 && (
+              <div className="label">
+                <button
+                  className="btn btn-xs sm:btn-sm md:btn-md  btn-secondary"
+                  onClick={handleAddComment}
+                >
+                  Add Comment
+                </button>
+              </div>
+            )}
           </label>
 
           {commentsArray &&
