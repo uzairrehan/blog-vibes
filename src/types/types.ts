@@ -51,3 +51,17 @@ export type AdminLayoutTypes = {
 export type AllCardsProps = {
   allCards: blogType[];
 }
+
+
+export type UserState = {
+  email: string;
+  uid: string;
+  DOB?: string;
+  bio?: string;
+  fathername?: string;
+  imageURL?: string;
+  phonenumber?: string;
+  userName?: string;
+  role?: string;
+  saved?:string[]
+}

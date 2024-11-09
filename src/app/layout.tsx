@@ -6,8 +6,6 @@ import Navbar from "@/components/navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "@/components/footer";
-import { Provider } from "react-redux";
-import { store } from "@/store/store";
 
 
 const geistSans = localFont({
@@ -43,12 +41,10 @@ export default function RootLayout({
         className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         data-theme="mytheme mytheme2"
       >
-        <Provider store={store}>
           <Navbar />
           {children}
           <ToastContainer autoClose={2000} />
           <Footer />
-        </Provider>
       </body>
     </html>
   );
