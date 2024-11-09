@@ -1,12 +1,14 @@
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import StoreProvider from "./StoreProvider";
 import Footer from "@/components/footer";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -41,12 +43,12 @@ export default function RootLayout({
         className={`${roboto.variable} ${geistSans.variable} ${geistMono.variable} antialiased h-full`}
         data-theme="mytheme mytheme2"
       >
-        <StoreProvider>
+        <Provider store={store}>
           <Navbar />
           {children}
           <ToastContainer autoClose={2000} />
           <Footer />
-        </StoreProvider>
+        </Provider>
       </body>
     </html>
   );

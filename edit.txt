@@ -8,7 +8,6 @@ save = another page
 set footer on bottom
 do error handling
 loading component acha sa banana he 
-loading par page ki opacity set karni he
 remove all any types and add specific types
 add firebase rules
 configure redux toolkit with localstorage for user

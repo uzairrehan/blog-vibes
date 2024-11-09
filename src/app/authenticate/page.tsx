@@ -9,18 +9,18 @@ import { auth } from "@/firebase/firebaseconfig";
 function Authenticate() {
   const [page, setPage] = useState("SignUp");
   const route = useRouter();
+  
+    function checkUser() {
+      if (auth.currentUser) {
+        toast.error("You are already logged in !");
+        route.push("/");
+      }
+    }
 
   useEffect(() => {
     checkUser();
   }, []);
 
-
-  function checkUser() {
-    if (auth.currentUser) {
-      toast.error("You are already logged in !");
-      route.push("/");
-    }
-  }
 
   return (
     <>
