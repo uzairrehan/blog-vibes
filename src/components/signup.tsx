@@ -54,6 +54,7 @@ function SignUp() {
     };
     await updateDoc(reference, data);
   }
+  
   function signupWithEmailPassword(
     email: string,
     password: string,
