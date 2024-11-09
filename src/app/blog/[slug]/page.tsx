@@ -1,6 +1,5 @@
 "use client";
 
-import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import {
   addDoc,
@@ -213,7 +212,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           <Loading />
         </div>
       )}
-      <Footer />
     </>
   );
 }

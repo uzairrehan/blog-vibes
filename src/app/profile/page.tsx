@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { app, auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
-import Footer from "@/components/footer";
 import { toast } from "react-toastify";
 import {
   collection,
@@ -281,7 +280,6 @@ function Profile() {
         </form>
       </div>
 
-      <Footer />
     </>
   );
 }

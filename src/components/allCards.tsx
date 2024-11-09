@@ -1,7 +1,6 @@
 "use client";
 
 import Cards from "@/components/cards";
-import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { AllCardsProps } from "@/types/types";
 import { useState } from "react";
@@ -64,7 +63,6 @@ export default function AllCards({ allCards }: AllCardsProps) {
         </div>
       )}
 
-      <Footer />
     </>
   );
 }
