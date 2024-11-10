@@ -4,7 +4,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/firebase/firebaseconfig";
-import { FaKey } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Loading from "./loading";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -15,7 +15,9 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [toggle ,setToggle] = useState(true)
   const setUserFromStore = useUserStore((state) => state.saveUser);
+
 
   const route = useRouter();
 
@@ -134,13 +136,25 @@ function SignIn() {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={ toggle ?
+                    "password":"text"
+                  }
+
                   required
                   className="grow"
                   placeholder="••••••••"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 />
+                <button
+                  type="button"
+                onClick={()=>{
+                  setToggle(!toggle)
+                }}>
+                {
+                  toggle ? <FaEyeSlash /> :  <FaEye />
+                }
+                </button>
               </label>
             </div>
             <div className="center flex justify-center items-center pt-4 ">

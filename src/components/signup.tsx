@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FaGoogle } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db, provider } from "@/firebase/firebaseconfig";
@@ -19,6 +19,8 @@ function SignUp() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
+  const [toggle ,setToggle] = useState(true)
+
   const setUserFromStore = useUserStore((state) => state.saveUser);
 
   const fetchUserDetails = () => {
@@ -183,13 +185,24 @@ function SignUp() {
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={ toggle ?
+                    "password":"text"
+                  }
                   required
                   className="grow"
                   placeholder="••••••••"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 />
+              <button
+                  type="button"
+                onClick={()=>{
+                  setToggle(!toggle)
+                }}>
+                {
+                  toggle ? <FaEyeSlash /> :  <FaEye />
+                }
+                </button>
               </label>
             </div>
             <div className="center flex justify-center items-center pt-4">
