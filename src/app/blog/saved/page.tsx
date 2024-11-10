@@ -2,14 +2,7 @@
 import AllCards from "@/components/allCards";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function Saved() {

@@ -6,10 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import {
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { blogType } from "@/types/types";
 import { toast } from "react-toastify";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -40,7 +37,7 @@ function Edit({ params }: { params: { slug: string } }) {
             setData(doc.data() as CardData);
           });
         } catch (error) {
-          // console.error(error);
+          console.error(error);
         }
       };
 
@@ -119,15 +116,13 @@ function Edit({ params }: { params: { slug: string } }) {
             (snapshot) => {
               const progress =
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              // console.log("Upload is " + progress + "% done");
+              console.log("Upload is " + progress + "% done");
             },
             (error) => {
-              // console.error("Upload error: ", error);
               reject(error);
             },
             async () => {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              // console.log("File available at", downloadURL);
               resolve(downloadURL);
             }
           );
@@ -135,7 +130,6 @@ function Edit({ params }: { params: { slug: string } }) {
       };
   
       const imageURL = await uploadImage();
-      // console.log(imageURL);
   
       const collectionRef = doc(db, "blogs", firebaseID);
   
@@ -156,8 +150,7 @@ function Edit({ params }: { params: { slug: string } }) {
   
       toast.success("Blog edited successfully!");
     } catch (error) {
-      // console.error("Error updating blog:", error);
-      toast.error("Failed to edit the blog.");
+      toast.error(`Failed to edit the blog. ${error} `);
     }
   }
   

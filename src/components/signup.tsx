@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db, provider } from "@/firebase/firebaseconfig";
 import { FaUserAlt } from "react-icons/fa";
@@ -13,7 +13,7 @@ import { collection, doc, getDocs, query, setDoc, updateDoc, where } from "fireb
 import useUserStore from "@/store/userStore";
 import { UserState } from "@/types/types";
 
-function SignUp() { 
+function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -30,8 +30,6 @@ function SignUp() {
 
         if (data) {
           setUserFromStore(data);
-        } else {
-          // console.warn("User data not found or invalid.");
         }
       });
     });
@@ -49,7 +47,6 @@ function SignUp() {
       uid: uid,
     };
     await setDoc(reference, data);
-    // console.log("created");
   }
 
   async function updateUser(
@@ -76,20 +73,15 @@ function SignUp() {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const { email, uid } = userCredential.user;
-        // console.log(email, uid, userName, "user created successfully.");
         updateProfile(userCredential.user, {
           displayName: userName,
         });
-        // console.log(userCredential);
         saveUser(email, userName, uid).then(() => {
           fetchUserDetails();
         });
         toast.success(`Signed Up with email : ${email}`);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // console.error(errorMessage, errorCode);
         toast.error("Could'nt sign-up", error.message);
       });
   }
@@ -108,8 +100,6 @@ function SignUp() {
   async function googleSign() {
     await signInWithPopup(auth, provider)
       .then((result) => {
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential?.accessToken;
         const user = result.user;
         updateUser(
           auth.currentUser?.email,
@@ -117,17 +107,11 @@ function SignUp() {
           user.uid,
           user.photoURL as string
         );
-        // console.log(token, user);
         fetchUserDetails();
         route.push("/");
         toast.success("Signed in with google !");
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // console.log(errorCode, errorMessage, email, credential);
         toast.error("Could'nt sign-in", error.message);
       });
   }

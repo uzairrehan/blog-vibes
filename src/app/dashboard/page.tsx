@@ -1,13 +1,7 @@
 "use client";
 
 import { CardData } from "@/types/types";
-import {
-  collection,
-  query,
-  onSnapshot,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -24,10 +18,8 @@ function Dashboard() {
   useEffect(() => {
     const q = query(collection(db, "blogs"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      // console.log("snapshot", snapshot);
       const newCards: CardData[] = [];
       snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
-      // console.log(newCards);
       setCards(newCards);
     });
     return unsubscribe;

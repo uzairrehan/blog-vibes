@@ -40,7 +40,7 @@ function AdminProtectedRoute({ children }: { children: React.ReactNode }) {
             }
             setLoading(false);
           } catch (error) {
-            // console.error("Error in fetch user data: ", error);
+            console.error("Error in fetch user data: ", error);
             setLoading(false);
           }
         };

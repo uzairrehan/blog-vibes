@@ -1,16 +1,7 @@
 "use client";
 
 import Loading from "@/components/loading";
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  DocumentData,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { addDoc, arrayUnion, collection, DocumentData, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -56,7 +47,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             setData(doc.data());
           });
         } catch (error) {
-          // console.error(error);
+          console.error(error);
         }
       };
       fetchBlog();
@@ -99,7 +90,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       time: new Date(),
       UID: auth.currentUser?.uid,
     };
-    // console.log(comm);
     await addDoc(coll, comm);
     setComment("");
   }

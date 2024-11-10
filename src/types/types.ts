@@ -33,6 +33,7 @@ export type blogType = {
   firebaseID?: string;
   imageURL?: string;
   uid?: string;
+  imageURl? : object
 };
 
 export type updateProfileType = {

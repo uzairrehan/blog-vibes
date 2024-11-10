@@ -31,7 +31,6 @@ function Profile() {
     const q = query(collection(db, "users"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      // console.log(doc.id, " => ");
       const data = doc.data();
       setName(data.userName);
       setFathername(data.fathername);

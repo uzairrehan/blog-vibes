@@ -10,16 +10,13 @@ import { toast } from "react-toastify";
 
 const EmailVerification = () => {
   const [isLoading, setIsLoading] = useState(true);
-  // const [email, setEmail] = useState<string | null>(null);
   const [user] = useState<User | null>(null);
   const route = useRouter();
-  const userr = useUserStore(state => state.user)
+  const userr = useUserStore((state) => state.user);
 
   useEffect(() => {
     const currentUser = auth.currentUser;
     if (currentUser) {
-      // setEmail(currentUser.email);
-      // setUser(currentUser);
       if (currentUser.emailVerified) {
         route.push("/");
       } else {

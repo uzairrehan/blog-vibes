@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
-import { LuLogIn } from "react-icons/lu";
+import { LuLogIn, LuSave } from "react-icons/lu";
 import { FaRegMoon, FaRegUser } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -17,7 +17,6 @@ function Navbar() {
   const logoutUser = useUserStore((state) => state.logoutUser);
   const user = useUserStore((state) => state.user);
 
-  // console.log(user);
 
   function signOutFunc() {
     if (!auth.currentUser) {
@@ -58,6 +57,18 @@ function Navbar() {
                 Go to Home
               </Link>
             </li>
+
+            {user.email ? (
+            <li>
+            <Link
+              className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
+              href={"/blog/saved"}
+            >
+              <LuSave />
+              Saved Blogs
+            </Link>
+          </li>
+        ) : null}
 
             {user.role == "admin" ? (
               <li>
