@@ -1,16 +1,7 @@
 "use client";
 
 import Loading from "@/components/loading";
-import {
-  addDoc,
-  arrayRemove,
-  arrayUnion,
-  collection,
-  DocumentData,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { addDoc, arrayRemove, arrayUnion, collection, DocumentData, onSnapshot, query, where } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -45,26 +36,65 @@ export default function Page({ params }: { params: { slug: string } }) {
     toast.success("blog saved !");
   }
 
+  async function saveLikeToBlog() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
+    const uid = auth.currentUser?.uid;
+    const reference = doc(db, "blogs", data?.firebaseID);
+    const d = {
+      likes: arrayUnion(uid),
+    };
+    await updateDoc(reference, d);
+    toast.success("liked!");
+  }
 
+  async function removeLikeToBlog() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to remove like ");
+      route.push("/authenticate");
+      return;
+    }
+    const uid = auth.currentUser?.uid;
+    const reference = doc(db, "blogs", data?.firebaseID);
+    const d = {
+      likes: arrayRemove(uid),
+    };
+    await updateDoc(reference, d);
+    toast.success("like removed!");
+  }
 
-  // async function saveLikenDisLikeToBlog() {
-  //   if (!auth.currentUser?.uid) {
-  //     toast.error("Please Login First to save!");
-  //     route.push("/authenticate");
-  //     return;
-  //   }
-  //   const uid = auth.currentUser?.uid;
-  //   const reference = doc(db, "users", uid);
-  //   const d = {
-  //     savedBlogs: arrayUnion(data?.firebaseID),
-  //   };
-  //   await updateDoc(reference, d);
-  //   updateBlogSaved();
-  //   toast.success("blog saved !");
-  // }
+  async function saveDisLikeToBlog() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
+    const uid = auth.currentUser?.uid;
+    const reference = doc(db, "blogs", data?.firebaseID);
+    const d = {
+      disLikes: arrayUnion(uid),
+    };
+    await updateDoc(reference, d);
+    toast.success("liked!");
+  }
 
-
-
+  async function removeDisikeToBlog() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to remove like ");
+      route.push("/authenticate");
+      return;
+    }
+    const uid = auth.currentUser?.uid;
+    const reference = doc(db, "blogs", data?.firebaseID);
+    const d = {
+      disLikes: arrayRemove(uid),
+    };
+    await updateDoc(reference, d);
+    toast.success("like removed!");
+  }
 
   async function updateBlogSaved() {
     const collectionRef = doc(db, "blogs", data?.firebaseID);
@@ -175,7 +205,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     return () => unsubscribe();
   }, [data]);
 
-
   return (
     <>
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
@@ -199,20 +228,36 @@ export default function Page({ params }: { params: { slug: string } }) {
           <div className="mt-4">
             <div className="mb-2 ">
               <span className="font-semibold prose flex gap-3">
+                {data?.likes && data.likes.includes(auth.currentUser?.uid) ? (
+                  <button
+                    title="remove like"
+                    onClick={() => removeLikeToBlog()}
+                  >
+                    <BiSolidLike className="size-8" />
+                  </button>
+                ) : (
+                  <button title="like" onClick={() => saveLikeToBlog()}>
+                    <BiLike className="size-8" />
+                  </button>
+                )}
+                {data.likes ? data.likes.length : null}
 
-                
-
-                <BiSolidLike  title="remove like" className="size-8" />
-
-                <BiLike title="like" className="size-8" />
-
-                <BiSolidDislike title="dislike"  className="size-8" />
-
-                <BiDislike title="remove dislike" className="size-8" />
-
-
-
-                {data.savedByWhom.includes(auth.currentUser?.uid) ? (
+                {data?.disLikes &&
+                data.disLikes.includes(auth.currentUser?.uid) ? (
+                  <button
+                    title="remove dislike"
+                    onClick={() => removeDisikeToBlog()}
+                  >
+                    <BiSolidDislike className="size-8" />
+                  </button>
+                ) : (
+                  <button title="dislike" onClick={() => saveDisLikeToBlog()}>
+                    <BiDislike className="size-8" />
+                  </button>
+                )}
+                {data.disLikes ? data.disLikes.length : null}
+                {data?.savedByWhom &&
+                data.savedByWhom.includes(auth.currentUser?.uid) ? (
                   <button title="unsave" onClick={() => removeSaveBlogToUser()}>
                     <RiSaveFill className="size-8 " />
                   </button>
@@ -221,8 +266,6 @@ export default function Page({ params }: { params: { slug: string } }) {
                     <RiSaveLine className="size-8 " />
                   </button>
                 )}
-
-
               </span>
             </div>
             <div className="mb-2">

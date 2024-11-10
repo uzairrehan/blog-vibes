@@ -1,5 +1,6 @@
 "use client";
 import AllCards from "@/components/allCards";
+import Loading from "@/components/loading";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
 import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
@@ -8,6 +9,8 @@ import { useEffect, useState } from "react";
 export default function Saved() {
   const [allCards, setAllCards] = useState<CardData[]>([]);
   const [allUIDS, setAllUIDS] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
+
   // getting data
   useEffect(() => {
     getData();
@@ -16,6 +19,8 @@ export default function Saved() {
   useEffect(() => {
     if (allUIDS.length > 0) {
       getSavedBlogs();
+    } else {
+      setLoading(false); // No saved blogs to load
     }
   }, [allUIDS]);
 
@@ -24,36 +29,37 @@ export default function Saved() {
     const docRef = doc(db, "users", auth.currentUser?.uid as string);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      const savedBlogs = docSnap.data().savedBlogs;
+      const savedBlogs = docSnap.data().savedBlogs || [];
       setAllUIDS(savedBlogs);
     } else {
-      // console.log("No such document!");
+      console.log("No such document!");
+      setAllUIDS([]);
     }
   }
 
   // for fetching blogs from firebaseID that is present in "allUIDS"
   async function getSavedBlogs() {
     const dataArray: CardData[] = [];
-    for (let i = 0; i < allUIDS.length; i++) {
-      const q = query(
-        collection(db, "blogs"),
-        where("firebaseID", "==", allUIDS[i])
-      );
+    for (const id of allUIDS) {
+      const q = query(collection(db, "blogs"), where("firebaseID", "==", id));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         dataArray.push(doc.data() as CardData);
       });
     }
     setAllCards(dataArray);
+    setLoading(false); // Loading finished
   }
-
+  
   return (
     <>
       <h1 className="p-5 text-neutral m-5 text-4xl text-center">Saved Blogs</h1>
-      {allCards.length >= 0 ? (
+      {loading ? (
+        <Loading/>
+      ) : allUIDS.length > 0 ? (
         <AllCards allCards={allCards} />
       ) : (
-        <h1>no saved blogs</h1>
+        <h1>No saved blogs</h1>
       )}
     </>
   );
