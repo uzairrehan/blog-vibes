@@ -12,8 +12,11 @@ import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { auth } from "@/firebase/firebaseconfig";
 import { signOut } from "firebase/auth";
 import Image from "next/image";
+import useUserStore from "@/store/userStore";
 
 function Navbar() {
+  const logoutUser = useUserStore((state) => state.logoutUser);
+
   function signOutFunc() {
     if (!auth.currentUser) {
       toast.error("Not loggedin");
@@ -22,6 +25,7 @@ function Navbar() {
     signOut(auth)
       .then(() => {
         toast.success("Signed-out succesfully !");
+        logoutUser()
       })
       .catch((error) => {
         toast.error(`error : ${error.message}`);

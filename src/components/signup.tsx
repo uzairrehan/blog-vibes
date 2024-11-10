@@ -2,27 +2,40 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
-import {
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  // sendEmailVerification,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db, provider } from "@/firebase/firebaseconfig";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaKey } from "react-icons/fa";
 import Loading from "./loading";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import useUserStore from "@/store/userStore";
+import { UserState } from "@/types/types";
 
-function SignUp() {
+function SignUp() { 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
+  const setUserFromStore = useUserStore((state) => state.saveUser);
+
+  const fetchUserDetails = () => {
+    const uid = auth.currentUser?.uid;
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    getDocs(q).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as UserState | undefined;
+
+        if (data) {
+          setUserFromStore(data);
+        } else {
+          console.warn("User data not found or invalid.");
+        }
+      });
+    });
+  };
 
   async function saveUser(
     email: string | null | undefined,
@@ -54,13 +67,13 @@ function SignUp() {
     };
     await updateDoc(reference, data);
   }
-  
-  function signupWithEmailPassword(
+
+  async function signupWithEmailPassword(
     email: string,
     password: string,
     userName: string
   ) {
-    createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const { email, uid } = userCredential.user;
         console.log(email, uid, userName, "user created successfully.");
@@ -68,7 +81,9 @@ function SignUp() {
           displayName: userName,
         });
         console.log(userCredential);
-        saveUser(email, userName, uid);
+        saveUser(email, userName, uid).then(() => {
+          fetchUserDetails();
+        });
         toast.success(`Signed Up with email : ${email}`);
       })
       .catch((error) => {
@@ -103,8 +118,8 @@ function SignUp() {
           user.photoURL as string
         );
         console.log(token, user);
+        fetchUserDetails();
         route.push("/");
-
         toast.success("Signed in with google !");
       })
       .catch((error) => {

@@ -2,21 +2,47 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { auth } from "@/firebase/firebaseconfig";
+import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "@/firebase/firebaseconfig";
 import { FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import Loading from "./loading";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import useUserStore from "@/store/userStore";
+import { UserState } from "@/types/types";
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const setUserFromStore = useUserStore((state) => state.saveUser);
 
   const route = useRouter();
+
+
+  const fetchUserDetails = () => {
+    const uid = auth.currentUser?.uid;
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    getDocs(q).then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const data = doc.data() as UserState | undefined;
+
+        if (data) {
+          setUserFromStore(data);
+        } else {
+          console.warn("User data not found or invalid.");
+        }
+      });
+    });
+  };
+
+  
+
+
+
+
+
+
 
   function loginWithEmailPassword() {
     signInWithEmailAndPassword(auth, email, password)
@@ -24,6 +50,7 @@ function SignIn() {
         const { email, uid, emailVerified } = userCredential.user;
         console.log(email, uid, "user LOGGED IN successfully.", userCredential);
         toast.success(`Signed in with email : ${email}`);
+        fetchUserDetails()
         if (emailVerified) {
           route.push("/");
         } else {
