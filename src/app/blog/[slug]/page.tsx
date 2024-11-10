@@ -78,7 +78,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       disLikes: arrayUnion(uid),
     };
     await updateDoc(reference, d);
-    toast.success("liked!");
+    toast.success("disliked!");
   }
 
   async function removeDisikeToBlog() {
@@ -93,7 +93,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       disLikes: arrayRemove(uid),
     };
     await updateDoc(reference, d);
-    toast.success("like removed!");
+    toast.success("dislike removed!");
   }
 
   async function updateBlogSaved() {

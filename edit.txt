@@ -1,19 +1,12 @@
 todooss = 
 
-
-add like and dislike option
-realtime listener in likes
 more features in comments 
-save = another page   
 set footer on bottom
 do error handling
 loading component acha sa banana he 
 remove all any types and add specific types
 add firebase rules
-configure redux toolkit with localstorage for user
 add comments in all code
-Save likes in array type and in array save users uid 
-And then get it by .length
 
 
 
@@ -26,3 +19,9 @@ delete
 edit time
 add all new blogs
 verify page
+add like and dislike option
+Save likes in array type and in array save users uid 
+And then get it by .length
+realtime listener in likes
+save = another page   
+configure redux toolkit with localstorage for user
