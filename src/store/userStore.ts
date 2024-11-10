@@ -1,4 +1,4 @@
-import {  UserState } from "@/types/types";
+import { UserState } from "@/types/types";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 

@@ -58,7 +58,7 @@ function Navbar() {
               </Link>
             </li>
 
-            {user.email ? (
+            {user.email? (
             <li>
             <Link
               className="bg-neutral text-base-100 mb-1 hover:bg-secondary"

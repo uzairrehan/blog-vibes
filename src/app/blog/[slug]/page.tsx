@@ -1,7 +1,16 @@
 "use client";
 
 import Loading from "@/components/loading";
-import { addDoc, arrayUnion, collection, DocumentData, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  arrayRemove,
+  arrayUnion,
+  collection,
+  DocumentData,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -11,8 +20,8 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
-import { LuSave } from "react-icons/lu";
 import { doc, updateDoc } from "firebase/firestore";
+import { RiSaveFill, RiSaveLine } from "react-icons/ri";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);
@@ -32,25 +41,83 @@ export default function Page({ params }: { params: { slug: string } }) {
       savedBlogs: arrayUnion(data?.firebaseID),
     };
     await updateDoc(reference, d);
+    updateBlogSaved();
+    toast.success("blog saved !");
+  }
+
+
+
+  // async function saveLikenDisLikeToBlog() {
+  //   if (!auth.currentUser?.uid) {
+  //     toast.error("Please Login First to save!");
+  //     route.push("/authenticate");
+  //     return;
+  //   }
+  //   const uid = auth.currentUser?.uid;
+  //   const reference = doc(db, "users", uid);
+  //   const d = {
+  //     savedBlogs: arrayUnion(data?.firebaseID),
+  //   };
+  //   await updateDoc(reference, d);
+  //   updateBlogSaved();
+  //   toast.success("blog saved !");
+  // }
+
+
+
+
+  async function updateBlogSaved() {
+    const collectionRef = doc(db, "blogs", data?.firebaseID);
+    const newBlog = {
+      savedByWhom: arrayUnion(auth.currentUser?.uid),
+    };
+    await updateDoc(collectionRef, newBlog);
+    console.log("updated blog ");
+  }
+
+  async function updateBlogUnSaved() {
+    const collectionRef = doc(db, "blogs", data?.firebaseID);
+    const newBlog = {
+      savedByWhom: arrayRemove(auth.currentUser?.uid),
+    };
+    await updateDoc(collectionRef, newBlog);
+    console.log("updated blog ");
+  }
+
+  async function removeSaveBlogToUser() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to unsave!");
+      route.push("/authenticate");
+      return;
+    }
+    const uid = auth.currentUser?.uid;
+    const reference = doc(db, "users", uid);
+    const d = {
+      savedBlogs: arrayRemove(data?.firebaseID),
+    };
+    await updateDoc(reference, d);
+    updateBlogUnSaved();
+    toast.success("blog unsaved !");
   }
 
   useEffect(() => {
     if (params.slug) {
-      const fetchBlog = async () => {
-        try {
-          const q = query(
-            collection(db, "blogs"),
-            where("slug", "==", params.slug)
-          );
-          const querySnapshot = await getDocs(q);
-          querySnapshot.forEach((doc) => {
-            setData(doc.data());
-          });
-        } catch (error) {
-          console.error(error);
+      const q = query(
+        collection(db, "blogs"),
+        where("slug", "==", params.slug)
+      );
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const blogData = querySnapshot.docs.map((doc) => doc.data());
+        if (blogData.length > 0) {
+          setData(blogData[0]);
+          console.log(data?.savedByWhom);
+        } else {
+          setData(null);
         }
-      };
-      fetchBlog();
+      });
+
+      return () => unsubscribe();
     }
   }, [params.slug]);
 
@@ -108,6 +175,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     return () => unsubscribe();
   }, [data]);
 
+
   return (
     <>
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
@@ -131,15 +199,30 @@ export default function Page({ params }: { params: { slug: string } }) {
           <div className="mt-4">
             <div className="mb-2 ">
               <span className="font-semibold prose flex gap-3">
-                <BiSolidLike className="size-8" />
 
-                <BiLike className="size-8" />
+                
 
-                <BiSolidDislike className="size-8" />
+                <BiSolidLike  title="remove like" className="size-8" />
 
-                <BiDislike className="size-8" />
+                <BiLike title="like" className="size-8" />
 
-                <LuSave onClick={() => saveBlogToUser()} className="size-8" />
+                <BiSolidDislike title="dislike"  className="size-8" />
+
+                <BiDislike title="remove dislike" className="size-8" />
+
+
+
+                {data.savedByWhom.includes(auth.currentUser?.uid) ? (
+                  <button title="unsave" onClick={() => removeSaveBlogToUser()}>
+                    <RiSaveFill className="size-8 " />
+                  </button>
+                ) : (
+                  <button title="save" onClick={() => saveBlogToUser()}>
+                    <RiSaveLine className="size-8 " />
+                  </button>
+                )}
+
+
               </span>
             </div>
             <div className="mb-2">
