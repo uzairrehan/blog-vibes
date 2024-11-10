@@ -31,7 +31,7 @@ function SignUp() {
         if (data) {
           setUserFromStore(data);
         } else {
-          console.warn("User data not found or invalid.");
+          // console.warn("User data not found or invalid.");
         }
       });
     });
@@ -49,7 +49,7 @@ function SignUp() {
       uid: uid,
     };
     await setDoc(reference, data);
-    console.log("created");
+    // console.log("created");
   }
 
   async function updateUser(
@@ -76,11 +76,11 @@ function SignUp() {
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const { email, uid } = userCredential.user;
-        console.log(email, uid, userName, "user created successfully.");
+        // console.log(email, uid, userName, "user created successfully.");
         updateProfile(userCredential.user, {
           displayName: userName,
         });
-        console.log(userCredential);
+        // console.log(userCredential);
         saveUser(email, userName, uid).then(() => {
           fetchUserDetails();
         });
@@ -89,7 +89,7 @@ function SignUp() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.error(errorMessage, errorCode);
+        // console.error(errorMessage, errorCode);
         toast.error("Could'nt sign-up", error.message);
       });
   }
@@ -117,7 +117,7 @@ function SignUp() {
           user.uid,
           user.photoURL as string
         );
-        console.log(token, user);
+        // console.log(token, user);
         fetchUserDetails();
         route.push("/");
         toast.success("Signed in with google !");
@@ -127,7 +127,7 @@ function SignUp() {
         const errorMessage = error.message;
         const email = error.customData.email;
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(errorCode, errorMessage, email, credential);
+        // console.log(errorCode, errorMessage, email, credential);
         toast.error("Could'nt sign-in", error.message);
       });
   }

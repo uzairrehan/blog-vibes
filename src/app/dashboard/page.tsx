@@ -24,10 +24,10 @@ function Dashboard() {
   useEffect(() => {
     const q = query(collection(db, "blogs"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      console.log("snapshot", snapshot);
+      // console.log("snapshot", snapshot);
       const newCards: CardData[] = [];
       snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
-      console.log(newCards);
+      // console.log(newCards);
       setCards(newCards);
     });
     return unsubscribe;

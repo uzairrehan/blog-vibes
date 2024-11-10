@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import { IoHomeOutline } from "react-icons/io5";
 import { LuLogIn } from "react-icons/lu";
@@ -16,6 +15,9 @@ import useUserStore from "@/store/userStore";
 
 function Navbar() {
   const logoutUser = useUserStore((state) => state.logoutUser);
+  const user = useUserStore((state) => state.user);
+
+  // console.log(user);
 
   function signOutFunc() {
     if (!auth.currentUser) {
@@ -24,11 +26,11 @@ function Navbar() {
     }
     signOut(auth)
       .then(() => {
-        toast.success("Signed-out succesfully !");
-        logoutUser()
+        toast.success("Signed-out successfully!");
+        logoutUser();
       })
       .catch((error) => {
-        toast.error(`error : ${error.message}`);
+        toast.error(`Error: ${error.message}`);
       });
   }
 
@@ -56,30 +58,37 @@ function Navbar() {
                 Go to Home
               </Link>
             </li>
-            <li>
-              <Link
-                className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
-                href={"/dashboard"}
-              >
-                <MdOutlineSpaceDashboard />
-                Go to Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
-                href={"/authenticate"}
-              >
-                <LuLogIn />
-                Login / Sign-Up
-              </Link>
-            </li>
-            <li onClick={signOutFunc}>
-              <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">
-                <BiLogOut />
-                Logout
-              </div>
-            </li>
+
+            {user.role == "admin" ? (
+              <li>
+                <Link
+                  className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
+                  href={"/dashboard"}
+                >
+                  <MdOutlineSpaceDashboard />
+                  Go to Dashboard
+                </Link>
+              </li>
+            ) : null}
+
+            {user.email ? (
+              <li onClick={signOutFunc}>
+                <div className="bg-error text-base-100 mb-1 hover:bg-error flex flex-row items-center justify-start">
+                  <BiLogOut />
+                  Logout
+                </div>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
+                  href={"/authenticate"}
+                >
+                  <LuLogIn />
+                  Login / Sign-Up
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>
@@ -104,12 +113,15 @@ function Navbar() {
           <FiSun className="swap-off h-5 w-5 fill-current" />
           <FaRegMoon className="swap-on h-5 w-5 fill-current" />
         </label>
-        <Link
-          href={"/profile"}
-          className="btn btn-ghost btn-circle hover:bg-secondary"
-        >
-          <FaRegUser />
-        </Link>
+
+        {user.email ? (
+          <Link
+            href={"/profile"}
+            className="btn btn-ghost btn-circle hover:bg-secondary"
+          >
+            <FaRegUser />
+          </Link>
+        ) : null}
       </div>
     </div>
   );

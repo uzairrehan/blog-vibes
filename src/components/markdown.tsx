@@ -52,12 +52,12 @@ function Markdown() {
         if (!file) {
           return;
         }
-        console.log(file);
+        // console.log(file);
         const imageRef = ref(
           storage,
           `uploads/images/${crypto.randomUUID()}-${file.name}`
         );
-        console.log(imageRef);
+        // console.log(imageRef);
         
         const uploadTask = uploadBytesResumable(imageRef, file);
 
@@ -67,15 +67,15 @@ function Markdown() {
             (snapshot) => {
               const progress =
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log("Upload is " + progress + "% done");
+              // console.log("Upload is " + progress + "% done");
             },
             (error) => {
-              console.error("Upload error: ", error);
+              // console.error("Upload error: ", error);
               reject(error);
             },
             async () => {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              console.log("File available at", downloadURL);
+              // console.log("File available at", downloadURL);
               resolve(downloadURL);
             }
           );
@@ -103,7 +103,7 @@ function Markdown() {
 
       toast.success("Blog Added Successfully!");
     } catch (error) {
-      console.error("Error adding blog: ", error);
+      // console.error("Error adding blog: ", error);
       toast.error("Couldn't add blog!");
     }
   }

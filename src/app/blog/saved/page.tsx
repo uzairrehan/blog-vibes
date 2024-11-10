@@ -34,7 +34,7 @@ export default function Saved() {
       const savedBlogs = docSnap.data().savedBlogs;
       setAllUIDS(savedBlogs);
     } else {
-      console.log("No such document!");
+      // console.log("No such document!");
     }
   }
 

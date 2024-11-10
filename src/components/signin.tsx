@@ -30,7 +30,7 @@ function SignIn() {
         if (data) {
           setUserFromStore(data);
         } else {
-          console.warn("User data not found or invalid.");
+          // console.warn("User data not found or invalid.");
         }
       });
     });
@@ -48,7 +48,7 @@ function SignIn() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const { email, uid, emailVerified } = userCredential.user;
-        console.log(email, uid, "user LOGGED IN successfully.", userCredential);
+        // console.log(email, uid, "user LOGGED IN successfully.", userCredential);
         toast.success(`Signed in with email : ${email}`);
         fetchUserDetails()
         if (emailVerified) {
@@ -60,7 +60,7 @@ function SignIn() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.error(errorMessage, errorCode);
+        // console.error(errorMessage, errorCode);
         toast.error("Could'nt sign-in", error.message);
       });
   }
@@ -68,13 +68,13 @@ function SignIn() {
   function passwordReset(email: string) {
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        console.log("sent");
+        // console.log("sent");
         toast.success(`Check Email : ${email}`);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        // console.log(errorCode, errorMessage);
         toast.error(`error : ${error.message}`);
       });
   }

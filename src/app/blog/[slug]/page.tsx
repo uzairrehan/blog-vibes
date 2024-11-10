@@ -56,7 +56,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             setData(doc.data());
           });
         } catch (error) {
-          console.error(error);
+          // console.error(error);
         }
       };
       fetchBlog();
@@ -99,7 +99,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       time: new Date(),
       UID: auth.currentUser?.uid,
     };
-    console.log(comm);
+    // console.log(comm);
     await addDoc(coll, comm);
     setComment("");
   }

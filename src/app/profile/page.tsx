@@ -31,7 +31,7 @@ function Profile() {
     const q = query(collection(db, "users"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ");
+      // console.log(doc.id, " => ");
       const data = doc.data();
       setName(data.userName);
       setFathername(data.fathername);
@@ -100,7 +100,7 @@ function Profile() {
         if (!picture) {
           return;
         }
-        console.log(picture);
+        // console.log(picture);
         const imageRef = ref(
           storage,
           `uploads/images/${crypto.randomUUID()}-${picture.name}`
@@ -113,15 +113,15 @@ function Profile() {
             (snapshot) => {
               const progress =
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log("Upload is " + progress + "% done");
+              // console.log("Upload is " + progress + "% done");
             },
             (error) => {
-              console.error("Upload error: ", error);
+              // console.error("Upload error: ", error);
               reject(error);
             },
             async () => {
               const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              console.log("File available at", downloadURL);
+              // console.log("File available at", downloadURL);
               resolve(downloadURL);
             }
           );
@@ -144,7 +144,7 @@ function Profile() {
 
       toast.success("Updated Successfully!");
     } catch (error) {
-      console.error("Error Updating : ", error);
+      // console.error("Error Updating : ", error);
       toast.error(`Error Updating! ${error}`);
     }
   }

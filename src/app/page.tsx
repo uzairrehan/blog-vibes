@@ -30,7 +30,7 @@ export default function Home() {
       {/* <button
         onClick={() => {
           saveUser(userr);
-          console.log("saved");
+          // console.log("saved");
         }}
       >
         save

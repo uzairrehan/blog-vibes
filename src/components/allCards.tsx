@@ -14,7 +14,7 @@ export default function AllCards({ allCards }: AllCardsProps) {
     setSelectedcategory(event.target.value);
   };
 
-  console.log("all cards", allCards);
+  // console.log("all cards", allCards);
 
   const filteredCards =
     selectedcategory === "All"
