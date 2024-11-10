@@ -10,13 +10,12 @@ import { toast } from "react-toastify";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { auth } from "@/firebase/firebaseconfig";
 import { signOut } from "firebase/auth";
-import Image from "next/image";
 import useUserStore from "@/store/userStore";
+import Image from "next/image";
 
 function Navbar() {
   const logoutUser = useUserStore((state) => state.logoutUser);
   const user = useUserStore((state) => state.user);
-
 
   function signOutFunc() {
     if (!auth.currentUser) {
@@ -58,17 +57,17 @@ function Navbar() {
               </Link>
             </li>
 
-            {user.email? (
-            <li>
-            <Link
-              className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
-              href={"/blog/saved"}
-            >
-              <LuSave />
-              Saved Blogs
-            </Link>
-          </li>
-        ) : null}
+            {user.email ? (
+              <li>
+                <Link
+                  className="bg-neutral text-base-100 mb-1 hover:bg-secondary"
+                  href={"/blog/saved"}
+                >
+                  <LuSave />
+                  Saved Blogs
+                </Link>
+              </li>
+            ) : null}
 
             {user.role == "admin" ? (
               <li>
@@ -104,16 +103,19 @@ function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <a href="/">
+        <a
+          href="/"
+          className="relative w-20 h-12 sm:w-12 sm:h-8 md:w-16 md:h-10 lg:w-24 lg:h-14 overflow-hidden rounded-lg"
+        >
           <Image
             src="/images/bv.png"
             alt="logo"
-            height={25}
-            width={70}
-            className="rounded-lg w-auto h-auto"
+            layout="fill"
+            objectFit="contain"
           />
         </a>
       </div>
+
       <div className="navbar-end">
         <label className="swap swap-rotate btn btn-ghost btn-circle hover:bg-secondary">
           <input
