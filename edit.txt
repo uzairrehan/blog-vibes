@@ -3,7 +3,7 @@ todooss =
 more features in comments 
 set footer on bottom
 do error handling
-loading component acha sa banana he 
+loading component ko center karna he page par
 remove all any types and add specific types
 add firebase rules
 add comments in all code
