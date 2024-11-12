@@ -4,14 +4,15 @@ import SignIn from "@/components/signin";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { auth } from "@/firebase/firebaseconfig";
+import useUserStore from "@/store/userStore";
 
 function Authenticate() {
   const [page, setPage] = useState("SignUp");
+  const user = useUserStore((state) => state.user);
   const route = useRouter();
 
   function checkUser() {
-    if (auth.currentUser) {
+    if (user.uid) {
       toast.error("You are already logged in !");
       route.push("/");
     }

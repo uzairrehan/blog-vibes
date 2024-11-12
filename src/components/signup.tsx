@@ -73,9 +73,9 @@ function SignUp() {
     userName: string
   ) {
     await createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const { email, uid } = userCredential.user;
-        updateProfile(userCredential.user, {
+        await updateProfile(userCredential.user, {
           displayName: userName,
         });
         saveUser(email, userName, uid).then(() => {
@@ -84,37 +84,37 @@ function SignUp() {
         toast.success(`Signed Up with email : ${email}`);
       })
       .catch((error) => {
-        toast.error("Could'nt sign-up", error.message);
+        toast.error(`Couldn't sign-up: ${error.message}`);
       });
   }
 
-  function handleSubmit(event: { preventDefault: () => void }) {
+  async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     setLoading(true);
-    signupWithEmailPassword(email, password, name);
+    await signupWithEmailPassword(email, password, name);
+    setLoading(false);
     setEmail("");
     setName("");
     setPassword("");
-    setLoading(false);
     route.push("/authenticate/verify");
   }
 
   async function googleSign() {
     await signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user;
-        updateUser(
+        await updateUser(
           auth.currentUser?.email,
           user.displayName,
           user.uid,
           user.photoURL as string
         );
-        fetchUserDetails();
+        await fetchUserDetails();
         route.push("/");
         toast.success("Signed in with google !");
       })
       .catch((error) => {
-        toast.error("Could'nt sign-in", error.message);
+        toast.error(`Couldn't sign-in: ${error.message}`);
       });
   }
 
