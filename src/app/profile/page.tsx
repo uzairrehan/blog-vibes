@@ -1,9 +1,9 @@
 "use client";
 
-import { onAuthStateChanged } from "firebase/auth";
+import {  onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth, db, storage } from "@/firebase/firebaseconfig";
+import {  auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -21,13 +21,12 @@ function Profile() {
   const [phonenumber, setPhonenumber] = useState(" ");
   const [DOB, setDOB] = useState(" ");
   const [bio, setBio] = useState(" ");
-  const [PFP, setPFP] = useState(" ");
+  const [PFP, setPFP] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
 
   // fetching all users details and setting into state
   async function fetchUserDetails() {
-    if (!auth.currentUser) return; 
     const uid = auth.currentUser?.uid;
     const q = query(collection(db, "users"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
@@ -70,8 +69,6 @@ function Profile() {
     }
   };
 
-
-
   async function updateMyProfile() {
     const uid = auth.currentUser?.uid;
 
@@ -100,9 +97,7 @@ function Profile() {
         if (!picture) {
           return;
         }
-        const imageRef = ref(
-          storage, `uploads/images/${crypto.randomUUID()}-${picture.name}`
-        );
+        const imageRef = ref( storage,`uploads/images/${crypto.randomUUID()}-${picture.name}`);
         const uploadTask = uploadBytesResumable(imageRef, picture);
 
         return new Promise((resolve, reject) => {
