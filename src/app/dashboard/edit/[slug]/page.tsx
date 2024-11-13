@@ -13,7 +13,6 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { auth, db, storage } from "@/firebase/firebaseconfig";
 import Footer from "@/components/footer";
 
-
 function Edit({ params }: { params: { slug: string } }) {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -74,12 +73,7 @@ function Edit({ params }: { params: { slug: string } }) {
     }
   };
 
-
-
-
-
-
-   async function updateBlog({
+  async function updateBlog({
     title,
     category,
     mark,
@@ -88,17 +82,17 @@ function Edit({ params }: { params: { slug: string } }) {
     file,
   }: blogType) {
     const uid = auth.currentUser?.uid;
-  
+
     if (!uid) {
       toast.error("User is not authenticated!");
       return;
     }
-  
+
     if (!firebaseID) {
       toast.error("Invalid blog ID!");
       return;
     }
-  
+
     try {
       const uploadImage = async () => {
         if (!file) {
@@ -110,7 +104,7 @@ function Edit({ params }: { params: { slug: string } }) {
           `uploads/images/${Date.now()}-${file.name}`
         );
         const uploadTask = uploadBytesResumable(imageRef, file);
-  
+
         return new Promise((resolve, reject) => {
           uploadTask.on(
             "state_changed",
@@ -129,11 +123,11 @@ function Edit({ params }: { params: { slug: string } }) {
           );
         });
       };
-  
+
       const imageURL = await uploadImage();
-  
+
       const collectionRef = doc(db, "blogs", firebaseID);
-  
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const newBlog: any = {
         title,
@@ -142,24 +136,18 @@ function Edit({ params }: { params: { slug: string } }) {
         uid,
         editedDate,
       };
-  
+
       if (imageURL) {
         newBlog.imageURL = imageURL;
       }
-  
+
       await updateDoc(collectionRef, newBlog);
-  
+
       toast.success("Blog edited successfully!");
     } catch (error) {
       toast.error(`Failed to edit the blog. ${error} `);
     }
   }
-  
-
-
-
-
-
 
   return (
     <>
@@ -245,7 +233,6 @@ function Edit({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <Footer />
-
     </>
   );
 }

@@ -132,9 +132,17 @@ function Navbar() {
             href={"/profile"}
             className="btn btn-ghost btn-circle hover:bg-secondary "
           >
-            {
-              user.imageURL? <Image className="rounded-xl" src={user.imageURL} alt={"p"} height={30} width={30} /> : <FaRegUser />
-            }
+            {user.imageURL ? (
+              <Image
+                className="w-15 h-15"
+                src={user.imageURL}
+                alt={"p"}
+                height={35}
+                width={35}
+              />
+            ) : (
+              <FaRegUser />
+            )}
           </Link>
         ) : null}
       </div>

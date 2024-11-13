@@ -2,7 +2,10 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { sendPasswordResetEmail, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
@@ -15,9 +18,8 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [toggle ,setToggle] = useState(true)
+  const [toggle, setToggle] = useState(true);
   const setUserFromStore = useUserStore((state) => state.saveUser);
-
 
   const route = useRouter();
 
@@ -136,10 +138,7 @@ function SignIn() {
                 <input
                   id="password"
                   name="password"
-                  type={ toggle ?
-                    "password":"text"
-                  }
-
+                  type={toggle ? "password" : "text"}
                   required
                   className="grow"
                   placeholder="••••••••"
@@ -148,12 +147,11 @@ function SignIn() {
                 />
                 <button
                   type="button"
-                onClick={()=>{
-                  setToggle(!toggle)
-                }}>
-                {
-                  toggle ? <FaEyeSlash /> :  <FaEye />
-                }
+                  onClick={() => {
+                    setToggle(!toggle);
+                  }}
+                >
+                  {toggle ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </label>
             </div>

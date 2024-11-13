@@ -7,15 +7,20 @@ import { auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import Image from "next/image";
 import Loading from "@/components/loading";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import useUserStore from "@/store/userStore";
 import { UserState } from "@/types/types";
 import Footer from "@/components/footer";
-
-
 
 function Profile() {
   const [picture, setPicture] = useState<File | null>(null);
@@ -27,8 +32,8 @@ function Profile() {
   const [PFP, setPFP] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
-  const saveUser = useUserStore(state => state.saveUser)
-  const userrr = useUserStore(state => state.user)
+  const saveUser = useUserStore((state) => state.saveUser);
+  const userrr = useUserStore((state) => state.user);
 
   // fetching all users details and setting into state
   async function fetchUserDetails() {
@@ -46,7 +51,6 @@ function Profile() {
     });
   }
 
-
   useEffect(() => {
     onAuthStateChanged(auth, async (loggedInUser) => {
       if (!loggedInUser) {
@@ -57,8 +61,6 @@ function Profile() {
       await fetchUserDetails();
     });
   }, []);
-
-
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -85,14 +87,20 @@ function Profile() {
     const collectionRef = doc(db, "users", uid);
 
     if (!picture) {
+      const { email, uid, role, imageURL } = userrr;
       const user = {
+        imageURL,
+        role,
         userName: name,
         fathername,
         phonenumber,
         DOB,
         bio,
+        email,
+        uid,
       };
       await updateDoc(collectionRef, user);
+      saveUser(user as UserState);
       toast.success("Updated Successfully!");
       return;
     }
@@ -102,7 +110,10 @@ function Profile() {
         if (!picture) {
           return;
         }
-        const imageRef = ref(storage, `uploads/images/${crypto.randomUUID()}-${picture.name}`);
+        const imageRef = ref(
+          storage,
+          `uploads/images/${crypto.randomUUID()}-${picture.name}`
+        );
         const uploadTask = uploadBytesResumable(imageRef, picture);
 
         return new Promise((resolve, reject) => {
@@ -130,8 +141,7 @@ function Profile() {
 
       if (!imageURL) return toast.error("error uploading image");
 
-
-      const { email, uid , role } = userrr
+      const { email, uid, role } = userrr;
       const user = {
         role,
         imageURL,
@@ -140,11 +150,11 @@ function Profile() {
         phonenumber,
         DOB,
         bio,
-        email, uid
+        email,
+        uid,
       };
       await updateDoc(collectionRef, user);
-      saveUser(user as UserState)
-
+      saveUser(user as UserState);
 
       toast.success("Updated Successfully!");
     } catch (error) {
@@ -152,9 +162,6 @@ function Profile() {
       toast.error(`Error Updating! ${error}`);
     }
   }
-
-
-
 
   return (
     <>
@@ -287,7 +294,6 @@ function Profile() {
         </form>
       </div>
       <Footer />
-
     </>
   );
 }

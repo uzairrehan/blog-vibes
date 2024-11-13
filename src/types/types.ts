@@ -33,7 +33,7 @@ export type blogType = {
   firebaseID?: string;
   imageURL?: string;
   uid?: string;
-  imageURl? : object
+  imageURl?: object;
 };
 
 export type updateProfileType = {
@@ -43,17 +43,15 @@ export type updateProfileType = {
   phonenumber: string;
   DOB: string;
   bio: string;
-  imageURL?:string
+  imageURL?: string;
 };
 export type AdminLayoutTypes = {
   children: ReactNode;
 };
 
-
 export type AllCardsProps = {
   allCards: blogType[];
-}
-
+};
 
 export type UserState = {
   email: string;
@@ -65,15 +63,14 @@ export type UserState = {
   phonenumber?: string;
   userName?: string;
   role?: string;
-  saved?:string[]
-}
+  saved?: string[];
+};
 
- 
-export type UserProfile  = {
+export type UserProfile = {
   userName: string;
   fathername: string;
   phonenumber: string;
   DOB: string;
   bio: string;
   imageURL?: string;
-}
+};

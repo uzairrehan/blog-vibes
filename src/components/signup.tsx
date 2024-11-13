@@ -2,14 +2,26 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
-import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db, provider } from "@/firebase/firebaseconfig";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaKey } from "react-icons/fa";
 import Loading from "./loading";
-import { collection, doc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import useUserStore from "@/store/userStore";
 import { UserState } from "@/types/types";
 
@@ -19,12 +31,11 @@ function SignUp() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
-  const [toggle ,setToggle] = useState(true)
+  const [toggle, setToggle] = useState(true);
 
   const setUserFromStore = useUserStore((state) => state.saveUser);
-  const userrr = useUserStore((state) => state.user);
 
-   const  fetchUserDetails = async () => {
+  const fetchUserDetails = async () => {
     const uid = auth.currentUser?.uid;
     const q = query(collection(db, "users"), where("uid", "==", uid));
     getDocs(q).then((querySnapshot) => {
@@ -32,7 +43,7 @@ function SignUp() {
         const data = doc.data() as UserState | undefined;
 
         if (data) {
-        setUserFromStore(data);
+          setUserFromStore(data);
         }
       });
     });
@@ -52,10 +63,7 @@ function SignUp() {
     await setDoc(reference, data);
   }
 
-  async function updateUser(
-    email: string | null | undefined,
-    uid: string,
-  ) {
+  async function updateUser(email: string | null | undefined, uid: string) {
     const reference = doc(db, "users", uid);
     const data = {
       email: email,
@@ -75,8 +83,8 @@ function SignUp() {
         await updateProfile(userCredential.user, {
           displayName: userName,
         });
-        await saveUser(email, userName, uid).then( async () => {
-           await fetchUserDetails();
+        await saveUser(email, userName, uid).then(async () => {
+          await fetchUserDetails();
         });
         toast.success(`Signed Up with email : ${email}`);
       })
@@ -100,10 +108,7 @@ function SignUp() {
     await signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        await updateUser(
-          auth.currentUser?.email,
-          user.uid,
-        );
+        await updateUser(auth.currentUser?.email, user.uid);
         await fetchUserDetails();
         route.push("/");
         toast.success("Signed in with google !");
@@ -180,23 +185,20 @@ function SignUp() {
                 <input
                   id="password"
                   name="password"
-                  type={ toggle ?
-                    "password":"text"
-                  }
+                  type={toggle ? "password" : "text"}
                   required
                   className="grow"
                   placeholder="••••••••"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 />
-              <button
+                <button
                   type="button"
-                onClick={()=>{
-                  setToggle(!toggle)
-                }}>
-                {
-                  toggle ? <FaEyeSlash /> :  <FaEye />
-                }
+                  onClick={() => {
+                    setToggle(!toggle);
+                  }}
+                >
+                  {toggle ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </label>
             </div>

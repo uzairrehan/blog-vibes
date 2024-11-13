@@ -56,7 +56,7 @@ function Markdown() {
           storage,
           `uploads/images/${crypto.randomUUID()}-${file.name}`
         );
-        
+
         const uploadTask = uploadBytesResumable(imageRef, file);
 
         return new Promise((resolve, reject) => {
@@ -103,7 +103,6 @@ function Markdown() {
     }
   }
 
-  
   return (
     <>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
