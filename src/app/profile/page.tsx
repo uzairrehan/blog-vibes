@@ -1,9 +1,9 @@
 "use client";
 
-import {  onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {  auth, db, storage } from "@/firebase/firebaseconfig";
+import { auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -11,6 +11,9 @@ import { collection, getDocs, query, where, doc, updateDoc } from "firebase/fire
 import Image from "next/image";
 import Loading from "@/components/loading";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import useUserStore from "@/store/userStore";
+import { UserState } from "@/types/types";
+import Footer from "@/components/footer";
 
 
 
@@ -24,6 +27,8 @@ function Profile() {
   const [PFP, setPFP] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
+  const saveUser = useUserStore(state => state.saveUser)
+  const userrr = useUserStore(state => state.user)
 
   // fetching all users details and setting into state
   async function fetchUserDetails() {
@@ -65,7 +70,7 @@ function Profile() {
       console.log(error);
       toast.error(`Couldn't update! ${error}`);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -97,7 +102,7 @@ function Profile() {
         if (!picture) {
           return;
         }
-        const imageRef = ref( storage,`uploads/images/${crypto.randomUUID()}-${picture.name}`);
+        const imageRef = ref(storage, `uploads/images/${crypto.randomUUID()}-${picture.name}`);
         const uploadTask = uploadBytesResumable(imageRef, picture);
 
         return new Promise((resolve, reject) => {
@@ -125,6 +130,8 @@ function Profile() {
 
       if (!imageURL) return toast.error("error uploading image");
 
+
+      const { email, uid } = userrr
       const user = {
         imageURL,
         userName: name,
@@ -132,8 +139,11 @@ function Profile() {
         phonenumber,
         DOB,
         bio,
+        email, uid
       };
       await updateDoc(collectionRef, user);
+      saveUser(user as UserState)
+
 
       toast.success("Updated Successfully!");
     } catch (error) {
@@ -144,7 +154,7 @@ function Profile() {
 
 
 
-  
+
   return (
     <>
       <Link href={"/"} className="btn m-2 btn-xs btn-neutral">
@@ -275,6 +285,8 @@ function Profile() {
           </div>
         </form>
       </div>
+      <Footer />
+
     </>
   );
 }

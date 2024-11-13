@@ -22,8 +22,9 @@ function SignUp() {
   const [toggle ,setToggle] = useState(true)
 
   const setUserFromStore = useUserStore((state) => state.saveUser);
+  const userrr = useUserStore((state) => state.user);
 
-  const fetchUserDetails = () => {
+   const  fetchUserDetails = async () => {
     const uid = auth.currentUser?.uid;
     const q = query(collection(db, "users"), where("uid", "==", uid));
     getDocs(q).then((querySnapshot) => {
@@ -31,7 +32,7 @@ function SignUp() {
         const data = doc.data() as UserState | undefined;
 
         if (data) {
-          setUserFromStore(data);
+        setUserFromStore(data);
         }
       });
     });
@@ -53,16 +54,12 @@ function SignUp() {
 
   async function updateUser(
     email: string | null | undefined,
-    userName: string | null,
     uid: string,
-    photoURL?: string
   ) {
     const reference = doc(db, "users", uid);
     const data = {
       email: email,
-      userName: userName,
       uid: uid,
-      imageURL: photoURL,
     };
     await updateDoc(reference, data);
   }
@@ -78,8 +75,8 @@ function SignUp() {
         await updateProfile(userCredential.user, {
           displayName: userName,
         });
-        saveUser(email, userName, uid).then(() => {
-          fetchUserDetails();
+        await saveUser(email, userName, uid).then( async () => {
+           await fetchUserDetails();
         });
         toast.success(`Signed Up with email : ${email}`);
       })
@@ -105,9 +102,7 @@ function SignUp() {
         const user = result.user;
         await updateUser(
           auth.currentUser?.email,
-          user.displayName,
           user.uid,
-          user.photoURL as string
         );
         await fetchUserDetails();
         route.push("/");

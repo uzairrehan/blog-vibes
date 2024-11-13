@@ -11,6 +11,7 @@ import { blogType } from "@/types/types";
 import { toast } from "react-toastify";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { auth, db, storage } from "@/firebase/firebaseconfig";
+import Footer from "@/components/footer";
 
 
 function Edit({ params }: { params: { slug: string } }) {
@@ -243,6 +244,8 @@ function Edit({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </div>
+      <Footer />
+
     </>
   );
 }

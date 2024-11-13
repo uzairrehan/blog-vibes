@@ -21,42 +21,49 @@ export default function AllCards({ allCards }: AllCardsProps) {
 
   return (
     <>
-      <label className="form-control w-full max-w-xs flex justify-start items-start ml-5">
-        <div className="label">
-          <span className="label-text text-neutral">Filter by category:</span>
-        </div>
-        <select
-          className="select select-bordered select-sm select-secondary"
-          value={selectedcategory}
-          onChange={handlecategoryChange}
-        >
-          <option value="All">All</option>
-          <option value="Coding">Coding</option>
-          <option value="Education">Education</option>
-          <option value="Entertainment">Entertainment</option>
-          <option value="Blogging">Blogging</option>
-        </select>
-      </label>
-
       {allCards.length > 0 ? (
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-5 my-5">
-            {filteredCards.map(({ firebaseID, imageURL, title, mark, category, slug }) => {
-              return (
-                <Cards
-                  key={firebaseID}
-                  imageURL={imageURL}
-                  heading={title}
-                  text={mark}
-                  category={category}
-                  slug={slug}
-                />
-              );
-            })}
+
+        <div>
+
+          <label className="form-control w-full max-w-xs flex justify-start items-start ml-5">
+            <div className="label">
+              <span className="label-text text-neutral">Filter by category:</span>
+            </div>
+            <select
+              className="select select-bordered select-sm select-secondary"
+              value={selectedcategory}
+              onChange={handlecategoryChange}
+            >
+              <option value="All">All</option>
+              <option value="Coding">Coding</option>
+              <option value="Education">Education</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Blogging">Blogging</option>
+            </select>
+          </label>
+
+
+
+          <div className="flex justify-center items-center min-h-screen">
+            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-5 my-5">
+              {filteredCards.map(({ firebaseID, imageURL, title, mark, category, slug }) => {
+                return (
+                  <Cards
+                    key={firebaseID}
+                    imageURL={imageURL}
+                    heading={title}
+                    text={mark}
+                    category={category}
+                    slug={slug}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
+
       ) : (
-        <div className="flex justify-center items-center">
+        <div className="min-h-full flex items-center justify-center">
           <Loading />
         </div>
       )}

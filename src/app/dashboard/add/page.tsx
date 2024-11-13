@@ -1,4 +1,5 @@
 
+import Footer from "@/components/footer";
 import Markdown from "@/components/markdown";
 import Link from "next/link";
 import { FaLongArrowAltLeft } from "react-icons/fa";
@@ -10,6 +11,8 @@ function Add() {
         <FaLongArrowAltLeft /> Go Back to Home
       </Link>{" "}
       <Markdown />
+      <Footer />
+
     </>
   );
 }
