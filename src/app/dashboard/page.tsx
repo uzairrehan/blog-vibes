@@ -10,6 +10,7 @@ import Link from "next/link";
 import { IoMdAdd } from "react-icons/io";
 import { toast } from "react-toastify";
 import { db } from "@/firebase/firebaseconfig";
+import Footer from "@/components/footer";
 
 function Dashboard() {
   const [cards, setCards] = useState<CardData[]>([]);
@@ -18,7 +19,7 @@ function Dashboard() {
   useEffect(() => {
     const q = query(collection(db, "blogs"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const newCards: CardData[] = [];
+      const newCards: CardData[] = []; 
       snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
       setCards(newCards);
     });
@@ -30,7 +31,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto " >
         <Link href={"/dashboard/add"}>
           <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
             <IoMdAdd />
@@ -49,7 +50,9 @@ function Dashboard() {
           </thead>
           <tbody>
             {!cards ? (
-              <Loading />
+              <div className="min-h-full flex items-center justify-center">
+                <Loading />
+              </div>
             ) : (
               cards.map(({ imageURL, title, category, slug, firebaseID }) => (
                 <tr key={title}>
@@ -108,6 +111,8 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
+      <Footer />
+
     </>
   );
 }

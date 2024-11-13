@@ -13,6 +13,7 @@ import { auth, db } from "@/firebase/firebaseconfig";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { doc, updateDoc } from "firebase/firestore";
 import { RiSaveFill, RiSaveLine } from "react-icons/ri";
+import Footer from "@/components/footer";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);
@@ -243,7 +244,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 {data.likes ? data.likes.length : null}
 
                 {data?.disLikes &&
-                data.disLikes.includes(auth.currentUser?.uid) ? (
+                  data.disLikes.includes(auth.currentUser?.uid) ? (
                   <button
                     title="remove dislike"
                     onClick={() => removeDisikeToBlog()}
@@ -257,7 +258,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 )}
                 {data.disLikes ? data.disLikes.length : null}
                 {data?.savedByWhom &&
-                data.savedByWhom.includes(auth.currentUser?.uid) ? (
+                  data.savedByWhom.includes(auth.currentUser?.uid) ? (
                   <button title="unsave" onClick={() => removeSaveBlogToUser()}>
                     <RiSaveFill className="size-8 " />
                   </button>
@@ -327,10 +328,12 @@ export default function Page({ params }: { params: { slug: string } }) {
             })}
         </div>
       ) : (
-        <div className="flex justify-center items-center">
+        <div className="min-h-full flex items-center justify-center">
           <Loading />
         </div>
       )}
+                <Footer />
+
     </>
   );
 }

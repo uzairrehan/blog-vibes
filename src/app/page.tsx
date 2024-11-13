@@ -1,5 +1,6 @@
 "use client";
 import AllCards from "@/components/allCards";
+import Footer from "@/components/footer";
 import { db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
 import { collection, getDocs } from "firebase/firestore";
@@ -25,6 +26,8 @@ export default function Home() {
   return (
     <>
       <AllCards allCards={allCards} />
+      <Footer />
+
     </>
   );
 }

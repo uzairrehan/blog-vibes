@@ -1,5 +1,6 @@
 "use client";
 import AllCards from "@/components/allCards";
+import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
@@ -20,7 +21,7 @@ export default function Saved() {
     if (allUIDS.length > 0) {
       getSavedBlogs();
     } else {
-      setLoading(false); // No saved blogs to load
+      setLoading(false);
     }
   }, [allUIDS]);
 
@@ -48,19 +49,25 @@ export default function Saved() {
       });
     }
     setAllCards(dataArray);
-    setLoading(false); // Loading finished
+    setLoading(false);
   }
-  
+
   return (
     <>
-      <h1 className="p-5 text-neutral m-5 text-4xl text-center">Saved Blogs</h1>
       {loading ? (
-        <Loading/>
+        <div className="min-h-full flex items-center justify-center">
+          <Loading />
+        </div>
       ) : allUIDS.length > 0 ? (
-        <AllCards allCards={allCards} />
+        <div>
+          <h1 className="p-5 text-neutral m-5 text-4xl text-center">Saved Blogs</h1>
+          <AllCards allCards={allCards} />
+        </div>
       ) : (
-        <h1>No saved blogs</h1>
+        <h1 className="min-h-full flex items-center justify-center text-2xl text-neutral" >No saved blogs</h1>
       )}
+                <Footer />
+
     </>
   );
 }

@@ -44,7 +44,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <ToastContainer autoClose={2000} />
-          <Footer />
+          {/* <Footer /> */}
       </body>
     </html>
   );
