@@ -131,8 +131,9 @@ function Profile() {
       if (!imageURL) return toast.error("error uploading image");
 
 
-      const { email, uid } = userrr
+      const { email, uid , role } = userrr
       const user = {
+        role,
         imageURL,
         userName: name,
         fathername,
