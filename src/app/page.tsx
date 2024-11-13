@@ -22,12 +22,10 @@ export default function Home() {
     getData();
   }, []);
 
-
   return (
     <>
       <AllCards allCards={allCards} />
       <Footer />
-
     </>
   );
 }

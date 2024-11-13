@@ -45,12 +45,11 @@ const EmailVerification = () => {
     }
   };
 
-
   return (
-
-
     <div className="min-h-full flex items-center justify-center">
-      {isLoading ? <Loading  /> :
+      {isLoading ? (
+        <Loading />
+      ) : (
         <div className="card w-full max-w-sm p-8 rounded-lg">
           <h2 className="text-2xl font-semibold text-center mb-6">
             Email Verification
@@ -73,13 +72,8 @@ const EmailVerification = () => {
             </button>
           </div>
         </div>
-
-
-      }
-
+      )}
     </div>
-
-
   );
 };
 

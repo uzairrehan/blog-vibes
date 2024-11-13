@@ -4,7 +4,14 @@ import Footer from "@/components/footer";
 import Loading from "@/components/loading";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { CardData } from "@/types/types";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 export default function Saved() {
@@ -60,14 +67,17 @@ export default function Saved() {
         </div>
       ) : allUIDS.length > 0 ? (
         <div>
-          <h1 className="p-5 text-neutral m-5 text-4xl text-center">Saved Blogs</h1>
+          <h1 className="p-5 text-neutral m-5 text-4xl text-center">
+            Saved Blogs
+          </h1>
           <AllCards allCards={allCards} />
         </div>
       ) : (
-        <h1 className="min-h-full flex items-center justify-center text-2xl text-neutral" >No saved blogs</h1>
+        <h1 className="min-h-full flex items-center justify-center text-2xl text-neutral">
+          No saved blogs
+        </h1>
       )}
-                <Footer />
-
+      <Footer />
     </>
   );
 }

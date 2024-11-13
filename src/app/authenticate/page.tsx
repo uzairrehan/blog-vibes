@@ -26,7 +26,7 @@ function Authenticate() {
       <div className="flex justify-center gap-4 py-5 items-center">
         <button
           className={
-            page 
+            page
               ? "btn btn-neutral text-primary "
               : "btn btn-secondary  text-neutral"
           }
@@ -36,7 +36,7 @@ function Authenticate() {
         </button>
         <button
           className={
-            page 
+            page
               ? "btn btn-secondary text-neutral"
               : "btn btn-neutral  text-primary "
           }

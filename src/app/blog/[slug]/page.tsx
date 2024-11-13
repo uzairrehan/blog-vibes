@@ -1,7 +1,16 @@
 "use client";
 
 import Loading from "@/components/loading";
-import { addDoc, arrayRemove, arrayUnion, collection, DocumentData, onSnapshot, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  arrayRemove,
+  arrayUnion,
+  collection,
+  DocumentData,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -244,7 +253,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 {data.likes ? data.likes.length : null}
 
                 {data?.disLikes &&
-                  data.disLikes.includes(auth.currentUser?.uid) ? (
+                data.disLikes.includes(auth.currentUser?.uid) ? (
                   <button
                     title="remove dislike"
                     onClick={() => removeDisikeToBlog()}
@@ -258,7 +267,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 )}
                 {data.disLikes ? data.disLikes.length : null}
                 {data?.savedByWhom &&
-                  data.savedByWhom.includes(auth.currentUser?.uid) ? (
+                data.savedByWhom.includes(auth.currentUser?.uid) ? (
                   <button title="unsave" onClick={() => removeSaveBlogToUser()}>
                     <RiSaveFill className="size-8 " />
                   </button>
@@ -332,8 +341,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           <Loading />
         </div>
       )}
-                <Footer />
-
+      <Footer />
     </>
   );
 }

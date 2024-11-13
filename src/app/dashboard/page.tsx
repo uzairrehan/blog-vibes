@@ -1,7 +1,13 @@
 "use client";
 
 import { CardData } from "@/types/types";
-import { collection, query, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,7 +25,7 @@ function Dashboard() {
   useEffect(() => {
     const q = query(collection(db, "blogs"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const newCards: CardData[] = []; 
+      const newCards: CardData[] = [];
       snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
       setCards(newCards);
     });
@@ -31,7 +37,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="overflow-x-auto " >
+      <div className="overflow-x-auto ">
         <Link href={"/dashboard/add"}>
           <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
             <IoMdAdd />
@@ -82,7 +88,9 @@ function Dashboard() {
                     </div>
                   </th>
                   <td>
-                    <span className="badge badge-ghost badge-sm">{category}</span>
+                    <span className="badge badge-ghost badge-sm">
+                      {category}
+                    </span>
                   </td>
                   <th>
                     <button
@@ -112,7 +120,6 @@ function Dashboard() {
         </table>
       </div>
       <Footer />
-
     </>
   );
 }

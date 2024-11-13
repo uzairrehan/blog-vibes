@@ -1,4 +1,3 @@
-
 import Footer from "@/components/footer";
 import Markdown from "@/components/markdown";
 import Link from "next/link";
@@ -12,7 +11,6 @@ function Add() {
       </Link>{" "}
       <Markdown />
       <Footer />
-
     </>
   );
 }
