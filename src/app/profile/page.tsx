@@ -1,9 +1,9 @@
 "use client";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { app, auth, db, storage } from "@/firebase/firebaseconfig";
+import { auth, db, storage } from "@/firebase/firebaseconfig";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -16,17 +16,18 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 function Profile() {
   const [picture, setPicture] = useState<File | null>(null);
-  const [name, setName] = useState("");
-  const [fathername, setFathername] = useState("");
-  const [phonenumber, setPhonenumber] = useState("");
-  const [DOB, setDOB] = useState("");
-  const [bio, setBio] = useState("");
-  const [PFP, setPFP] = useState("");
+  const [name, setName] = useState(" ");
+  const [fathername, setFathername] = useState(" ");
+  const [phonenumber, setPhonenumber] = useState(" ");
+  const [DOB, setDOB] = useState(" ");
+  const [bio, setBio] = useState(" ");
+  const [PFP, setPFP] = useState(" ");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
 
   // fetching all users details and setting into state
   async function fetchUserDetails() {
+    if (!auth.currentUser) return; 
     const uid = auth.currentUser?.uid;
     const q = query(collection(db, "users"), where("uid", "==", uid));
     const querySnapshot = await getDocs(q);
@@ -43,14 +44,13 @@ function Profile() {
 
 
   useEffect(() => {
-    const auth = getAuth(app);
-    onAuthStateChanged(auth, (loggedInUser) => {
+    onAuthStateChanged(auth, async (loggedInUser) => {
       if (!loggedInUser) {
         toast.error("authenticate to view your profile !");
         route.push("/authenticate");
         return;
       }
-      fetchUserDetails();
+      await fetchUserDetails();
     });
   }, []);
 
@@ -58,16 +58,17 @@ function Profile() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
       await updateMyProfile();
-      setLoading(false);
       await fetchUserDetails();
     } catch (error) {
-      toast.error(`Couldn't update ! ${error}`);
+      console.log(error);
+      toast.error(`Couldn't update! ${error}`);
+    } finally {
+      setLoading(false); 
     }
   };
-
 
 
 
@@ -100,8 +101,7 @@ function Profile() {
           return;
         }
         const imageRef = ref(
-          storage,
-          `uploads/images/${crypto.randomUUID()}-${picture.name}`
+          storage, `uploads/images/${crypto.randomUUID()}-${picture.name}`
         );
         const uploadTask = uploadBytesResumable(imageRef, picture);
 
@@ -146,8 +146,6 @@ function Profile() {
       toast.error(`Error Updating! ${error}`);
     }
   }
-
-
 
 
 
@@ -275,7 +273,7 @@ function Profile() {
             <button
               onClick={handleSubmit}
               className="btn btn-active btn-neutral w-full"
-              disabled={loading ? true : false}
+              disabled={loading}
             >
               {loading ? <Loading /> : <> Update Profile </>}
             </button>

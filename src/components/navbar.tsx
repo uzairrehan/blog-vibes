@@ -130,9 +130,11 @@ function Navbar() {
         {user.email ? (
           <Link
             href={"/profile"}
-            className="btn btn-ghost btn-circle hover:bg-secondary"
+            className="btn btn-ghost btn-circle hover:bg-secondary "
           >
-            <FaRegUser />
+            {
+              user.imageURL? <Image className="rounded-xl" src={user.imageURL} alt={"p"} height={30} width={30} /> : <FaRegUser />
+            }
           </Link>
         ) : null}
       </div>

@@ -37,12 +37,13 @@ export type blogType = {
 };
 
 export type updateProfileType = {
-  picture: File | null | undefined;
-  name: string;
+  picture?: File | null | undefined;
+  userName: string;
   fathername: string;
   phonenumber: string;
   DOB: string;
   bio: string;
+  imageURL?:string
 };
 export type AdminLayoutTypes = {
   children: ReactNode;
@@ -65,4 +66,14 @@ export type UserState = {
   userName?: string;
   role?: string;
   saved?:string[]
+}
+
+ 
+export type UserProfile  = {
+  userName: string;
+  fathername: string;
+  phonenumber: string;
+  DOB: string;
+  bio: string;
+  imageURL?: string;
 }

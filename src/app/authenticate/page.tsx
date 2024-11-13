@@ -4,15 +4,14 @@ import SignIn from "@/components/signin";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import useUserStore from "@/store/userStore";
+import { auth } from "@/firebase/firebaseconfig";
 
 function Authenticate() {
-  const [page, setPage] = useState("SignUp");
-  const user = useUserStore((state) => state.user);
+  const [page, setPage] = useState(true);
   const route = useRouter();
 
   function checkUser() {
-    if (user.uid) {
+    if (auth.currentUser?.uid) {
       toast.error("You are already logged in !");
       route.push("/");
     }
@@ -27,26 +26,26 @@ function Authenticate() {
       <div className="flex justify-center gap-4 py-5 items-center">
         <button
           className={
-            page == "SignIn"
-              ? "btn btn-secondary  text-neutral"
-              : "btn btn-neutral text-primary "
+            page 
+              ? "btn btn-neutral text-primary "
+              : "btn btn-secondary  text-neutral"
           }
-          onClick={() => setPage("SignIn")}
+          onClick={() => setPage(false)}
         >
-          Sign In
+          Login
         </button>
         <button
           className={
-            page == "SignUp"
+            page 
               ? "btn btn-secondary text-neutral"
               : "btn btn-neutral  text-primary "
           }
-          onClick={() => setPage("SignUp")}
+          onClick={() => setPage(true)}
         >
-          Sign Up
+          Create
         </button>
       </div>
-      {page == "SignUp" ? <SignUp /> : <SignIn />}
+      {page ? <SignUp /> : <SignIn />}
     </>
   );
 }
