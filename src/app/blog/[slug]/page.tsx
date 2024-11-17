@@ -30,8 +30,15 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [comment, setComment] = useState<string>("");
   const route = useRouter();
   const [commentsArray, setCommentsArray] = useState<DocumentData[]>([]);
-  
+  const isliked = data?.likes.includes(auth.currentUser?.uid);
+  const isDisliked = data?.disLikes.includes(auth.currentUser?.uid);
+
   async function saveLikeToBlog() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
 
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
@@ -39,11 +46,18 @@ export default function Page({ params }: { params: { slug: string } }) {
       likes: arrayUnion(uid),
     };
     await updateDoc(reference, d);
+    if(isDisliked){
+      removeDisikeToBlog()
+    }
     toast.success("liked!");
   }
 
   async function removeLikeToBlog() {
-
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -54,18 +68,29 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   async function saveDisLikeToBlog() {
-
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
       disLikes: arrayUnion(uid),
     };
     await updateDoc(reference, d);
+    if(isliked){
+      removeLikeToBlog()
+    }
     toast.success("disliked!");
   }
 
   async function removeDisikeToBlog() {
-
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -74,40 +99,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     await updateDoc(reference, d);
     toast.success("dislike removed!");
   }
-
-
-  function handleLikesAndDislikes() {
-    if (!auth.currentUser?.uid) {
-      toast.error("Please Login First to like or dislike!");
-      route.push("/authenticate");
-      return;
-    }
-    const isliked = data?.likes.includes(auth.currentUser?.uid)
-    const isDisliked = data?.disLikes.includes(auth.currentUser?.uid)
-
-    if (isliked){
-      saveLikeToBlog()
-      return
-    }
-    
-    if (!isliked){
-      removeLikeToBlog()
-      return
-    }
-  
-    if (isDisliked){
-      saveDisLikeToBlog()
-      return
-    }
-    
-    if (!isDisliked){
-      removeDisikeToBlog()
-      return
-    }
-   
-  }
-
-
 
 
   async function updateBlogSaved() {
@@ -145,7 +136,6 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   async function saveBlogToUser() {
-      
     if (!auth.currentUser?.uid) {
       toast.error("Please Login First to save!");
       route.push("/authenticate");
@@ -181,8 +171,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [params.slug]);
 
-
-
   async function handleAddComment() {
     if (!auth.currentUser?.uid) {
       toast.error("Please Login First!");
@@ -200,8 +188,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     await addDoc(coll, comm);
     setComment("");
   }
-  
-  
+
   useEffect(() => {
     if (!data) return;
 
@@ -238,7 +225,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
           <div className="mt-4">
             <div className="mb-2 ">
-            <span className="font-semibold prose flex gap-3">
+              <span className="font-semibold prose flex gap-3">
                 {data?.likes && data.likes.includes(auth.currentUser?.uid) ? (
                   <button
                     title="remove like"
