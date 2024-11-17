@@ -105,9 +105,10 @@ function Navbar() {
       <div className="navbar-center">
         <a
           href="/"
-          className="relative w-20 h-12 sm:w-12 sm:h-8 md:w-16 md:h-10 lg:w-24 lg:h-14 overflow-hidden rounded-lg"
+          className="relative w-20 h-12 sm:w-12 sm:h-8 md:w-16 md:h-10 lg:w-24 lg:h-14 overflow-hidden rounded-xl" 
         >
           <Image
+            className="rounded-xl" 
             src="/images/bv.png"
             alt="logo"
             layout="fill"
