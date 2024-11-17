@@ -1,16 +1,7 @@
 "use client";
 
 import Loading from "@/components/loading";
-import {
-  addDoc,
-  arrayRemove,
-  arrayUnion,
-  collection,
-  DocumentData,
-  onSnapshot,
-  query,
-  where,
-} from "firebase/firestore";
+import { addDoc, arrayRemove, arrayUnion, collection, DocumentData, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -46,8 +37,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       likes: arrayUnion(uid),
     };
     await updateDoc(reference, d);
-    if(isDisliked){
-      removeDisikeToBlog()
+    if (isDisliked) {
+      removeDisikeToBlog();
     }
     toast.success("liked!");
   }
@@ -79,8 +70,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       disLikes: arrayUnion(uid),
     };
     await updateDoc(reference, d);
-    if(isliked){
-      removeLikeToBlog()
+    if (isliked) {
+      removeLikeToBlog();
     }
     toast.success("disliked!");
   }
@@ -99,7 +90,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     await updateDoc(reference, d);
     toast.success("dislike removed!");
   }
-
 
   async function updateBlogSaved() {
     const collectionRef = doc(db, "blogs", data?.firebaseID);
@@ -191,15 +181,16 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     if (!data) return;
-
+  
     const ref = doc(db, "blogs", data.firebaseID);
     const commentsCollection = collection(ref, "comments");
-    const unsubscribe = onSnapshot(commentsCollection, (snapshot) => {
+    const q = query(commentsCollection, orderBy("time", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const updatedComments: DocumentData[] = [];
       snapshot.forEach((doc) => updatedComments.push(doc.data()));
       setCommentsArray(updatedComments);
     });
-
+  
     return () => unsubscribe();
   }, [data]);
 
