@@ -23,35 +23,16 @@ import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { doc, updateDoc } from "firebase/firestore";
 import { RiSaveFill, RiSaveLine } from "react-icons/ri";
 import Footer from "@/components/footer";
+import { formatDate } from "@/utils/funcs";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<DocumentData | null>(null);
   const [comment, setComment] = useState<string>("");
   const route = useRouter();
   const [commentsArray, setCommentsArray] = useState<DocumentData[]>([]);
-
-  async function saveBlogToUser() {
-    if (!auth.currentUser?.uid) {
-      toast.error("Please Login First to save!");
-      route.push("/authenticate");
-      return;
-    }
-    const uid = auth.currentUser?.uid;
-    const reference = doc(db, "users", uid);
-    const d = {
-      savedBlogs: arrayUnion(data?.firebaseID),
-    };
-    await updateDoc(reference, d);
-    updateBlogSaved();
-    toast.success("blog saved !");
-  }
-
+  
   async function saveLikeToBlog() {
-    if (!auth.currentUser?.uid) {
-      toast.error("Please Login First to like or dislike!");
-      route.push("/authenticate");
-      return;
-    }
+
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -62,11 +43,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   async function removeLikeToBlog() {
-    if (!auth.currentUser?.uid) {
-      toast.error("Please Login First to remove like ");
-      route.push("/authenticate");
-      return;
-    }
+
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -77,11 +54,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   async function saveDisLikeToBlog() {
-    if (!auth.currentUser?.uid) {
-      toast.error("Please Login First to like or dislike!");
-      route.push("/authenticate");
-      return;
-    }
+
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -92,11 +65,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   async function removeDisikeToBlog() {
-    if (!auth.currentUser?.uid) {
-      toast.error("Please Login First to remove like ");
-      route.push("/authenticate");
-      return;
-    }
+
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -105,6 +74,41 @@ export default function Page({ params }: { params: { slug: string } }) {
     await updateDoc(reference, d);
     toast.success("dislike removed!");
   }
+
+
+  function handleLikesAndDislikes() {
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to like or dislike!");
+      route.push("/authenticate");
+      return;
+    }
+    const isliked = data?.likes.includes(auth.currentUser?.uid)
+    const isDisliked = data?.disLikes.includes(auth.currentUser?.uid)
+
+    if (isliked){
+      saveLikeToBlog()
+      return
+    }
+    
+    if (!isliked){
+      removeLikeToBlog()
+      return
+    }
+  
+    if (isDisliked){
+      saveDisLikeToBlog()
+      return
+    }
+    
+    if (!isDisliked){
+      removeDisikeToBlog()
+      return
+    }
+   
+  }
+
+
+
 
   async function updateBlogSaved() {
     const collectionRef = doc(db, "blogs", data?.firebaseID);
@@ -140,6 +144,22 @@ export default function Page({ params }: { params: { slug: string } }) {
     toast.success("blog unsaved !");
   }
 
+  async function saveBlogToUser() {
+      
+    if (!auth.currentUser?.uid) {
+      toast.error("Please Login First to save!");
+      route.push("/authenticate");
+      return;
+    }
+    const uid = auth.currentUser?.uid;
+    const reference = doc(db, "users", uid);
+    const d = {
+      savedBlogs: arrayUnion(data?.firebaseID),
+    };
+    await updateDoc(reference, d);
+    updateBlogSaved();
+    toast.success("blog saved !");
+  }
   useEffect(() => {
     if (params.slug) {
       const q = query(
@@ -161,27 +181,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [params.slug]);
 
-  // from ChatGPT
-  function formatDate(prop: { seconds: number; nanoseconds: number }) {
-    const { seconds, nanoseconds } = prop;
-    const milliseconds = seconds * 1000 + Math.floor(nanoseconds / 1000000);
-    const date = new Date(milliseconds);
-    const pad = (num: number) => num.toString().padStart(2, "0");
-    const day = pad(date.getDate());
-    const month = date.toLocaleString("default", { month: "long" });
-    const year = date.getFullYear();
-    let hours = date.getHours();
-    const period = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-    const minutes = pad(date.getMinutes());
-    const secondsTime = pad(date.getSeconds());
-    const formattedDate = `${day} ${month} ${year} ${pad(
-      hours
-    )}:${minutes}:${secondsTime} ${period}`;
 
-    return formattedDate;
-  }
-  //
 
   async function handleAddComment() {
     if (!auth.currentUser?.uid) {
@@ -200,7 +200,8 @@ export default function Page({ params }: { params: { slug: string } }) {
     await addDoc(coll, comm);
     setComment("");
   }
-
+  
+  
   useEffect(() => {
     if (!data) return;
 
@@ -237,7 +238,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
           <div className="mt-4">
             <div className="mb-2 ">
-              <span className="font-semibold prose flex gap-3">
+            <span className="font-semibold prose flex gap-3">
                 {data?.likes && data.likes.includes(auth.currentUser?.uid) ? (
                   <button
                     title="remove like"
@@ -323,18 +324,19 @@ export default function Page({ params }: { params: { slug: string } }) {
             )}
           </label>
 
-          {commentsArray &&
-            commentsArray.map(({ text, time }, index) => {
-              return (
-                <div className="chat chat-start" key={index}>
-                  <div className="chat-bubble">
-                    {formatDate(time)}
-                    <br />
-                    {text}
-                  </div>
+          {commentsArray.length === 0 ? (
+            <p className="text-black">No comments yet !!</p>
+          ) : (
+            commentsArray.map(({ text, time }, index) => (
+              <div className="chat chat-start" key={index}>
+                <div className="chat-bubble">
+                  {formatDate(time)}
+                  <br />
+                  {text}
                 </div>
-              );
-            })}
+              </div>
+            ))
+          )}
         </div>
       ) : (
         <div className="min-h-full flex items-center justify-center">

@@ -42,30 +42,26 @@ function Dashboard() {
 
   return (
     <>
-      <div className="overflow-x-auto">
-        <Link href={"/dashboard/add"}>
-          <button className="btn btn-sm m-5 btn-outline bg-secondary hover:btn-neutral">
-            <IoMdAdd />
-            Add Blog
-          </button>
-        </Link>
+      <Link href={"/dashboard/add"}>
+        <button className="btn btn-sm m-5 btn-outline bg-secondary hover:btn-neutral">
+          <IoMdAdd />
+          Add Blog
+        </button>
+      </Link>
 
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Category</th>
-              <th>Delete</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!cards ? (
-              <div className="min-h-full flex items-center justify-center">
-                <Loading />
-              </div>
-            ) : (
-              cards.map(({ imageURL, title, category, slug, firebaseID }) => (
+      {cards ? (
+        <div className="overflow-x-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Delete</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cards.map(({ imageURL, title, category, slug, firebaseID }) => (
                 <tr key={title}>
                   <th>
                     <div
@@ -116,22 +112,23 @@ function Dashboard() {
                     </button>
                   </th>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="min-h-full flex items-center justify-center">
+          <Loading />
+        </div>
+      )}
 
-      {/* Modal */}
+      {/* this is Modal */}
       {modalOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
           onClick={() => setModalOpen(false)}
         >
-          <div
-            className="relative p-4 w-full max-w-md max-h-full bg-base-100 rounded-lg shadow"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative p-4 w-full max-w-md max-h-full bg-base-100 rounded-lg shadow">
             <div className="text-center">
               <h3 className="mb-5 text-lg font-normal text-gray-500">
                 Are you sure you want to delete this blog?

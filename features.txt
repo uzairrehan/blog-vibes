@@ -24,4 +24,5 @@ Save likes in array type and in array save users uid
 And then get it by .length
 realtime listener in likes
 save = another page   
-configure redux toolkit with localstorage for user
+configure zustand with localstorage for user
+
