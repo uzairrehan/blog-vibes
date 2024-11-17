@@ -134,7 +134,7 @@ function Navbar() {
           >
             {user.imageURL ? (
               <Image
-                className="w-15 h-15"
+                className="w-10 h-10 rounded-full object-cover"
                 src={user.imageURL}
                 alt={"p"}
                 height={35}

@@ -8,6 +8,7 @@ import Loading from "./loading";
 import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { auth, db, storage } from "@/firebase/firebaseconfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import Image from "next/image";
 
 function Markdown() {
   const [title, setTitle] = useState("");
@@ -16,6 +17,7 @@ function Markdown() {
   const [mark, setMark] = useState("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   // This is from chatGPT
   function makeSlug(title: string) {
@@ -26,6 +28,20 @@ function Markdown() {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
   }
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0] ?? null;
+    setFile(selectedFile);
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageSrc(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    } 
+  };
+  
+
   //
   const handleSubmit = async () => {
     try {
@@ -102,9 +118,21 @@ function Markdown() {
       toast.error(`Couldn't add blog! ${error}`);
     }
   }
+  console.log(file);
 
   return (
     <>
+      <div className="flex justify-center items-center p-5">
+        {imageSrc && (
+          <Image
+            className="w-1/3 rounded-lg shadow-md h-auto"
+            src={imageSrc}
+            alt="Blog Image"
+            width={700}
+            height={700}
+          />
+        )}{" "}
+      </div>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200">
           <div>
@@ -129,9 +157,8 @@ function Markdown() {
             <input
               type="file"
               id="image"
-              onChange={(e) => {
-                setFile(e.target.files?.[0] ?? null);
-              }}
+              accept="image/*"
+              onChange={handleFileChange}
               className="w-full p-0 file-input bg-white file-input-bordered rounded-lg input input-primary text-black"
             />
           </div>

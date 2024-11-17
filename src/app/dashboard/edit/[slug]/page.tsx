@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { auth, db, storage } from "@/firebase/firebaseconfig";
 import Footer from "@/components/footer";
+import { FaLongArrowAltLeft } from "react-icons/fa";
+import Link from "next/link";
 
 function Edit({ params }: { params: { slug: string } }) {
   const [title, setTitle] = useState("");
@@ -23,6 +25,7 @@ function Edit({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<CardData | null>(null);
   const [loading, setLoading] = useState(false);
   const route = useRouter();
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
     if (params.slug) {
@@ -54,6 +57,20 @@ function Edit({ params }: { params: { slug: string } }) {
       setPicture(data.imageURL ?? "");
     }
   }, [data]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0] ?? null;
+    setFile(selectedFile);
+  
+    if (selectedFile) {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        setImageSrc(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    }
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -150,9 +167,20 @@ function Edit({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <>
+    <>      <Link href={"/dashboard"} className="btn m-2 btn-xs btn-neutral">
+    <FaLongArrowAltLeft /> Go Back to Dashboard
+  </Link>
       <div className="flex justify-center items-center p-5">
-        <Image src={picture} width={200} height={200} alt="picture" />
+      {(imageSrc || picture) && (
+  <Image
+    className="w-1/3 rounded-lg shadow-md h-auto"
+    src={imageSrc || picture}
+    alt="Blog Image"
+    width={700}
+    height={700}
+  />
+)}
+
       </div>
       <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch p-6">
         <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col justify-between w-full md:w-2/5 border border-gray-200">
@@ -178,9 +206,7 @@ function Edit({ params }: { params: { slug: string } }) {
             <input
               type="file"
               id="image"
-              onChange={(e) => {
-                setFile(e.target.files?.[0] ?? null);
-              }}
+              onChange={handleFileChange}
               className="w-full p-0 file-input bg-white file-input-bordered rounded-lg input input-primary text-black"
             />
           </div>

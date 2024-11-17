@@ -1,25 +1,27 @@
 "use client";
 
-import { CardData } from "@/types/types";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { IoMdAdd } from "react-icons/io";
+import { db } from "@/firebase/firebaseconfig";
 import {
   collection,
-  query,
-  onSnapshot,
   deleteDoc,
   doc,
+  onSnapshot,
+  query,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Loading from "@/components/loading";
-import Link from "next/link";
-import { IoMdAdd } from "react-icons/io";
 import { toast } from "react-toastify";
-import { db } from "@/firebase/firebaseconfig";
+import Link from "next/link";
+import Loading from "@/components/loading";
 import Footer from "@/components/footer";
+import { CardData } from "@/types/types";
+import Image from "next/image";
 
 function Dashboard() {
   const [cards, setCards] = useState<CardData[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
   const route = useRouter();
 
   useEffect(() => {
@@ -31,15 +33,18 @@ function Dashboard() {
     });
     return unsubscribe;
   }, []);
+
   async function deleteBlog(id: string) {
     await deleteDoc(doc(db, "blogs", id));
+    toast.success("Blog deleted!");
+    setModalOpen(false);
   }
 
   return (
     <>
-      <div className="overflow-x-auto ">
+      <div className="overflow-x-auto">
         <Link href={"/dashboard/add"}>
-          <button className="btn btn-sm m-5 btn-outline hover:btn-secondary ">
+          <button className="btn btn-sm m-5 btn-outline bg-secondary hover:btn-neutral">
             <IoMdAdd />
             Add Blog
           </button>
@@ -49,7 +54,7 @@ function Dashboard() {
           <thead>
             <tr>
               <th>Title</th>
-              <th>category</th>
+              <th>Category</th>
               <th>Delete</th>
               <th>Edit</th>
             </tr>
@@ -67,10 +72,7 @@ function Dashboard() {
                       className="flex items-center gap-3 hover:cursor-pointer"
                       onClick={() => route.push(`/blog/${slug}`)}
                     >
-                      <div
-                        className="avatar "
-                        onClick={() => route.push(`/blog/${slug}`)}
-                      >
+                      <div className="avatar">
                         <div className="mask mask-squircle h-12 w-12">
                           {imageURL ? (
                             <Image
@@ -94,18 +96,18 @@ function Dashboard() {
                   </td>
                   <th>
                     <button
-                      className="btn btn-error sm:btn-xs lg:btn-sm"
                       onClick={() => {
-                        deleteBlog(firebaseID as string);
-                        toast.success("Deleted !");
+                        setSelectedBlogId(firebaseID as string);
+                        setModalOpen(true);
                       }}
+                      className="block btn btn-error sm:btn-xs lg:btn-sm"
                     >
                       Delete
                     </button>
                   </th>
                   <th>
                     <button
-                      className="btn btn-warning  sm:btn-xs lg:btn-sm"
+                      className="btn btn-warning sm:btn-xs lg:btn-sm"
                       onClick={() => {
                         route.push(`/dashboard/edit/${slug}`);
                       }}
@@ -119,6 +121,38 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
+
+      {/* Modal */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="relative p-4 w-full max-w-md max-h-full bg-base-100 rounded-lg shadow"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="text-center">
+              <h3 className="mb-5 text-lg font-normal text-gray-500">
+                Are you sure you want to delete this blog?
+              </h3>
+              <button
+                onClick={() => deleteBlog(selectedBlogId as string)}
+                className="bg-error font-medium rounded-lg text-sm px-5 py-2.5"
+              >
+                Yes, I&apos;m sure
+              </button>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="bg-primary ml-3 py-2.5 px-5 text-sm font-medium rounded-lg border"
+              >
+                No, cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </>
   );
