@@ -1,27 +1,28 @@
 "use client";
-
+// imports
 import Loading from "@/components/loading";
-import { addDoc, arrayRemove, arrayUnion, collection, DocumentData, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import Image from "next/image";
-import Link from "next/link";
+import { addDoc, arrayRemove, arrayUnion, collection, DocumentData, getDoc, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import ReactMarkdown from "react-markdown";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { doc, updateDoc } from "firebase/firestore";
 import { RiSaveFill, RiSaveLine } from "react-icons/ri";
-import Footer from "@/components/footer";
 import { formatDate } from "@/utils/funcs";
+import Image from "next/image";
+import Footer from "@/components/footer";
+import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
 export default function Page({ params }: { params: { slug: string } }) {
+  // States
   const [data, setData] = useState<DocumentData | null>(null);
   const [comment, setComment] = useState<string>("");
   const route = useRouter();
   const [commentsArray, setCommentsArray] = useState<DocumentData[]>([]);
-    
+  const [author, setAuthor] = useState<DocumentData>();
 
   async function saveLikeToBlog() {
     if (!auth.currentUser?.uid) {
@@ -62,8 +63,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       route.push("/authenticate");
       return;
     }
-    
-  const isliked = data?.likes.includes(auth.currentUser?.uid);
+
+    const isliked = data?.likes.includes(auth.currentUser?.uid);
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -179,7 +180,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   useEffect(() => {
     if (!data) return;
-  
+
     const ref = doc(db, "blogs", data.firebaseID);
     const commentsCollection = collection(ref, "comments");
     const q = query(commentsCollection, orderBy("time", "desc"));
@@ -188,9 +189,24 @@ export default function Page({ params }: { params: { slug: string } }) {
       snapshot.forEach((doc) => updatedComments.push(doc.data()));
       setCommentsArray(updatedComments);
     });
-  
     return () => unsubscribe();
   }, [data]);
+
+  useEffect(() => {
+    fetchUser();
+  }, [data]);
+
+  async function fetchUser() {
+    const reference = doc(db, "users", data?.uid);
+    const docSnap = await getDoc(reference);
+    if (docSnap.exists()) {
+      setAuthor(docSnap.data());
+      console.log("Document data:", docSnap.data());
+    } else {
+      console.log("No such document!");
+    }
+  }
+  
 
   return (
     <>
@@ -207,6 +223,23 @@ export default function Page({ params }: { params: { slug: string } }) {
             width={700}
             height={700}
           />
+          {author && (
+            <div className="my-4 flex gap-4 items-center">
+              <Image
+                className="w-11 h-11 rounded-3xl"
+                src={author.imageURL}
+                alt="Author"
+                width={70}
+                height={70}
+              />
+
+              <p className="text-primary">
+                {" "}
+                <span className="text-neutral">Author :</span>{" "}
+                {author.userName}
+              </p>
+            </div>
+          )}
 
           <h1 className="mt-6 text-4xl font-bold text-gray-900">
             {data.title}
