@@ -1,14 +1,17 @@
 "use client";
-import SignUp from "@/components/signup";
-import SignIn from "@/components/signin";
+// imports
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { auth } from "@/firebase/firebaseconfig";
+import SignUp from "@/components/signup";
+import SignIn from "@/components/signin";
 
 function Authenticate() {
   const [page, setPage] = useState(true);
   const route = useRouter();
+
+
 
   function checkUser() {
     if (auth.currentUser?.uid) {
@@ -17,10 +20,13 @@ function Authenticate() {
     }
   }
 
+
   useEffect(() => {
     checkUser();
   }, []);
 
+
+  
   return (
     <>
       <div className="flex justify-center gap-4 py-5 items-center">

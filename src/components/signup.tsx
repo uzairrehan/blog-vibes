@@ -2,46 +2,35 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
-import {
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup } from "firebase/auth";
 import { toast } from "react-toastify";
 import { auth, db, provider } from "@/firebase/firebaseconfig";
 import { FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { FaKey } from "react-icons/fa";
-import Loading from "./loading";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
-import useUserStore from "@/store/userStore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { UserState } from "@/types/types";
+import { saveUser, updateUser } from "@/utils/funcs";
+import Loading from "./loading";
+import useUserStore from "@/store/userStore";
 
 function SignUp() {
+  // states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const route = useRouter();
   const [toggle, setToggle] = useState(true);
-
+  const route = useRouter();
+  // from zustand store
   const setUserFromStore = useUserStore((state) => state.saveUser);
 
-  const fetchUserDetails = async () => {
-    const uid = auth.currentUser?.uid;
+  // fetching user details & setting it into zustand store
+  const fetchUserDetails = async (uid: string) => {
     const q = query(collection(db, "users"), where("uid", "==", uid));
     getDocs(q).then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         const data = doc.data() as UserState | undefined;
-
         if (data) {
           setUserFromStore(data);
         }
@@ -49,29 +38,7 @@ function SignUp() {
     });
   };
 
-  async function saveUser(
-    email: string | null | undefined,
-    userName: string | null,
-    uid: string
-  ) {
-    const reference = doc(db, "users", uid);
-    const data = {
-      email: email,
-      userName: userName,
-      uid: uid,
-    };
-    await setDoc(reference, data);
-  }
-
-  async function updateUser(email: string | null | undefined, uid: string) {
-    const reference = doc(db, "users", uid);
-    const data = {
-      email: email,
-      uid: uid,
-    };
-    await updateDoc(reference, data);
-  }
-
+  // signup function with saving user in firestore and after this fetching this data and setting it into store
   async function signupWithEmailPassword(
     email: string,
     password: string,
@@ -80,11 +47,8 @@ function SignUp() {
     await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         const { email, uid } = userCredential.user;
-        await updateProfile(userCredential.user, {
-          displayName: userName,
-        });
         await saveUser(email, userName, uid).then(async () => {
-          await fetchUserDetails();
+          await fetchUserDetails(uid);
         });
         toast.success(`Signed Up with email : ${email}`);
       })
@@ -93,15 +57,16 @@ function SignUp() {
       });
   }
 
+  // main func that is handling the subit
   async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     setLoading(true);
     await signupWithEmailPassword(email, password, name);
-    setLoading(false);
+    await checkUserVerification();
     setEmail("");
     setName("");
     setPassword("");
-    route.push("/authenticate/verify");
+    setLoading(false);
   }
 
   async function googleSign() {
@@ -109,13 +74,33 @@ function SignUp() {
       .then(async (result) => {
         const user = result.user;
         await updateUser(auth.currentUser?.email, user.uid);
-        await fetchUserDetails();
+        await fetchUserDetails(user.uid);
         route.push("/");
         toast.success("Signed in with google !");
       })
       .catch((error) => {
+        console.log(error);
         toast.error(`Couldn't sign-in: ${error.message}`);
       });
+  }
+
+  async function checkUserVerification() {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      if (currentUser.emailVerified) {
+        route.push("/");
+      } else {
+        await sendEmailVerification(currentUser);
+        toast.success("Email verifiction sent");
+
+        console.log("verificaion sent ");
+
+        route.push("/authenticate/verify");
+      }
+    } else {
+      setLoading(false);
+      console.log("user not found");
+    }
   }
 
   return (

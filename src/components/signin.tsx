@@ -1,24 +1,25 @@
 "use client";
+
+// imports
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import {
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, User } from "firebase/auth";
 import { auth, db } from "@/firebase/firebaseconfig";
 import { FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import Loading from "./loading";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import useUserStore from "@/store/userStore";
 import { UserState } from "@/types/types";
+import Loading from "./loading";
+import useUserStore from "@/store/userStore";
 
 function SignIn() {
+  // states
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [toggle, setToggle] = useState(true);
+  // function from store to set user in store
   const setUserFromStore = useUserStore((state) => state.saveUser);
 
   const route = useRouter();
@@ -37,20 +38,24 @@ function SignIn() {
     });
   };
 
-  function loginWithEmailPassword() {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+  async function loginWithEmailPassword() {
+    await signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
         const { email, emailVerified } = userCredential.user;
         toast.success(`Signed in with email : ${email}`);
-        fetchUserDetails();
+        await fetchUserDetails();
         if (emailVerified) {
           route.push("/");
         } else {
+          await sendEmailVerification(auth.currentUser as User);
+
+          toast.success("Email verifiction sent");
+
           route.push("/authenticate/verify");
         }
       })
       .catch((error) => {
-        toast.error("Could'nt sign-in", error.message);
+        toast.error("Could not sign-in", error.message);
       });
   }
 
@@ -64,18 +69,18 @@ function SignIn() {
       });
   }
 
-  function handleSubmit(event: { preventDefault: () => void }) {
+  async function handleSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
     setLoading(true);
-    loginWithEmailPassword();
+    await loginWithEmailPassword();
     setEmail("");
     setPassword("");
     setLoading(false);
   }
 
-  function handlePasswordReset() {
+  async function handlePasswordReset() {
     if (email) {
-      passwordReset(email);
+      await passwordReset(email);
       toast.success("Email sent !");
     } else {
       toast.error("Please Add Email");
