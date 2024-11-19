@@ -21,8 +21,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   const [comment, setComment] = useState<string>("");
   const route = useRouter();
   const [commentsArray, setCommentsArray] = useState<DocumentData[]>([]);
-  const isliked = data?.likes.includes(auth.currentUser?.uid);
-  const isDisliked = data?.disLikes.includes(auth.currentUser?.uid);
+    
 
   async function saveLikeToBlog() {
     if (!auth.currentUser?.uid) {
@@ -31,6 +30,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       return;
     }
 
+    const isDisliked = data?.disLikes.includes(auth.currentUser?.uid);
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -62,6 +62,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       route.push("/authenticate");
       return;
     }
+    
+  const isliked = data?.likes.includes(auth.currentUser?.uid);
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
