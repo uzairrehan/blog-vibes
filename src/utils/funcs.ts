@@ -49,3 +49,14 @@ export async function saveUser(
   };
   await setDoc(reference, data);
 }
+
+
+
+export function makeSlug(title: string) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}

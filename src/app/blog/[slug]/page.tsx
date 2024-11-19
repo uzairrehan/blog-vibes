@@ -40,7 +40,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     if (isDisliked) {
       removeDisikeToBlog();
     }
-    toast.success("liked!");
   }
 
   async function removeLikeToBlog() {
@@ -55,7 +54,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       likes: arrayRemove(uid),
     };
     await updateDoc(reference, d);
-    toast.success("like removed!");
   }
 
   async function saveDisLikeToBlog() {
@@ -73,7 +71,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     if (isliked) {
       removeLikeToBlog();
     }
-    toast.success("disliked!");
   }
 
   async function removeDisikeToBlog() {
@@ -88,7 +85,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       disLikes: arrayRemove(uid),
     };
     await updateDoc(reference, d);
-    toast.success("dislike removed!");
   }
 
   async function updateBlogSaved() {

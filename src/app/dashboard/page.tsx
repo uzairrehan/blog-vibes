@@ -4,18 +4,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { IoMdAdd } from "react-icons/io";
 import { db } from "@/firebase/firebaseconfig";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import { collection, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { CardData } from "@/types/types";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import Loading from "@/components/loading";
 import Footer from "@/components/footer";
-import { CardData } from "@/types/types";
 import Image from "next/image";
 
 function Dashboard() {
@@ -25,7 +19,7 @@ function Dashboard() {
   const route = useRouter();
 
   useEffect(() => {
-    const q = query(collection(db, "blogs"));
+    const q = query(collection(db, "blogs"), where("deleted", "!=", true));
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const newCards: CardData[] = [];
       snapshot.forEach((doc) => newCards.push(doc.data() as CardData));
@@ -34,8 +28,12 @@ function Dashboard() {
     return unsubscribe;
   }, []);
 
+
   async function deleteBlog(id: string) {
-    await deleteDoc(doc(db, "blogs", id));
+    const blogRef = doc(db, "blogs", id);
+    await updateDoc(blogRef, {
+      deleted: true
+    });
     toast.success("Blog deleted!");
     setModalOpen(false);
   }
@@ -50,7 +48,7 @@ function Dashboard() {
       </Link>
 
       {cards ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto mb-8">
           <table className="table">
             <thead>
               <tr>

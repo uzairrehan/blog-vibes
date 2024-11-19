@@ -9,6 +9,7 @@ import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { auth, db, storage } from "@/firebase/firebaseconfig";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import Image from "next/image";
+import { makeSlug } from "@/utils/funcs";
 
 function Markdown() {
   const [title, setTitle] = useState("");
@@ -20,14 +21,7 @@ function Markdown() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
 
   // This is from chatGPT
-  function makeSlug(title: string) {
-    return title
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
-  }
+
   
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0] ?? null;
@@ -104,6 +98,7 @@ function Markdown() {
         createdDate: new Date(),
         uid,
         imageURL,
+        deleted:false
       };
 
       const docRef = await addDoc(collectionRef, newBlog);
