@@ -100,17 +100,17 @@ function Profile() {
       const { email, role } = userrr;
 
       const user = {
-        userName: name,
-        fathername,
-        phonenumber,
-        DOB,
-        bio,
-        email,
-        uid,
-        imageURL, 
+        userName: name?name:null,
+        fathername: fathername?fathername:null,
+        phonenumber:phonenumber?phonenumber:null,
+        DOB :DOB?DOB:null,
+        bio:bio?bio:null,
+        email:email?email:null,
+        uid:uid?uid:null,
+        imageURL:imageURL?imageURL:null, 
         role : role? role:"user"
       };
-      
+
       await setDoc(doc(db, "users", uid), user, { merge: true });
       saveUser(user as UserState);
   
