@@ -1,5 +1,5 @@
 import { db } from "@/firebase/firebaseconfig";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 // from ChatGPT
 export function formatDate(prop: { seconds: number; nanoseconds: number }) {
@@ -32,7 +32,7 @@ export async function updateUser(
     email: email,
     uid: uid,
   };
-  await updateDoc(reference, data);
+  await setDoc(reference, data, { merge: true });
   console.log("user added");
 }
 

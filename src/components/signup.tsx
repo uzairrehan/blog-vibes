@@ -73,7 +73,7 @@ function SignUp() {
     await signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
-        await updateUser(auth.currentUser?.email, user.uid);
+        await updateUser(auth.currentUser?.email, user.uid)
         await fetchUserDetails(user.uid);
         route.push("/");
         toast.success("Signed in with google !");

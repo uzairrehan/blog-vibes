@@ -8,12 +8,12 @@ import { FaLongArrowAltLeft } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import {
-  collection,
-  getDocs,
-  query,
-  where,
+  // collection,
+  // getDocs,
+  // query,
+  // where,
   doc,
-  updateDoc,
+  setDoc,
 } from "firebase/firestore";
 import Image from "next/image";
 import Loading from "@/components/loading";
@@ -24,33 +24,43 @@ import Footer from "@/components/footer";
 
 function Profile() {
   const [picture, setPicture] = useState<File | null>(null);
-  const [name, setName] = useState(" ");
-  const [fathername, setFathername] = useState(" ");
-  const [phonenumber, setPhonenumber] = useState(" ");
-  const [DOB, setDOB] = useState(" ");
-  const [bio, setBio] = useState(" ");
-  const [PFP, setPFP] = useState("");
+  const [name, setName] = useState<string | undefined>("");
+  const [fathername, setFathername] = useState<string | undefined>("");
+  const [phonenumber, setPhonenumber] = useState<string | undefined>("");
+  const [DOB, setDOB] = useState<string | undefined>("");
+  const [bio, setBio] = useState<string | undefined>("");
+  const [PFP, setPFP] = useState<string | undefined>("");
   const [loading, setLoading] = useState(false);
   const route = useRouter();
   const saveUser = useUserStore((state) => state.saveUser);
   const userrr = useUserStore((state) => state.user);
 
   // fetching all users details and setting into state
-  async function fetchUserDetails() {
-    const uid = auth.currentUser?.uid;
-    const q = query(collection(db, "users"), where("uid", "==", uid));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      setName(data.userName);
-      setFathername(data.fathername);
-      setBio(data.bio);
-      setDOB(data.DOB);
-      setPhonenumber(data.phonenumber);
-      setPFP(data.imageURL);
-    });
-  }
+  // async function fetchUserDetails() {
+  //   const uid = auth.currentUser?.uid;
+  //   const q = query(collection(db, "users"), where("uid", "==", uid));
+  //   const querySnapshot = await getDocs(q);
+  //   querySnapshot.forEach((doc) => {
+  //     const data = doc.data();
+  //     setName(data.userName);
+  //     setFathername(data.fathername);
+  //     setBio(data.bio);
+  //     setDOB(data.DOB);
+  //     setPhonenumber(data.phonenumber);
+  //     setPFP(data.imageURL);
+  //   });
+  // }
 
+
+  function setUserDetails() {
+      console.log(userrr);
+      setName(userrr.userName);
+      setFathername(userrr.fathername);
+      setBio(userrr.bio);
+      setDOB(userrr.DOB);
+      setPhonenumber(userrr.phonenumber);
+      setPFP(userrr.imageURL);
+  }
   useEffect(() => {
     onAuthStateChanged(auth, async (loggedInUser) => {
       if (!loggedInUser) {
@@ -58,16 +68,17 @@ function Profile() {
         route.push("/authenticate");
         return;
       }
-      await fetchUserDetails();
+      // await fetchUserDetails();
+      setUserDetails()
     });
-  }, []);
+  }, [userrr]);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setLoading(true);
     try {
       await updateMyProfile();
-      await fetchUserDetails();
+      // await fetchUserDetails();
     } catch (error) {
       console.log(error);
       toast.error(`Couldn't update! ${error}`);
@@ -76,75 +87,123 @@ function Profile() {
     }
   };
 
+  // async function updateMyProfile() {
+  //   const uid = auth.currentUser?.uid;
+  //   if (!uid) {
+  //     toast.error("User is not authenticated!");
+  //     return;
+  //   }
+
+  //   const collectionRef = doc(db, "users", uid);
+
+  //   if (!picture) {
+  //     const { email, uid } = userrr;
+  //     const user = {
+  //       userName: name,
+  //       fathername,
+  //       phonenumber,
+  //       DOB,
+  //       bio,
+  //       email,
+  //       uid,
+  //     };
+  //     await setDoc(collectionRef, user, { merge:true });
+  //     saveUser(user as UserState);
+  //     toast.success("Updated Successfully!");
+  //     return;
+  //   }
+
+  //   try {
+  //     const uploadImage = async () => {
+  //       if (!picture) {
+  //         return;
+  //       }
+  //       const imageRef = ref(
+  //         storage,
+  //         `uploads/images/${crypto.randomUUID()}-${picture.name}`
+  //       );
+  //       const uploadTask = uploadBytesResumable(imageRef, picture);
+
+  //       return new Promise((resolve, reject) => {
+  //         uploadTask.on(
+  //           "state_changed",
+  //           (snapshot) => {
+  //             const progress =
+  //               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  //             console.log("Upload is " + progress + "% done");
+  //           },
+  //           (error) => {
+  //             console.error("Upload error: ", error);
+  //             reject(error);
+  //           },
+  //           async () => {
+  //             const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+  //             console.log("File available at", downloadURL);
+  //             resolve(downloadURL);
+  //           }
+  //         );
+  //       });
+  //     };
+
+  //     const imageURL = await uploadImage();
+
+  //     if (!imageURL) return toast.error("error uploading image");
+
+  //     const { email, uid } = userrr;
+  //     const user = {
+  //       imageURL,
+  //       userName: name ,
+  //       fathername,
+  //       phonenumber,
+  //       DOB,
+  //       bio,
+  //       email,
+  //       uid,
+  //     };
+  //     await setDoc(collectionRef, user, { merge: true });
+  //     saveUser(user as UserState);
+  //     toast.success("Updated Successfully!");
+  //   } 
+  //   catch (error) {
+  //     console.error("Error Updating : ", error);
+  //     toast.error(`Error Updating! ${error}`);
+  //   }
+  // }
+
   async function updateMyProfile() {
     const uid = auth.currentUser?.uid;
-
+  
     if (!uid) {
       toast.error("User is not authenticated!");
       return;
     }
-
-    const collectionRef = doc(db, "users", uid);
-
-    if (!picture) {
-      const { email, uid, role, imageURL } = userrr;
-      const user = {
-        imageURL,
-        role,
-        userName: name,
-        fathername,
-        phonenumber,
-        DOB,
-        bio,
-        email,
-        uid,
-      };
-      await updateDoc(collectionRef, user);
-      saveUser(user as UserState);
-      toast.success("Updated Successfully!");
-      return;
-    }
-
+  
     try {
-      const uploadImage = async () => {
-        if (!picture) {
-          return;
-        }
-        const imageRef = ref(
-          storage,
-          `uploads/images/${crypto.randomUUID()}-${picture.name}`
-        );
+      let imageURL = PFP; 
+  
+      if (picture) {
+        console.log("Uploading image...");
+        const imageRef = ref(storage, `uploads/images/${crypto.randomUUID()}-${picture.name}`);
         const uploadTask = uploadBytesResumable(imageRef, picture);
-
-        return new Promise((resolve, reject) => {
+  
+        imageURL = await new Promise((resolve, reject) => {
           uploadTask.on(
             "state_changed",
-            (snapshot) => {
-              const progress =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-              console.log("Upload is " + progress + "% done");
-            },
-            (error) => {
-              // console.error("Upload error: ", error);
-              reject(error);
-            },
-            async () => {
-              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-              // console.log("File available at", downloadURL);
-              resolve(downloadURL);
-            }
+            null, 
+            (error) => reject(error), 
+            async () => resolve(await getDownloadURL(uploadTask.snapshot.ref))
           );
         });
-      };
-
-      const imageURL = await uploadImage();
-
-      if (!imageURL) return toast.error("error uploading image");
-
-      const { email, uid, role } = userrr;
+  
+        if (!imageURL) {
+          toast.error("Image upload failed.");
+          return;
+        }
+        console.log("Image uploaded successfully:", imageURL);
+      }
+  
+      const { email } = userrr;
       const user = {
-        role,
-        imageURL,
         userName: name,
         fathername,
         phonenumber,
@@ -152,16 +211,19 @@ function Profile() {
         bio,
         email,
         uid,
+        imageURL, 
       };
-      await updateDoc(collectionRef, user);
+  
+      await setDoc(doc(db, "users", uid), user, { merge: true });
       saveUser(user as UserState);
-
-      toast.success("Updated Successfully!");
+  
+      toast.success("Profile updated successfully!");
     } catch (error) {
-      // console.error("Error Updating : ", error);
-      toast.error(`Error Updating! ${error}`);
+      console.error("Error updating profile:", error);
+      toast.error(`Error updating profile `);
     }
   }
+  
 
   return (
     <>
