@@ -24,12 +24,10 @@
   - **Firebase Hosting**: Hosts the application.
 
 ## 💡 Usage
-
 - Sign in or create an account.
 - Explore available blogs.
 - Engage by liking and commenting on posts.
 - Admins can log in to access features for managing blogs.
 
 ## 🎨 Styling
-
 The app uses **Tailwind CSS** for styling, providing a modern, responsive design.
