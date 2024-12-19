@@ -31,7 +31,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       return;
     }
 
-    const isDisliked = data?.disLikes.includes(auth.currentUser?.uid);
+    const isDisliked = data?.disLikes?.includes(auth.currentUser?.uid);
     const uid = auth.currentUser?.uid;
     const reference = doc(db, "blogs", data?.firebaseID);
     const d = {
@@ -248,7 +248,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           <div className="mt-4">
             <div className="mb-2 ">
               <span className="font-semibold prose flex gap-3">
-                {data?.likes && data.likes.includes(auth.currentUser?.uid) ? (
+                {data?.likes && data.likes?.includes(auth.currentUser?.uid) ? (
                   <button
                     title="remove like"
                     onClick={() => removeLikeToBlog()}
@@ -260,10 +260,10 @@ export default function Page({ params }: { params: { slug: string } }) {
                     <BiLike className="size-8" />
                   </button>
                 )}
-                {data.likes ? data.likes.length : null}
+                {data.likes ? data?.likes?.length : null}
 
                 {data?.disLikes &&
-                data.disLikes.includes(auth.currentUser?.uid) ? (
+                data.disLikes?.includes(auth.currentUser?.uid) ? (
                   <button
                     title="remove dislike"
                     onClick={() => removeDisikeToBlog()}
@@ -277,7 +277,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                 )}
                 {data.disLikes ? data.disLikes.length : null}
                 {data?.savedByWhom &&
-                data.savedByWhom.includes(auth.currentUser?.uid) ? (
+                data.savedByWhom?.includes(auth.currentUser?.uid) ? (
                   <button title="unsave" onClick={() => removeSaveBlogToUser()}>
                     <RiSaveFill className="size-8 " />
                   </button>
