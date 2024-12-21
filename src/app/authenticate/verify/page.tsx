@@ -15,14 +15,13 @@ const EmailVerification = () => {
   const userr = useUserStore((state) => state.user);
 
   useEffect(() => {
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-      if (currentUser.emailVerified) {
+    const userVerify = auth.currentUser?.emailVerified;
+    if (userVerify) {
         route.push("/");
-      }
+        // console.log("user verified");
     } else {
       setIsLoading(false);
-      console.log("user not found");
+      // console.log("user not verified");
     }
   }, []);
 

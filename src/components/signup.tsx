@@ -130,7 +130,7 @@ function SignUp() {
                   name="username"
                   type="text"
                   required
-                  className="grow "
+                  className="grow"
                   placeholder="Syed Uzair"
                   onChange={(e) => setName(e.target.value)}
                   value={name}
