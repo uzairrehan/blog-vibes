@@ -1,6 +1,6 @@
 # Blog Vibes
 
-**Blog Vibes** is a feature-rich blogging platform that allows users to view, like, and comment on blogs. It also includes an admin panel for managing blog content. Built with **Next.js**, **TypeScript**, and **Firebase**, this project leverages modern web development technologies for an engaging user experience.
+**Blog Vibes** is a blogging platform that allows users to view, like, and comment on blogs. It also includes an admin panel for managing blog content. Built with **Next.js**, **TypeScript**, and **Firebase**.
 
 ## 🚀 Features
 
