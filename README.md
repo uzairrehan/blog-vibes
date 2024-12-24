@@ -31,3 +31,35 @@
 
 ## 🎨 Styling
 The app uses **Tailwind CSS** for styling, providing a modern, responsive design.
+
+## 📸 Screenshots
+
+### Dashboard
+![Dashboard](public/images/dashboard.png)
+
+### Add Page
+![Add Page](public/images/add.png)
+
+### Edit Page
+![Edit Page](public/images/edit.png)
+
+### Admin can go to dashboard
+![Go to dashboard](public/images/gotodashboard.png)
+
+### Confirmation
+![Confirmation](public/images/confirm.png)
+
+### Blog List Page
+![Blog List Page](public/images/home.png)
+
+### Blog Detailed Page
+![Blog Detailed Page](public/images/fullblog.png)
+
+### Register Page
+![Register Page](public/images/register.png)
+
+---
+
+## 🔗 Links
+- [Live Demo](https://blogvibes.vercel.app)
+- [Repository](https://github.com/uzairrehan/blog-vibes)
